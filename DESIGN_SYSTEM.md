@@ -88,6 +88,12 @@ All UI strings live in a single i18n resource file (Spanish) via `react-i18next`
 | `events.method.face` | "Rostro" |
 | `events.method.body` | "Cuerpo" |
 | `events.unidentified` | "No identificado" |
+| `auth.login` | "Iniciar sesión" |
+| `auth.logout` | "Cerrar sesión" |
+| `auth.forbidden` | "No tienes permiso para ver esta página" |
+| `cameras.title` | "Cámaras" |
+| `cameras.lanOnly` | "El video solo está disponible en la red local del piloto" |
+| `dev.title` | "Vista de análisis (dev)" |
 
 ## 7. Accessibility notes
 

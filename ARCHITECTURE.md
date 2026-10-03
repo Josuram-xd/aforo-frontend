@@ -36,6 +36,12 @@
 **Decision**: Server state (occupancy, events, people) is managed by TanStack Query; there is no Redux/Zustand/global store.
 **Why**: the app has no complex client-only state — everything displayed comes from the backend. TanStack Query's caching and polling cover the entire data layer needed.
 
+### ADR-004: Login with Amazon Cognito managed login (OIDC + PKCE)
+**Decision**: Users sign in through the Cognito User Pool defined in `aforo-backend` (ADR-005 there), using its managed login page with the authorization-code + PKCE flow (e.g. `react-oidc-context` / `oidc-client-ts`; verify current versions before pinning). The access token is sent as `Authorization: Bearer` to `aforo-backend` and as a query parameter to `aforo-vision`'s stream server (an `<img>` MJPEG request cannot send headers).
+**Routes**: `/` dashboard (`viewer`, `dev`), `/camaras` plain camera streams (`viewer`, `dev`), `/dev` annotated analysis streams (`dev` only). Groups come from the token's `cognito:groups` claim; hiding routes in the UI is only convenience — the backend and the stream server enforce access.
+**Why**: no password handling in our code, free within Cognito's tier for a few users, and the same token works for both the API and the local video.
+**Constraint**: the camera pages only work when the app is opened from the laptop's network over plain HTTP (e.g. `npm run dev` / `vite preview` on the laptop); from the HTTPS Amplify deployment the browser blocks `http://` LAN streams. The dashboard itself works from anywhere.
+
 ## 4. Data contract (consumed, not owned)
 
 `aforo-frontend` consumes the REST API and shared enums defined in `aforo-backend/ARCHITECTURE.md`. It must not diverge from that contract; if the UI needs a new field, that's a change proposed to `aforo-backend`, not invented locally.
@@ -103,7 +109,10 @@ aforo-frontend/
 │   │   ├── OccupancyCard.tsx
 │   │   ├── PeopleList.tsx
 │   │   ├── EventTimeline.tsx
-│   │   └── LiveCameraPreview.tsx  # optional, stretch goal
+│   │   ├── LiveCameraPreview.tsx  # optional, stretch goal (plain or dev stream)
+│   │   └── RequireGroup.tsx       # route guard by Cognito group
+│   ├── auth/
+│   │   └── authConfig.ts          # Cognito OIDC settings from VITE_COGNITO_* env vars
 │   ├── hooks/
 │   │   ├── useAforo.ts
 │   │   ├── useEvents.ts

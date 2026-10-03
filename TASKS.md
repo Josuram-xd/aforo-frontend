@@ -19,7 +19,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 | A — Arranque (en paralelo) | 1-3 | 1-2 | 1-3 | 1-2 |
 | B — Núcleo | 4 | 3-7 | 4-6 | 3-5 (con datos mock) |
 | C — Integración | — | — | 7 | 6 |
-| D — Ensayo y ajustes | 5 | 8-9 | 8-11 | 7-8 |
+| D — Ensayo y ajustes | 5 | 8-9, 11 (login) | 8-11 | 7-8, 11 (login) |
 | E — Extras | 6 | 10 | 12-13 | 9-10 |
 
 **Hito fin de septiembre:** fase A completa → aquí, la página "hola mundo" publicada en Amplify (task 2).
@@ -74,6 +74,14 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 ### Task 8 — Resumen del piloto
 - [ ] **8.1** `feat(ui): add pilot summary card` — Total de entradas, salidas y % identificado por rostro, calculado en el cliente a partir de `GET /events` (métrica de éxito del PRD).
 
+### Task 11 — Login de usuarios
+> Depende de: Seguir con la task 11 del repo: `aforo-backend` (User Pool de Cognito).
+
+- [ ] **11.1** `feat(auth): add cognito oidc login with pkce` — `src/auth/authConfig.ts` con `VITE_COGNITO_AUTHORITY`, `VITE_COGNITO_CLIENT_ID` y `VITE_COGNITO_DOMAIN`; botón "Iniciar sesión" / "Cerrar sesión". Agregar las variables a `.env.example`.
+- [ ] **11.2** `feat(auth): protect routes by cognito group` — `RequireGroup`: sin sesión → login; sin el grupo → "No tienes permiso para ver esta página".
+- [ ] **11.3** `feat(api): send bearer token on api requests` — `aforoClient` agrega `Authorization: Bearer <access token>`; ante un 401 vuelve al login. El modo mock (4.3) no exige login.
+- [ ] **11.4** (sin commit) Probar con un usuario `viewer` y uno `dev` creados con la task 11.3 de `aforo-backend`.
+
 ---
 
 ## Prioridad 3 — Extras
@@ -81,7 +89,10 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 ### Task 9 — Vista de cámara en vivo
 > Depende de: Seguir con la task 12 del repo: `aforo-vision`
 
-- [ ] **9.1** `feat(ui): add live camera preview` — `LiveCameraPreview` con el MJPEG local. Solo funciona con `npm run dev` en el laptop: desde Amplify (HTTPS) el navegador bloquea una imagen `http://` de la red local.
+> Depende de: task 11 de este repo (login).
+
+- [ ] **9.1** `feat(ui): add cameras page with live streams` — Ruta `/camaras` (`viewer` y `dev`) con `LiveCameraPreview` por cámara (`/stream/<cameraId>?token=...`). Solo funciona abierta desde la red del laptop por HTTP: desde Amplify (HTTPS) el navegador bloquea una imagen `http://` de la red local; mostrar el mensaje `cameras.lanOnly` en ese caso.
+- [ ] **9.2** `feat(ui): add dev analysis page` — Ruta `/dev` (solo grupo `dev`) con los streams anotados (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.
 
 ### Task 10 — Tests
 - [ ] **10.1** `test: add component tests with vitest` — Vitest + Testing Library para `OccupancyCard`, `PeopleList` y `EventTimeline` con los fixtures de 4.3.
