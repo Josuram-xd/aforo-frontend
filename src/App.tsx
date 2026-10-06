@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { DashboardLayout } from './components/DashboardLayout'
 import { OccupancyCard } from './components/OccupancyCard'
+import { PeopleList } from './components/PeopleList'
 
 function App() {
   const { t } = useTranslation()
@@ -8,7 +9,7 @@ function App() {
   return (
     <DashboardLayout
       occupancy={<OccupancyCard />}
-      people={<h2>{t('people.title')}</h2>}
+      people={<PeopleList />}
       events={<h2>{t('events.title')}</h2>}
     />
   )

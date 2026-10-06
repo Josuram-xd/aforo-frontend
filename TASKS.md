@@ -52,7 +52,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 ### Task 5 — Componentes principales
 - [x] **5.1** `feat(hooks): add polling hooks for aforo, events and people` — `useAforo`, `useEvents`, `usePeople` con `refetchInterval` de 2-3 s.
 - [x] **5.2** `feat(ui): add occupancy card` — `OccupancyCard`: número grande del aforo actual.
-- [ ] **5.3** `feat(ui): add people list with status labels` — `PeopleList`: punto de color + nombre + "Dentro"/"Fuera".
+- [x] **5.3** `feat(ui): add people list with status labels` — `PeopleList`: punto de color + nombre + "Dentro"/"Fuera".
 - [ ] **5.4** `feat(ui): add event timeline with direction and method tags` — `EventTimeline`: hora, "Entrada"/"Salida", nombre o "No identificado", etiqueta "Rostro"/"Cuerpo".
 - [ ] **5.5** `feat(ui): add loading and error states` — Mensajes en español ("Cargando…", "Sin conexión con el servidor").
 
