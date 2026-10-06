@@ -30,7 +30,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 
 ### Task 1 — Inicializar el proyecto
 - [x] **1.1** `chore: init vite react typescript project` — Vite 8 + React 19 + TypeScript fijado en `~6.0` (no 7.x mientras `typescript-eslint` no lo soporte).
-- [ ] **1.2** `chore: add eslint, prettier and strict tsconfig` — Reglas básicas y `"strict": true`.
+- [x] **1.2** `chore: add eslint, prettier and strict tsconfig` — Reglas básicas y `"strict": true`.
 - [x] **1.3** `docs: add PRD, DESIGN_SYSTEM, ARCHITECTURE and AGENTS` — Subir los documentos a la raíz.
 
 ### Task 2 — "Hola mundo" en Amplify **[HITO SEPT]**
