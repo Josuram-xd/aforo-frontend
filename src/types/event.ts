@@ -24,3 +24,10 @@ export interface PersonStatus {
   status: 'IN' | 'OUT'
   lastEventAt: string
 }
+
+/** Response of `GET /aforo`. */
+export interface AforoStatus {
+  currentOccupancy: number
+  /** ISO 8601 */
+  lastUpdated: string
+}
