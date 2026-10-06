@@ -35,5 +35,9 @@
   },
   "dev": {
     "title": "Vista de análisis (dev)"
+  },
+  "status": {
+    "loading": "Cargando…",
+    "error": "Sin conexión con el servidor"
   }
 }

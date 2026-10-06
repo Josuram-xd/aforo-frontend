@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useEvents } from '../hooks/useEvents'
 import type { AforoEvent } from '../types/event'
+import { QueryStatus } from './QueryStatus'
 import './EventTimeline.css'
 
 function formatTime(timestamp: string): string {
@@ -17,11 +18,12 @@ function byNewestFirst(a: AforoEvent, b: AforoEvent): number {
 
 export function EventTimeline() {
   const { t } = useTranslation()
-  const { data } = useEvents()
+  const { data, isPending, isError } = useEvents()
 
   return (
     <div className="event-timeline">
       <h2 className="event-timeline__title">{t('events.title')}</h2>
+      <QueryStatus isPending={isPending} isError={isError} />
       <ul className="event-timeline__items">
         {data?.toSorted(byNewestFirst).map((event) => {
           const isEntry = event.direction === 'ENTRY'

@@ -54,7 +54,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 - [x] **5.2** `feat(ui): add occupancy card` — `OccupancyCard`: número grande del aforo actual.
 - [x] **5.3** `feat(ui): add people list with status labels` — `PeopleList`: punto de color + nombre + "Dentro"/"Fuera".
 - [x] **5.4** `feat(ui): add event timeline with direction and method tags` — `EventTimeline`: hora, "Entrada"/"Salida", nombre o "No identificado", etiqueta "Rostro"/"Cuerpo".
-- [ ] **5.5** `feat(ui): add loading and error states` — Mensajes en español ("Cargando…", "Sin conexión con el servidor").
+- [x] **5.5** `feat(ui): add loading and error states` — Mensajes en español ("Cargando…", "Sin conexión con el servidor").
 
 ### Task 6 — Integración con el backend real
 > Depende de: Seguir con las task 1-7 del repo: `aforo-backend`
