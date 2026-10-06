@@ -36,10 +36,10 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 ### Task 2 — "Hola mundo" en Amplify **[HITO SEPT]**
 - [x] **2.1** `feat(ui): add placeholder home page` — Página con el título "Aforo — Piloto" y el fondo del Design System.
 - [x] **2.2** `chore: add amplify build config` — `amplify.yml` con `npm ci` y `npm run build` (salida `dist/`).
-- [ ] **2.3** (sin commit) Conectar el repo en la consola de Amplify y abrir la URL pública.
+- [x] **2.3** (sin commit) Conectar el repo en la consola de Amplify y abrir la URL pública.
 
 ### Task 3 — Base visual
-- [ ] **3.1** `feat(styles): add design tokens as css variables` — `src/styles/tokens.css` con los colores y tipografías de `DESIGN_SYSTEM.md`.
+- [x] **3.1** `feat(styles): add design tokens as css variables` — `src/styles/tokens.css` con los colores y tipografías de `DESIGN_SYSTEM.md`.
 - [ ] **3.2** `feat(i18n): setup react-i18next with spanish strings` — `src/i18n/es.json` con las claves del Design System ("Aforo actual", "Dentro", "Fuera", "Entrada", "Salida", "Rostro", "Cuerpo", "No identificado").
 - [ ] **3.3** `feat(layout): add dashboard layout and header` — Dos columnas en escritorio, una en pantallas pequeñas.
 
