@@ -44,7 +44,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 - [x] **3.3** `feat(layout): add dashboard layout and header` — Dos columnas en escritorio, una en pantallas pequeñas.
 
 ### Task 4 — Capa de datos
-- [ ] **4.1** `feat(types): add shared event and person types` — `src/types/event.ts`: `Direction`, `EventMethod`, `CameraId`, `AforoEvent`, `PersonStatus`. Mantener sincronizado con la task 3 del repo `aforo-backend`.
+- [x] **4.1** `feat(types): add shared event and person types` — `src/types/event.ts`: `Direction`, `EventMethod`, `CameraId`, `AforoEvent`, `PersonStatus`. Mantener sincronizado con la task 3 del repo `aforo-backend`.
 - [ ] **4.2** `feat(api): add aforo client` — `src/api/aforoClient.ts`: funciones `getAforo()`, `getEvents(from, to)`, `getPeople()` usando `VITE_API_BASE_URL`.
 - [ ] **4.3** `feat(api): add mock mode with fixtures` — Con `VITE_USE_MOCK=true` el cliente devuelve datos de ejemplo; así avanzas sin esperar al backend.
 - [ ] **4.4** `feat(query): setup tanstack query provider` — `QueryClientProvider` en `main.tsx`.
