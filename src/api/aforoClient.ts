@@ -1,4 +1,5 @@
 import type { AforoEvent, AforoStatus, PersonStatus } from '../types/event'
+import { mockAforo, mockEvents, mockPeople } from './fixtures'
 
 export class ApiError extends Error {
   readonly status: number
@@ -9,6 +10,8 @@ export class ApiError extends Error {
     this.status = status
   }
 }
+
+const useMock = import.meta.env.VITE_USE_MOCK === 'true'
 
 function baseUrl(): string {
   const url = import.meta.env.VITE_API_BASE_URL
@@ -33,14 +36,17 @@ async function get<T>(path: string, params?: Record<string, string | undefined>)
 }
 
 export function getAforo(): Promise<AforoStatus> {
+  if (useMock) return Promise.resolve(mockAforo())
   return get<AforoStatus>('/aforo')
 }
 
 /** `from` and `to` are optional ISO 8601 timestamps. */
 export function getEvents(from?: string, to?: string): Promise<AforoEvent[]> {
+  if (useMock) return Promise.resolve(mockEvents(from, to))
   return get<AforoEvent[]>('/events', { from, to })
 }
 
 export function getPeople(): Promise<PersonStatus[]> {
+  if (useMock) return Promise.resolve(mockPeople())
   return get<PersonStatus[]>('/people')
 }
