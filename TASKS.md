@@ -35,7 +35,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 
 ### Task 2 — "Hola mundo" en Amplify **[HITO SEPT]**
 - [x] **2.1** `feat(ui): add placeholder home page` — Página con el título "Aforo — Piloto" y el fondo del Design System.
-- [ ] **2.2** `chore: add amplify build config` — `amplify.yml` con `npm ci` y `npm run build` (salida `dist/`).
+- [x] **2.2** `chore: add amplify build config` — `amplify.yml` con `npm ci` y `npm run build` (salida `dist/`).
 - [ ] **2.3** (sin commit) Conectar el repo en la consola de Amplify y abrir la URL pública.
 
 ### Task 3 — Base visual
