@@ -59,7 +59,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 ### Task 6 — Integración con el backend real
 > Depende de: Seguir con las task 1-7 del repo: `aforo-backend`
 
-- [ ] **6.1** `chore(config): add env example with api url and mock flag` — `.env.example` con `VITE_API_BASE_URL` y `VITE_USE_MOCK`; en Amplify configurar la URL real como variable de entorno.
+- [x] **6.1** `chore(config): add env example with api url and mock flag` — `.env.example` con `VITE_API_BASE_URL` y `VITE_USE_MOCK`; en Amplify configurar la URL real como variable de entorno.
 - [ ] **6.2** (sin commit) Probar el dashboard publicado con el script de eventos falsos (task 7.1 del repo `aforo-backend`).
 
 ---
