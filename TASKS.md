@@ -50,7 +50,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 - [x] **4.4** `feat(query): setup tanstack query provider` — `QueryClientProvider` en `main.tsx`.
 
 ### Task 5 — Componentes principales
-- [ ] **5.1** `feat(hooks): add polling hooks for aforo, events and people` — `useAforo`, `useEvents`, `usePeople` con `refetchInterval` de 2-3 s.
+- [x] **5.1** `feat(hooks): add polling hooks for aforo, events and people` — `useAforo`, `useEvents`, `usePeople` con `refetchInterval` de 2-3 s.
 - [ ] **5.2** `feat(ui): add occupancy card` — `OccupancyCard`: número grande del aforo actual.
 - [ ] **5.3** `feat(ui): add people list with status labels` — `PeopleList`: punto de color + nombre + "Dentro"/"Fuera".
 - [ ] **5.4** `feat(ui): add event timeline with direction and method tags` — `EventTimeline`: hora, "Entrada"/"Salida", nombre o "No identificado", etiqueta "Rostro"/"Cuerpo".
