@@ -1,0 +1,37 @@
+{
+  "app": {
+    "title": "Aforo — Piloto"
+  },
+  "occupancy": {
+    "title": "Aforo actual"
+  },
+  "people": {
+    "status": {
+      "in": "Dentro",
+      "out": "Fuera"
+    }
+  },
+  "events": {
+    "direction": {
+      "entry": "Entrada",
+      "exit": "Salida"
+    },
+    "method": {
+      "face": "Rostro",
+      "body": "Cuerpo"
+    },
+    "unidentified": "No identificado"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "forbidden": "No tienes permiso para ver esta página"
+  },
+  "cameras": {
+    "title": "Cámaras",
+    "lanOnly": "El video solo está disponible en la red local del piloto"
+  },
+  "dev": {
+    "title": "Vista de análisis (dev)"
+  }
+}
