@@ -1,0 +1,30 @@
+.dashboard {
+  min-height: 100vh;
+}
+
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 24px 32px;
+}
+
+.dashboard__occupancy,
+.dashboard__people,
+.dashboard__events {
+  min-width: 0;
+  padding: 24px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  .dashboard__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dashboard__events {
+    grid-column: 1 / -1;
+  }
+}

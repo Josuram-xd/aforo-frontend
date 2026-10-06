@@ -1,0 +1,10 @@
+.header {
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header__title {
+  margin: 0;
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-semibold);
+}

@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next'
+import { DashboardLayout } from './components/DashboardLayout'
 
 function App() {
   const { t } = useTranslation()
 
   return (
-    <main style={{ display: 'grid', placeItems: 'center', minHeight: '100vh' }}>
-      <h1>{t('app.title')}</h1>
-    </main>
+    <DashboardLayout
+      occupancy={<h2>{t('occupancy.title')}</h2>}
+      people={<h2>{t('people.title')}</h2>}
+      events={<h2>{t('events.title')}</h2>}
+    />
   )
 }
 

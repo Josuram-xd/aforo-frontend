@@ -6,12 +6,14 @@
     "title": "Aforo actual"
   },
   "people": {
+    "title": "Personas enroladas",
     "status": {
       "in": "Dentro",
       "out": "Fuera"
     }
   },
   "events": {
+    "title": "Historial de eventos",
     "direction": {
       "entry": "Entrada",
       "exit": "Salida"

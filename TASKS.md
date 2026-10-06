@@ -41,7 +41,7 @@ Dashboard en React + TypeScript (Amplify) que muestra el aforo, el estado del cu
 ### Task 3 — Base visual
 - [x] **3.1** `feat(styles): add design tokens as css variables` — `src/styles/tokens.css` con los colores y tipografías de `DESIGN_SYSTEM.md`.
 - [x] **3.2** `feat(i18n): setup react-i18next with spanish strings` — `src/i18n/es.json` con las claves del Design System ("Aforo actual", "Dentro", "Fuera", "Entrada", "Salida", "Rostro", "Cuerpo", "No identificado").
-- [ ] **3.3** `feat(layout): add dashboard layout and header` — Dos columnas en escritorio, una en pantallas pequeñas.
+- [x] **3.3** `feat(layout): add dashboard layout and header` — Dos columnas en escritorio, una en pantallas pequeñas.
 
 ### Task 4 — Capa de datos
 - [ ] **4.1** `feat(types): add shared event and person types` — `src/types/event.ts`: `Direction`, `EventMethod`, `CameraId`, `AforoEvent`, `PersonStatus`. Mantener sincronizado con la task 3 del repo `aforo-backend`.
