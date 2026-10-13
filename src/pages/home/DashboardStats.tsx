@@ -51,6 +51,7 @@ function OccupancyCard({ classroom }: { classroom: Classroom | undefined }) {
   return (
     <StatCard
       className="dashboard__occupancy"
+      live
       label={t('occupancy.title')}
       icon={<Users size={18} />}
       tone={level === 'over' ? 'danger' : level === 'high' ? 'warning' : 'accent'}
