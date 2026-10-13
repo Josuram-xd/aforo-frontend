@@ -144,7 +144,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **14.5** `feat(students): add students page` — Lista con presencia y último evento; crear, editar y desactivar (solo `admin`).
 - [x] **14.6** `feat(cameras): add cameras status page` — Estado online/offline y último latido de cada cámara, en vivo.
 - [x] **14.7** `feat(alerts): add alerts page and badge` — Abiertas y resueltas; resolver (`teacher`, `admin`); contador en la campana del topbar.
-- [ ] **14.8** `feat(sessions): add class sessions and attendance page` — Crear/editar sesiones; asistencia por sesión (presente, salió, hora de entrada y salida).
+- [x] **14.8** `feat(sessions): add class sessions and attendance page` — Crear/editar sesiones; asistencia por sesión (presente, salió, hora de entrada y salida).
 - [ ] **14.9** `feat(admin): add users and roles page` — Lista de usuarios, cambiar rol (`set_user_role`), activar/desactivar (`set_user_active`), invitar (Edge Function `invite-user`).
 - [ ] **14.10** `feat(admin): add audit log page` — Tabla con filtros por usuario, acción, tabla y fecha; detalle con el antes/después.
 - [ ] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.

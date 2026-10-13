@@ -384,5 +384,63 @@
     "emptyHint": "Agrega a los estudiantes del curso para que aparezcan en los eventos.",
     "noResults": "Ningún estudiante coincide con la búsqueda",
     "submitCreate": "Crear estudiante"
+  },
+  "sessions": {
+    "description": "Programa las clases y revisa quién estuvo en cada una. La asistencia se llena sola con los eventos de las cámaras.",
+    "create": "Nueva sesión",
+    "submitCreate": "Crear sesión",
+    "createTitle": "Nueva sesión de clase",
+    "editTitle": "Editar sesión",
+    "editNamed": "Editar la sesión {{title}}",
+    "formHint": "Las horas se interpretan en hora de Bogotá.",
+    "titlePlaceholder": "Clase 11 · Repaso",
+    "bogotaTime": "Hora de Bogotá",
+    "fields": {
+      "title": "Título",
+      "course": "Curso",
+      "classroom": "Salón",
+      "starts": "Inicio",
+      "ends": "Fin",
+      "status": "Estado"
+    },
+    "validation": {
+      "title": "Escribe un título.",
+      "course": "Elige un curso.",
+      "range": "La hora de fin debe ser posterior a la de inicio."
+    },
+    "status": {
+      "scheduled": "Programada",
+      "cancelled": "Cancelada"
+    },
+    "phase": {
+      "live": "En curso",
+      "upcoming": "Próxima",
+      "finished": "Finalizada",
+      "cancelled": "Cancelada"
+    },
+    "listTitle": "Sesiones",
+    "listHint": "Elige una sesión para ver su asistencia",
+    "columns": {
+      "session": "Sesión",
+      "when": "Horario",
+      "classroom": "Salón",
+      "status": "Estado"
+    },
+    "empty": "No hay sesiones todavía",
+    "emptyHint": "Crea la primera sesión para empezar a medir la asistencia.",
+    "attendance": {
+      "title": "Asistencia",
+      "titleFor": "Asistencia · {{title}}",
+      "pick": "Elige una sesión de la lista",
+      "summary": "{{present}} presentes ahora · {{left}} salieron",
+      "student": "Estudiante",
+      "status": "Estado",
+      "entry": "Entrada",
+      "exit": "Salida",
+      "present": "Presente",
+      "left": "Salió",
+      "empty": "Sin asistencia registrada",
+      "emptyHint": "Aparece cuando un estudiante identificado por rostro entra durante la sesión."
+    }
   }
 }
