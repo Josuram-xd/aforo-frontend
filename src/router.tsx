@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router'
+import { RequireRole } from './auth/RequireRole'
 import type { RouteHandle } from './layouts/AppShell'
 import { ShellRoute } from './layouts/ShellRoute'
 import { HomePage } from './pages/home/HomePage'
@@ -18,7 +19,11 @@ export const router = createBrowserRouter([
   { path: '/recuperar', element: <RequestResetPage /> },
   { path: '/recuperar/nueva', element: <UpdatePasswordPage /> },
   {
-    element: <ShellRoute />,
+    element: (
+      <RequireRole roles={[]}>
+        <ShellRoute />
+      </RequireRole>
+    ),
     children: [
       { index: true, element: <HomePage />, handle: handle('nav.home') },
       { path: '*', element: <NotFoundPage />, handle: handle('notFound.title') },

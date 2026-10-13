@@ -106,7 +106,14 @@
     "passwordUpdatedTitle": "Contraseña actualizada",
     "passwordUpdatedText": "Ya puedes usar tu nueva contraseña.",
     "goToDashboard": "Ir al inicio",
-    "requestNewLink": "Pedir un enlace nuevo"
+    "requestNewLink": "Pedir un enlace nuevo",
+    "forbiddenHint": "Tu rol no incluye esta sección. Si crees que es un error, habla con el administrador.",
+    "blocked": {
+      "inactiveTitle": "Tu cuenta está desactivada",
+      "inactiveText": "Un administrador desactivó esta cuenta. Pídele que la vuelva a activar para entrar.",
+      "noRoleTitle": "Tu cuenta aún no tiene un rol",
+      "noRoleText": "Un administrador debe asignarte un rol antes de que puedas ver el panel."
+    }
   },
   "cameras": {
     "title": "Cámaras",
