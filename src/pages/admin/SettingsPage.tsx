@@ -192,7 +192,7 @@ export function SettingsPage() {
           size="sm"
           icon={<Pencil size={14} aria-hidden="true" />}
           onClick={() => setEditing({ kind: 'camera', item: row })}
-          aria-label={t('settings.editNamed', { name: row.name })}
+          aria-label={t('settings.cameras.renameNamed', { name: row.name })}
         >
           {t('settings.cameras.rename')}
         </Button>

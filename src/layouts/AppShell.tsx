@@ -158,7 +158,7 @@ export function AppShell({
 
       <div className="shell__scrim" aria-hidden="true" onClick={() => setDrawerOpen(false)} />
 
-      <div className="shell__main">
+      <div className="shell__main" inert={drawerOpen}>
         <header className="topbar">
           <button
             ref={menuButtonRef}

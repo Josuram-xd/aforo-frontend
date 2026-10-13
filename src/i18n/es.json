@@ -581,7 +581,8 @@
       "classroom": "Salón",
       "rename": "Renombrar",
       "renameTitle": "Renombrar cámara",
-      "renameHint": "Código técnico: {{code}}"
+      "renameHint": "Código técnico: {{code}}",
+      "renameNamed": "Renombrar {{name}}"
     },
     "delete": "Eliminar",
     "confirmDeleteClassroom": "¿Eliminar salón?",

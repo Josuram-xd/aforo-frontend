@@ -79,16 +79,20 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       <section className="toast-region" aria-label={t('common.notifications')}>
         {/* Errors interrupt; confirmations are announced politely. */}
-        <ol className="toast-stack" role="alert" aria-live="assertive">
-          {errors.map((item) => (
-            <ToastView key={item.id} item={item} onDismiss={dismiss} />
-          ))}
-        </ol>
-        <ol className="toast-stack" role="status" aria-live="polite">
-          {others.map((item) => (
-            <ToastView key={item.id} item={item} onDismiss={dismiss} />
-          ))}
-        </ol>
+        <div role="alert">
+          <ol className="toast-stack">
+            {errors.map((item) => (
+              <ToastView key={item.id} item={item} onDismiss={dismiss} />
+            ))}
+          </ol>
+        </div>
+        <div role="status">
+          <ol className="toast-stack">
+            {others.map((item) => (
+              <ToastView key={item.id} item={item} onDismiss={dismiss} />
+            ))}
+          </ol>
+        </div>
       </section>
     </ToastContext.Provider>
   )

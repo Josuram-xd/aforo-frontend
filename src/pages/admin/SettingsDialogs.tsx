@@ -123,6 +123,7 @@ export function ClassroomDialog({
           <TextInput
             id={id}
             name="name"
+            autoFocus
             maxLength={120}
             defaultValue={classroom?.name ?? ''}
             aria-describedby={describedBy}
@@ -215,6 +216,7 @@ export function CourseDialog({
           <TextInput
             id={id}
             name="code"
+            autoFocus
             maxLength={30}
             defaultValue={course?.code ?? ''}
             aria-describedby={describedBy}
@@ -307,6 +309,7 @@ export function CameraDialog({
           <TextInput
             id={id}
             name="name"
+            autoFocus
             maxLength={80}
             defaultValue={camera.name}
             aria-describedby={describedBy}

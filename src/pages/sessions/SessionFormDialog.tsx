@@ -107,6 +107,7 @@ export function SessionFormDialog({
             <TextInput
               id={id}
               name="title"
+              autoFocus
               defaultValue={session?.title ?? ''}
               maxLength={TITLE_MAX}
               placeholder={t('sessions.titlePlaceholder')}
