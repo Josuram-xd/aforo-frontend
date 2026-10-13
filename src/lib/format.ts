@@ -107,3 +107,10 @@ export function formatRelative(value: string | Date, now: number = Date.now()): 
   if (abs < 22 * 3600) return relativeFormat.format(Math.round(seconds / 3600), 'hour')
   return relativeFormat.format(Math.round(seconds / 86400), 'day')
 }
+
+/** Adds whole days to a YYYY-MM-DD string (calendar arithmetic, no time zone involved). */
+export function addDays(day: string, days: number): string {
+  const date = new Date(`${day}T12:00:00Z`)
+  date.setUTCDate(date.getUTCDate() + days)
+  return date.toISOString().slice(0, 10)
+}

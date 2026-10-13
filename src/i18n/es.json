@@ -31,7 +31,21 @@
     },
     "unidentified": "No identificado",
     "latestList": "Últimos eventos",
-    "confidence": "Confianza {{value}} %"
+    "confidence": "Confianza {{value}} %",
+    "description": "Cada entrada y salida registrada por las cámaras, con el método de identificación.",
+    "export": "Exportar CSV",
+    "exportFailed": "No se pudo exportar",
+    "exportRangeTooLong": "El rango máximo para exportar es de 31 días.",
+    "tableCaption": "Eventos de entrada y salida",
+    "noResults": "No hay eventos con esos filtros",
+    "noResultsHint": "Prueba con otro rango de fechas o quita algunos filtros.",
+    "columns": {
+      "time": "Hora",
+      "direction": "Dirección",
+      "student": "Estudiante",
+      "method": "Método",
+      "confidence": "Confianza"
+    }
   },
   "auth": {
     "login": "Iniciar sesión",
@@ -291,5 +305,22 @@
       "capacity_exceeded": "Aforo superado",
       "camera_offline": "Cámara sin conexión"
     }
+  },
+  "filters": {
+    "clear": "Limpiar filtros",
+    "events": "Filtros de eventos",
+    "from": "Desde",
+    "to": "Hasta",
+    "direction": "Dirección",
+    "method": "Método",
+    "student": "Estudiante",
+    "classroom": "Salón",
+    "all": "Todos",
+    "allStudents": "Todos los estudiantes",
+    "search": "Buscar",
+    "action": "Acción",
+    "table": "Recurso",
+    "user": "Usuario",
+    "status": "Estado"
   }
 }
