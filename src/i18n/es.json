@@ -29,7 +29,47 @@
   "auth": {
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
-    "forbidden": "No tienes permiso para ver esta página"
+    "forbidden": "No tienes permiso para ver esta página",
+    "signup": "Crear cuenta",
+    "google": "Continuar con Google",
+    "forgot": "¿Olvidaste tu contraseña?",
+    "loginTitle": "Bienvenido de nuevo",
+    "loginSubtitle": "Inicia sesión para ver el aforo del salón en tiempo real.",
+    "noAccount": "¿No tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "or": "o",
+    "legal": "Solo personal autorizado. Los accesos quedan registrados en la auditoría.",
+    "lockedTitle": "Demasiados intentos fallidos",
+    "lockedText_one": "Por seguridad, espera {{seconds}} segundo antes de intentarlo de nuevo.",
+    "lockedText_other": "Por seguridad, espera {{seconds}} segundos antes de intentarlo de nuevo.",
+    "validation": {
+      "email": "Escribe un correo válido.",
+      "passwordRequired": "Escribe tu contraseña.",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres.",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "nameRequired": "Escribe tu nombre.",
+      "nameTooLong": "El nombre no puede pasar de 120 caracteres."
+    },
+    "errors": {
+      "generic": "Algo salió mal. Inténtalo de nuevo en unos segundos.",
+      "loginFailed": "No pudimos iniciar sesión. Inténtalo de nuevo.",
+      "invalidCredentials": "Correo o contraseña incorrectos.",
+      "emailNotConfirmed": "Confirma tu correo antes de iniciar sesión. Revisa tu bandeja de entrada.",
+      "accountBlocked": "Esta cuenta no puede iniciar sesión. Habla con el administrador.",
+      "rateLimited": "Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.",
+      "emailRateLimited": "Ya enviamos varios correos. Espera unos minutos antes de pedir otro.",
+      "network": "No hay conexión con el servidor. Revisa tu internet.",
+      "weakPassword": "La contraseña es muy débil. Usa una más larga y variada.",
+      "samePassword": "La nueva contraseña debe ser distinta de la anterior.",
+      "invalidEmail": "Ese correo no es válido.",
+      "signupDisabled": "El registro está deshabilitado en este momento.",
+      "linkExpired": "El enlace no es válido o ya venció. Pide uno nuevo desde este mismo navegador."
+    }
   },
   "cameras": {
     "title": "Cámaras",
