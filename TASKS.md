@@ -120,7 +120,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 ### Task 12 — Base de la app **(Prioridad 1)**
 - [x] **12.1** `chore(deps): add supabase js, react router, recharts and lucide` — Verificar versiones vigentes antes de fijarlas (regla 7).
 - [x] **12.2** `feat(api): add supabase client and generated types` — `src/lib/supabase.ts` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; `src/types/database.ts` generado con `supabase gen types typescript`. Actualizar `.env.example` y quitar `VITE_API_BASE_URL`.
-- [ ] **12.3** `feat(layout): add app shell with sidebar and topbar` — `AppShell` con menú lateral por rol, título de página, campana de alertas, selector de tema y menú de usuario. Responsive (cajón en móvil).
+- [x] **12.3** `feat(layout): add app shell with sidebar and topbar` — `AppShell` con menú lateral por rol, título de página, campana de alertas, selector de tema y menú de usuario. Responsive (cajón en móvil).
 - [ ] **12.4** `feat(ui): add skeleton loaders and empty states` — `Skeleton` (texto, círculo, tarjeta, tabla, gráfica) con shimmer y `aria-busy`; `EmptyState`; barra de progreso superior para recargas en segundo plano.
 - [ ] **12.5** `feat(realtime): invalidate queries on database changes` — Suscripción a `events`, `classrooms`, `cameras` y `alerts`; cada cambio invalida las queries afectadas. Indicador "En vivo" / "Reconectando…" y polling de 30 s como respaldo.
 - [x] **12.6** `feat(ui): add design tokens v2 and light theme` — Tokens de `DESIGN_SYSTEM.md` 8.1, fuente Inter, tema claro/oscuro recordado por usuario.

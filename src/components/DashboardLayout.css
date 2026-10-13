@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
-  padding: 24px 32px;
+  padding: 0;
 }
 
 .dashboard__occupancy,

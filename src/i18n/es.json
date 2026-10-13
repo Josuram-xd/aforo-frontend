@@ -1,6 +1,8 @@
 {
   "app": {
-    "title": "Aforo — Piloto"
+    "title": "Aforo — Piloto",
+    "name": "Aforo",
+    "tagline": "Control de aforo"
   },
   "occupancy": {
     "title": "Aforo actual"
@@ -39,5 +41,48 @@
   "status": {
     "loading": "Cargando…",
     "error": "Sin conexión con el servidor"
+  },
+  "nav": {
+    "sections": {
+      "main": "Principal",
+      "admin": "Administración"
+    },
+    "home": "Inicio",
+    "events": "Eventos",
+    "students": "Estudiantes",
+    "sessions": "Sesiones",
+    "cameras": "Cámaras",
+    "alerts": "Alertas",
+    "profile": "Mi perfil",
+    "admin": {
+      "users": "Usuarios",
+      "audit": "Auditoría",
+      "settings": "Configuración"
+    }
+  },
+  "shell": {
+    "skipToContent": "Saltar al contenido",
+    "navigation": "Navegación principal",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "userMenu": "Menú de usuario",
+    "alertsNone": "Alertas: ninguna abierta",
+    "alertsWithCount_one": "Alertas: {{count}} abierta",
+    "alertsWithCount_other": "Alertas: {{count}} abiertas",
+    "signedInAs": "Sesión activa · {{role}}"
+  },
+  "theme": {
+    "toLight": "Cambiar a tema claro",
+    "toDark": "Cambiar a tema oscuro"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "teacher": "Docente",
+    "viewer": "Observador"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La dirección que abriste no existe o fue movida.",
+    "back": "Volver al inicio"
   }
 }
