@@ -244,5 +244,20 @@
     "page": "Página {{page}} de {{pages}}",
     "previous": "Anterior",
     "next": "Siguiente"
+  },
+  "chart": {
+    "title": "Entradas y salidas por hora",
+    "description": "Hoy, hora de Bogotá",
+    "entries": "Entradas",
+    "exits": "Salidas",
+    "hour": "Hora",
+    "legend": "Leyenda",
+    "hourRange": "{{hour}} – siguiente hora",
+    "showTable": "Ver como tabla",
+    "showChart": "Ver gráfica",
+    "tableCaption": "Entradas y salidas por hora de hoy",
+    "ariaSummary": "Gráfica de barras por hora. Total del día: {{entries}} entradas y {{exits}} salidas.",
+    "empty": "Aún no hay movimientos hoy",
+    "emptyHint": "La gráfica se llena sola cuando las cámaras registren entradas o salidas."
   }
 }

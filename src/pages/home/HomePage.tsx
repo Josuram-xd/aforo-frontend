@@ -10,6 +10,7 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { useClassrooms } from '../../hooks/queries'
 import { bogotaDay, formatLongDate } from '../../lib/format'
 import { DashboardStats } from './DashboardStats'
+import { HourlyChartCard } from './HourlyChartCard'
 import './HomePage.css'
 
 /** Inicio: live occupancy, today's KPIs, chart, latest events and open alerts (§8.4). */
@@ -67,6 +68,7 @@ export function HomePage() {
         }
       />
       <DashboardStats classroom={classroom} day={day} isStaff={isStaff} />
+      {isStaff && <HourlyChartCard classroomId={classroom?.id} day={day} />}
     </div>
   )
 }

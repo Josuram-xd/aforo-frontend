@@ -138,7 +138,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 ### Task 14 — Páginas **(Prioridad 1-2)**
 - [x] **14.1** `feat(dashboard): add stat cards and capacity bar` — Aforo actual vs. máximo con barra de capacidad, entradas y salidas de hoy, % identificado por rostro.
-- [ ] **14.2** `feat(dashboard): add entries per hour chart` — Recharts: entradas y salidas por hora del día (zona `America/Bogota`).
+- [x] **14.2** `feat(dashboard): add entries per hour chart` — Recharts: entradas y salidas por hora del día (zona `America/Bogota`).
 - [ ] **14.3** `feat(dashboard): add live latest events and open alerts` — Lista en vivo de los últimos 10 eventos con animación de entrada; alertas abiertas.
 - [ ] **14.4** `feat(events): add events history page with filters` — Filtros por fecha, dirección, método y estudiante; paginación; botón "Exportar CSV" (Edge Function de `aforo-backend` task 13.1).
 - [ ] **14.5** `feat(students): add students page` — Lista con presencia y último evento; crear, editar y desactivar (solo `admin`).
