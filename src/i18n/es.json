@@ -69,6 +69,27 @@
       "invalidEmail": "Ese correo no es válido.",
       "signupDisabled": "El registro está deshabilitado en este momento.",
       "linkExpired": "El enlace no es válido o ya venció. Pide uno nuevo desde este mismo navegador."
+    },
+    "signupTitle": "Crea tu cuenta",
+    "signupSubtitle": "Regístrate con tu correo. Un administrador asigna los permisos.",
+    "signupRoleNote": "Las cuentas nuevas empiezan como Observador: ven el aforo, las cámaras y las alertas, sin nombres de estudiantes.",
+    "fullName": "Nombre completo",
+    "fullNamePlaceholder": "Ana Gómez",
+    "confirmPassword": "Repite la contraseña",
+    "signupSent": "Si el correo es válido, te enviamos un enlace de confirmación.",
+    "checkEmailTitle": "Revisa tu correo",
+    "checkEmailText": "Si el correo es válido, te enviamos un enlace para confirmar tu cuenta.",
+    "checkEmailAlertTitle": "Enlace enviado",
+    "checkEmailHint": "Abre el enlace desde este mismo navegador. Si no lo ves, revisa la carpeta de spam.",
+    "backToLogin": "Volver a iniciar sesión",
+    "strength": {
+      "hint": "Mínimo 8 caracteres. Mezcla mayúsculas, números y símbolos.",
+      "label": "Seguridad: {{level}}",
+      "veryWeak": "muy débil",
+      "weak": "débil",
+      "fair": "aceptable",
+      "good": "buena",
+      "strong": "fuerte"
     }
   },
   "cameras": {
