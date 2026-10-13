@@ -9,6 +9,7 @@ import { Alert } from '../../components/ui/Alert'
 import { Button } from '../../components/ui/Button'
 import { Dialog } from '../../components/ui/Dialog'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
+import { useToast } from '../../components/ui/toastContext'
 import { bogotaDay, bogotaLocalToIso, isoToBogotaLocal } from '../../lib/format'
 
 const TITLE_MAX = 160
@@ -32,10 +33,14 @@ export function SessionFormDialog({
   const queryClient = useQueryClient()
   const [errors, setErrors] = useState<{ title?: string; course?: string; ends?: string }>({})
 
+  const toast = useToast()
   const save = useMutation({
     mutationFn: (input: SessionInput) => saveSession(input, session?.id),
-    onSuccess: async () => {
+    onSuccess: async (_, input) => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.sessions })
+      toast.success(
+        t(session ? 'sessions.toast.updated' : 'sessions.toast.created', { title: input.title }),
+      )
       onClose()
     },
   })
@@ -102,6 +107,7 @@ export function SessionFormDialog({
             <TextInput
               id={id}
               name="title"
+              autoFocus
               defaultValue={session?.title ?? ''}
               maxLength={TITLE_MAX}
               placeholder={t('sessions.titlePlaceholder')}

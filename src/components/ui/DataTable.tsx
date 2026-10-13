@@ -68,7 +68,8 @@ export function DataTable<T>({
   if (rows.length === 0 && empty) return <>{empty}</>
 
   return (
-    <div className="table-wrap">
+    // The wrapper scrolls on small screens, so it must be focusable to scroll with the keyboard.
+    <div className="table-wrap" tabIndex={0} role="region" aria-label={caption}>
       <table className="table">
         <caption className="visually-hidden">{caption}</caption>
         <thead>
@@ -130,6 +131,19 @@ export function DataTable<T>({
                   extra ?? '',
                 ].join(' ')}
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                aria-selected={onRowClick ? selectedKey === key : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (event) => {
+                        if (event.target !== event.currentTarget) return
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault()
+                          onRowClick(row)
+                        }
+                      }
+                    : undefined
+                }
               >
                 {columns.map((column) => (
                   <td

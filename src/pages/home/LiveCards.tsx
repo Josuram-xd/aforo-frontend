@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react'
+import { Activity, ArrowRight, BellRing, Cctv } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { SeverityBadge } from '../../components/AlertBadges'
@@ -29,6 +29,7 @@ export function LatestEventsCard({ classroomId }: { classroomId: string | undefi
     <Card aria-labelledby="latest-events-title">
       <CardHeader
         titleId="latest-events-title"
+        icon={<Activity size={18} />}
         title={t('dashboard.latestEvents')}
         description={t('dashboard.latestEventsHint')}
         actions={<SeeAll to="/eventos" label={t('dashboard.seeHistory')} />}
@@ -38,7 +39,12 @@ export function LatestEventsCard({ classroomId }: { classroomId: string | undefi
       ) : events.isError ? (
         <ErrorState compact onRetry={() => void events.refetch()} retrying={events.isFetching} />
       ) : events.data.length === 0 ? (
-        <EmptyState compact title={t('dashboard.noEvents')} description={t('chart.emptyHint')} />
+        <EmptyState
+          compact
+          icon={Activity}
+          title={t('dashboard.noEvents')}
+          description={t('chart.emptyHint')}
+        />
       ) : (
         <EventList events={events.data} />
       )}
@@ -54,6 +60,7 @@ export function OpenAlertsCard() {
     <Card aria-labelledby="open-alerts-title">
       <CardHeader
         titleId="open-alerts-title"
+        icon={<BellRing size={18} />}
         title={t('dashboard.openAlerts')}
         actions={<SeeAll to="/alertas" label={t('dashboard.seeAll')} />}
       />
@@ -64,6 +71,7 @@ export function OpenAlertsCard() {
       ) : alerts.data.length === 0 ? (
         <EmptyState
           compact
+          icon={BellRing}
           title={t('dashboard.noOpenAlerts')}
           description={t('alerts.allClear')}
         />
@@ -97,6 +105,7 @@ export function CamerasCard({ classroomId }: { classroomId: string | undefined }
     <Card aria-labelledby="cameras-card-title">
       <CardHeader
         titleId="cameras-card-title"
+        icon={<Cctv size={18} />}
         title={t('nav.cameras')}
         description={t('cameras.cardHint')}
         actions={<SeeAll to="/camaras" label={t('dashboard.seeAll')} />}
@@ -106,7 +115,7 @@ export function CamerasCard({ classroomId }: { classroomId: string | undefined }
       ) : cameras.isError ? (
         <ErrorState compact onRetry={() => void cameras.refetch()} retrying={cameras.isFetching} />
       ) : list.length === 0 ? (
-        <EmptyState compact title={t('cameras.empty')} />
+        <EmptyState compact icon={Cctv} title={t('cameras.empty')} />
       ) : (
         <ul className="mini-list">
           {list.map((camera) => (

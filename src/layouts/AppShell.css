@@ -355,12 +355,6 @@
 .user-menu__role {
   align-self: flex-start;
   margin-top: var(--space-1);
-  padding: 1px var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--color-accent-soft);
-  color: var(--color-accent-fg);
-  font-size: 11px;
-  font-weight: var(--font-weight-semibold);
 }
 
 .user-menu__item {
@@ -520,5 +514,17 @@
 
   .shell__content {
     padding: var(--space-4) var(--space-3);
+  }
+}
+
+/* Soft entrance for each page (disabled by prefers-reduced-motion in index.css). */
+.shell__content > * {
+  animation: page-in 260ms var(--ease-out) both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }

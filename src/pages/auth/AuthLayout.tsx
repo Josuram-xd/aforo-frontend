@@ -1,9 +1,11 @@
+import { Activity, ShieldCheck, ScanFace } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { BrandMark } from '../../components/BrandMark'
 import { ThemeToggle } from '../../layouts/ThemeToggle'
+import { AuthIllustration } from './AuthIllustration'
 import './AuthLayout.css'
 
 interface AuthLayoutProps {
@@ -13,7 +15,10 @@ interface AuthLayoutProps {
   footer?: ReactNode
 }
 
-/** Frame shared by the sign-in, sign-up and password pages. */
+/**
+ * Split layout for sign-in, sign-up and password pages (DESIGN_SYSTEM.md §8.7): product panel
+ * with an SVG illustration on the left, the form on the right. The panel hides on small screens.
+ */
 export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProps) {
   const { t } = useTranslation()
 
@@ -21,11 +26,42 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
     document.title = `${title} · ${t('app.name')}`
   }, [title, t])
 
+  const features = [
+    { icon: Activity, text: t('authPanel.featureLive') },
+    { icon: ScanFace, text: t('authPanel.featureFace') },
+    { icon: ShieldCheck, text: t('authPanel.featureRoles') },
+  ]
+
   return (
     <div className="auth">
+      <aside className="auth__showcase" aria-label={t('authPanel.label')}>
+        <div className="auth__showcase-inner">
+          <Link to="/login" className="auth__brand auth__brand--light">
+            <BrandMark size={34} />
+            <span>{t('app.name')}</span>
+          </Link>
+          <div className="auth__pitch">
+            <p className="auth__eyebrow">{t('authPanel.eyebrow')}</p>
+            <h2 className="auth__headline">{t('authPanel.headline')}</h2>
+            <p className="auth__lead">{t('authPanel.lead')}</p>
+          </div>
+          <AuthIllustration />
+          <ul className="auth__features">
+            {features.map(({ icon: Icon, text }) => (
+              <li key={text}>
+                <span className="auth__feature-icon" aria-hidden="true">
+                  <Icon size={16} />
+                </span>
+                {text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+
       <main className="auth__main">
         <div className="auth__topbar">
-          <Link to="/login" className="auth__brand">
+          <Link to="/login" className="auth__brand auth__brand--compact">
             <BrandMark size={30} />
             <span>{t('app.name')}</span>
           </Link>
