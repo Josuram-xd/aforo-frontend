@@ -126,7 +126,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **12.6** `feat(ui): add design tokens v2 and light theme` — Tokens de `DESIGN_SYSTEM.md` 8.1, fuente Inter, tema claro/oscuro recordado por usuario.
 
 ### Task 13 — Registro e inicio de sesión **(Prioridad 1)**
-- [ ] **13.1** `feat(auth): add auth provider and session hooks` — `AuthProvider`, `useSession`, `useRole` (lee `user_roles` una vez por sesión).
+- [x] **13.1** `feat(auth): add auth provider and session hooks` — `AuthProvider`, `useSession`, `useRole` (lee `user_roles` una vez por sesión).
 - [ ] **13.2** `feat(auth): add login page with email and password` — Errores de Supabase traducidos al español.
 - [ ] **13.3** `feat(auth): add sign up page with email confirmation` — Nombre, correo, contraseña (mínimo 8 caracteres); mensaje de "revisa tu correo".
 - [ ] **13.4** `feat(auth): add google sign in` — Botón "Continuar con Google" y ruta `/auth/callback`.

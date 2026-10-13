@@ -5,6 +5,7 @@ import '@fontsource-variable/inter'
 import './i18n'
 import './styles/tokens.css'
 import './index.css'
+import { AuthProvider } from './auth/AuthProvider'
 import { initTheme } from './theme/theme'
 import App from './App.tsx'
 
@@ -22,7 +23,9 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,
 )
