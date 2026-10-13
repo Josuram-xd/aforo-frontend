@@ -11,6 +11,7 @@ import { useClassrooms } from '../../hooks/queries'
 import { bogotaDay, formatLongDate } from '../../lib/format'
 import { DashboardStats } from './DashboardStats'
 import { HourlyChartCard } from './HourlyChartCard'
+import { CamerasCard, LatestEventsCard, OpenAlertsCard } from './LiveCards'
 import './HomePage.css'
 
 /** Inicio: live occupancy, today's KPIs, chart, latest events and open alerts (§8.4). */
@@ -69,6 +70,14 @@ export function HomePage() {
       />
       <DashboardStats classroom={classroom} day={day} isStaff={isStaff} />
       {isStaff && <HourlyChartCard classroomId={classroom?.id} day={day} />}
+      <div className="dashboard__row">
+        {isStaff ? (
+          <LatestEventsCard classroomId={classroom?.id} />
+        ) : (
+          <CamerasCard classroomId={classroom?.id} />
+        )}
+        <OpenAlertsCard />
+      </div>
     </div>
   )
 }

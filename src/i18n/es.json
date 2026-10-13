@@ -29,7 +29,9 @@
       "faceHint": "Identificado por reconocimiento facial",
       "bodyHint": "Contado por la silueta, sin identificar a la persona"
     },
-    "unidentified": "No identificado"
+    "unidentified": "No identificado",
+    "latestList": "Últimos eventos",
+    "confidence": "Confianza {{value}} %"
   },
   "auth": {
     "login": "Iniciar sesión",
@@ -122,7 +124,19 @@
   },
   "cameras": {
     "title": "Cámaras",
-    "lanOnly": "El video solo está disponible en la red local del piloto"
+    "lanOnly": "El video solo está disponible en la red local del piloto",
+    "cardHint": "Estado de las cámaras del salón",
+    "empty": "No hay cámaras registradas",
+    "status": {
+      "online": "En línea",
+      "offline": "Sin conexión"
+    },
+    "position": {
+      "outside": "Pasillo (afuera)",
+      "inside": "Salón (adentro)"
+    },
+    "lastSeen": "último latido {{when}}",
+    "neverSeen": "sin latidos todavía"
   },
   "nav": {
     "sections": {
@@ -226,7 +240,12 @@
     "noOpenAlerts": "Todo en orden",
     "nextSession": "Próxima sesión",
     "currentSession": "Sesión en curso",
-    "noSession": "Sin sesiones programadas"
+    "noSession": "Sin sesiones programadas",
+    "latestEvents": "Últimos eventos",
+    "latestEventsHint": "En vivo · los 10 más recientes",
+    "seeHistory": "Ver historial",
+    "seeAll": "Ver todas",
+    "noEvents": "Aún no hay eventos"
   },
   "errors": {
     "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
@@ -259,5 +278,18 @@
     "ariaSummary": "Gráfica de barras por hora. Total del día: {{entries}} entradas y {{exits}} salidas.",
     "empty": "Aún no hay movimientos hoy",
     "emptyHint": "La gráfica se llena sola cuando las cámaras registren entradas o salidas."
+  },
+  "alerts": {
+    "title": "Alertas",
+    "allClear": "No hay nada pendiente por revisar.",
+    "severity": {
+      "info": "Información",
+      "warning": "Advertencia",
+      "critical": "Crítica"
+    },
+    "type": {
+      "capacity_exceeded": "Aforo superado",
+      "camera_offline": "Cámara sin conexión"
+    }
   }
 }
