@@ -134,7 +134,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **13.6** `feat(auth): add password reset flow` — `/recuperar` y la pantalla para definir la nueva contraseña.
 - [x] **13.7** `feat(auth): protect routes by role` — `RequireRole`: sin sesión → `/login`; sin el rol → página "No tienes permiso".
 - [x] **13.8** `feat(audit): log logins and sensitive views` — Llamar `log_access` en LOGIN, LOGOUT y al abrir Estudiantes, Eventos y Auditoría.
-- [ ] **13.9** `feat(profile): add profile page` — Nombre, avatar (Google o iniciales), rol y cerrar sesión.
+- [x] **13.9** `feat(profile): add profile page` — Nombre, avatar (Google o iniciales), rol y cerrar sesión.
 
 ### Task 14 — Páginas **(Prioridad 1-2)**
 - [ ] **14.1** `feat(dashboard): add stat cards and capacity bar` — Aforo actual vs. máximo con barra de capacidad, entradas y salidas de hoy, % identificado por rostro.

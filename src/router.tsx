@@ -9,6 +9,7 @@ import { RequestResetPage } from './pages/auth/RequestResetPage'
 import { SignupPage } from './pages/auth/SignupPage'
 import { UpdatePasswordPage } from './pages/auth/UpdatePasswordPage'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { ProfilePage } from './pages/profile/ProfilePage'
 
 const handle = (titleKey: string): RouteHandle => ({ titleKey })
 
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <HomePage />, handle: handle('nav.home') },
+      { path: 'perfil', element: <ProfilePage />, handle: handle('nav.profile') },
       { path: '*', element: <NotFoundPage />, handle: handle('notFound.title') },
     ],
   },

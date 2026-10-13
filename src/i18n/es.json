@@ -175,7 +175,9 @@
     "retry": "Reintentar",
     "empty": "No hay datos para mostrar",
     "error": "No pudimos cargar esta información",
-    "errorHint": "Revisa tu conexión e inténtalo de nuevo."
+    "errorHint": "Revisa tu conexión e inténtalo de nuevo.",
+    "save": "Guardar cambios",
+    "cancel": "Cancelar"
   },
   "live": {
     "connected": "En vivo",
@@ -183,5 +185,23 @@
     "reconnecting": "Reconectando…",
     "connectedHint": "Los datos se actualizan solos en cuanto hay cambios",
     "fallbackHint": "Sin conexión en vivo: los datos se actualizan cada 30 segundos"
+  },
+  "profile": {
+    "description": "Tu información personal y lo que puedes hacer en Aforo.",
+    "memberSince": "Miembro desde",
+    "personalTitle": "Datos personales",
+    "personalDescription": "Este nombre aparece en el menú y en la auditoría.",
+    "saved": "Guardamos tu nombre.",
+    "saveError": "No pudimos guardar el cambio. Inténtalo de nuevo.",
+    "permissionsTitle": "Tus permisos",
+    "permissions": {
+      "admin": "Administrador: ves y gestionas todo, incluidos usuarios, roles, auditoría y configuración.",
+      "teacher": "Docente: ves estudiantes, eventos, sesiones y asistencia, y puedes resolver alertas.",
+      "viewer": "Observador: ves el aforo, las cámaras y las alertas, sin nombres de estudiantes."
+    },
+    "permissionsNote": "Los permisos los asigna un administrador. La base de datos aplica estas reglas aunque se intente acceder por otra vía.",
+    "securityTitle": "Seguridad",
+    "securityDescription": "Cambia tu contraseña de acceso con correo.",
+    "changePassword": "Cambiar contraseña"
   }
 }

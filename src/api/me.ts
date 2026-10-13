@@ -10,6 +10,7 @@ export interface Me {
   email: string | null
   avatarUrl: string | null
   isActive: boolean
+  createdAt: string | null
   /** Highest role the user holds, or null if none (should not happen: sign-up grants viewer). */
   role: RoleCode | null
 }
@@ -35,6 +36,7 @@ export async function fetchMe(user: AuthUser): Promise<Me> {
       email: MOCK_AUTH_USER.email,
       avatarUrl: null,
       isActive: true,
+      createdAt: '2026-09-28T14:00:00Z',
       role: MOCK_ROLE,
     }
   }
@@ -42,7 +44,7 @@ export async function fetchMe(user: AuthUser): Promise<Me> {
   const [profileResult, rolesResult] = await Promise.all([
     supabase
       .from('profiles')
-      .select('id, full_name, email, avatar_url, is_active')
+      .select('id, full_name, email, avatar_url, is_active, created_at')
       .eq('id', user.id)
       .maybeSingle(),
     supabase.from('user_roles').select('roles(code)').eq('user_id', user.id),
@@ -59,6 +61,19 @@ export async function fetchMe(user: AuthUser): Promise<Me> {
     email: profile?.email ?? user.email,
     avatarUrl: profile?.avatar_url ?? user.metadataAvatarUrl,
     isActive: profile?.is_active ?? false,
+    createdAt: profile?.created_at ?? null,
     role: pickHighestRole(codes),
   }
+}
+
+export const FULL_NAME_MAX = 120
+
+/** Own display name. RLS only allows active accounts to edit their own profile row. */
+export async function updateMyName(userId: string, fullName: string): Promise<void> {
+  if (isMockMode) return
+  const { error } = await supabase
+    .from('profiles')
+    .update({ full_name: fullName.trim().slice(0, FULL_NAME_MAX) })
+    .eq('id', userId)
+  if (error) throw error
 }
