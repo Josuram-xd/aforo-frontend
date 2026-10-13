@@ -1,0 +1,63 @@
+.capacity {
+  --capacity-color: var(--color-accent);
+  --capacity-fg: var(--color-accent-fg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.capacity--high {
+  --capacity-color: var(--color-warning);
+  --capacity-fg: var(--color-warning-fg);
+}
+
+.capacity--over {
+  --capacity-color: var(--color-danger);
+  --capacity-fg: var(--color-danger-fg);
+}
+
+.capacity__track {
+  position: relative;
+  height: 10px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-3);
+}
+
+.capacity__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--capacity-color) 65%, transparent),
+    var(--capacity-color)
+  );
+  box-shadow: 0 0 12px color-mix(in srgb, var(--capacity-color) 50%, transparent);
+  transition: width 600ms var(--ease-out);
+}
+
+.capacity__tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-surface);
+  opacity: 0.8;
+}
+
+.capacity__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--font-size-tiny);
+}
+
+.capacity__level {
+  font-weight: var(--font-weight-semibold);
+  color: var(--capacity-fg);
+}
+
+.capacity__percent {
+  color: var(--color-text-secondary);
+}

@@ -1,17 +1,20 @@
 {
   "app": {
-    "title": "Aforo — Piloto",
     "name": "Aforo",
     "tagline": "Control de aforo"
   },
   "occupancy": {
-    "title": "Aforo actual"
-  },
-  "people": {
-    "title": "Personas enroladas",
-    "status": {
-      "in": "Dentro",
-      "out": "Fuera"
+    "title": "Aforo actual",
+    "capacity": "Capacidad del salón",
+    "ofCapacity": "{{current}} de {{max}}",
+    "ofMax": "/ {{max}}",
+    "meterText": "{{current}} de {{max}} personas ({{percent}} %)",
+    "percentOfCapacity": "{{percent}} % de la capacidad",
+    "updated": "Actualizado {{when}}",
+    "level": {
+      "normal": "Con espacio",
+      "high": "Casi lleno",
+      "over": "Sobre el aforo máximo"
     }
   },
   "events": {
@@ -22,7 +25,9 @@
     },
     "method": {
       "face": "Rostro",
-      "body": "Cuerpo"
+      "body": "Cuerpo",
+      "faceHint": "Identificado por reconocimiento facial",
+      "bodyHint": "Contado por la silueta, sin identificar a la persona"
     },
     "unidentified": "No identificado"
   },
@@ -119,13 +124,6 @@
     "title": "Cámaras",
     "lanOnly": "El video solo está disponible en la red local del piloto"
   },
-  "dev": {
-    "title": "Vista de análisis (dev)"
-  },
-  "status": {
-    "loading": "Cargando…",
-    "error": "Sin conexión con el servidor"
-  },
   "nav": {
     "sections": {
       "main": "Principal",
@@ -177,7 +175,8 @@
     "error": "No pudimos cargar esta información",
     "errorHint": "Revisa tu conexión e inténtalo de nuevo.",
     "save": "Guardar cambios",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "close": "Cerrar"
   },
   "live": {
     "connected": "En vivo",
@@ -203,5 +202,47 @@
     "securityTitle": "Seguridad",
     "securityDescription": "Cambia tu contraseña de acceso con correo.",
     "changePassword": "Cambiar contraseña"
+  },
+  "dashboard": {
+    "intro": "{{name}} · {{location}}. Todo se actualiza solo, en tiempo real.",
+    "noLocation": "sin ubicación",
+    "pickClassroom": "Elegir salón",
+    "noClassrooms": "Todavía no hay salones",
+    "noClassroomsHint": "Un administrador debe crear el salón del piloto en Configuración.",
+    "entriesToday": "Entradas hoy",
+    "exitsToday": "Salidas hoy",
+    "identified": "Identificados por rostro",
+    "percentFace": "%",
+    "firstAt": "Primera entrada a las {{time}}",
+    "peak_one": "Pico del día: {{count}} persona",
+    "peak_other": "Pico del día: {{count}} personas",
+    "bodyOnlyCount_one": "{{count}} evento solo por cuerpo",
+    "bodyOnlyCount_other": "{{count}} eventos solo por cuerpo",
+    "noEventsYet": "Aún no hay eventos hoy",
+    "camerasOnline": "Cámaras en línea",
+    "camerasHint": "Estado según el último latido",
+    "openAlerts": "Alertas abiertas",
+    "openAlertsHint": "Revisa la sección Alertas",
+    "noOpenAlerts": "Todo en orden",
+    "nextSession": "Próxima sesión",
+    "currentSession": "Sesión en curso",
+    "noSession": "Sin sesiones programadas"
+  },
+  "errors": {
+    "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+    "forbidden": "Tu rol no permite hacer esto.",
+    "duplicate": "Ya existe un registro con esos datos.",
+    "invalid": "Algunos datos no son válidos. Revísalos e inténtalo de nuevo.",
+    "inUse": "No se puede eliminar porque otros datos dependen de este registro.",
+    "rateLimited": "Demasiadas solicitudes. Espera un momento.",
+    "functionUnavailable": "Este servicio aún no está disponible. Inténtalo más tarde."
+  },
+  "table": {
+    "sortBy": "(ordenar)",
+    "pagination": "Paginación",
+    "showing": "Mostrando {{first}}–{{last}} de {{total}}",
+    "page": "Página {{page}} de {{pages}}",
+    "previous": "Anterior",
+    "next": "Siguiente"
   }
 }
