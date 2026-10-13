@@ -129,7 +129,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **13.1** `feat(auth): add auth provider and session hooks` — `AuthProvider`, `useSession`, `useRole` (lee `user_roles` una vez por sesión).
 - [x] **13.2** `feat(auth): add login page with email and password` — Errores de Supabase traducidos al español.
 - [x] **13.3** `feat(auth): add sign up page with email confirmation` — Nombre, correo, contraseña (mínimo 8 caracteres); mensaje de "revisa tu correo".
-- [ ] **13.4** `feat(auth): add google sign in` — Botón "Continuar con Google" y ruta `/auth/callback`.
+- [x] **13.4** `feat(auth): add google sign in` — Botón "Continuar con Google" y ruta `/auth/callback`.
 - [ ] **13.5** (sin commit) Configurar Google: crear el cliente OAuth en Google Cloud Console, pegar client ID y secret en Supabase (Authentication → Providers → Google) y agregar las URLs de redirección de Amplify y `localhost:5173`.
 - [ ] **13.6** `feat(auth): add password reset flow` — `/recuperar` y la pantalla para definir la nueva contraseña.
 - [ ] **13.7** `feat(auth): protect routes by role` — `RequireRole`: sin sesión → `/login`; sin el rol → página "No tienes permiso".

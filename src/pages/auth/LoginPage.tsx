@@ -11,6 +11,7 @@ import { Button } from '../../components/ui/Button'
 import { Field, PasswordInput, TextInput } from '../../components/ui/Field'
 import { supabase } from '../../lib/supabase'
 import { AuthLayout } from './AuthLayout'
+import { GoogleButton } from './GoogleButton'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -108,6 +109,8 @@ export function LoginPage() {
         </Alert>
       )}
 
+      <GoogleButton onError={setErrorKey} />
+      <p className="auth__divider">{t('auth.orEmail')}</p>
       <form className="auth__form" onSubmit={handleSubmit} noValidate>
         <Field label={t('auth.email')} error={fieldErrors.email}>
           {({ id, describedBy, invalid }) => (

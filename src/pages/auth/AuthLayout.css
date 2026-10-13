@@ -117,3 +117,29 @@
     padding: var(--space-6) var(--space-5);
   }
 }
+
+.btn--google {
+  font-weight: var(--font-weight-semibold);
+}
+
+.auth__note {
+  font-size: var(--font-size-tiny);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.auth__sent-icon {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-full);
+  background: var(--color-success-soft);
+  color: var(--color-success-fg);
+}
+
+.auth__sent-icon--danger {
+  background: var(--color-danger-soft);
+  color: var(--color-danger-fg);
+}

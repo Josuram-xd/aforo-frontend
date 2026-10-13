@@ -11,6 +11,7 @@ import { Button, ButtonLink } from '../../components/ui/Button'
 import { Field, PasswordInput, TextInput } from '../../components/ui/Field'
 import { supabase } from '../../lib/supabase'
 import { AuthLayout } from './AuthLayout'
+import { GoogleButton } from './GoogleButton'
 import { PasswordStrengthMeter } from './PasswordStrengthMeter'
 import './PasswordStrength.css'
 
@@ -111,6 +112,8 @@ export function SignupPage() {
           {t(errorKey)}
         </Alert>
       )}
+      <GoogleButton onError={setErrorKey} />
+      <p className="auth__divider">{t('auth.orEmail')}</p>
       <form className="auth__form" onSubmit={handleSubmit} noValidate>
         <Field label={t('auth.fullName')} error={errors.name}>
           {({ id, describedBy, invalid }) => (

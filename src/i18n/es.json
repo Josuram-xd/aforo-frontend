@@ -90,7 +90,10 @@
       "fair": "aceptable",
       "good": "buena",
       "strong": "fuerte"
-    }
+    },
+    "orEmail": "o con tu correo",
+    "callbackFailedTitle": "No pudimos completar el acceso",
+    "callbackFailedAlert": "El inicio de sesión no se completó"
   },
   "cameras": {
     "title": "Cámaras",
