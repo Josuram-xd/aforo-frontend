@@ -8,7 +8,7 @@ import { useSession } from '../../auth/authContext'
 import { useMe } from '../../auth/useRole'
 import { Alert } from '../../components/ui/Alert'
 import { Avatar } from '../../components/ui/Avatar'
-import { Badge } from '../../components/ui/Badge'
+import { RoleBadge } from '../../components/RoleBadge'
 import { Button, ButtonLink } from '../../components/ui/Button'
 import { Card, CardHeader } from '../../components/ui/Card'
 import { Field, TextInput } from '../../components/ui/Field'
@@ -66,9 +66,7 @@ export function ProfilePage() {
           <div className="profile-hero__body">
             <Avatar name={profile.fullName} imageUrl={profile.avatarUrl} size="xl" />
             <h2 className="profile-hero__name">{profile.fullName}</h2>
-            <Badge tone={role === 'admin' ? 'violet' : role === 'teacher' ? 'accent' : 'neutral'}>
-              {t(`roles.${role}`)}
-            </Badge>
+            <RoleBadge role={role} />
             <dl className="profile-hero__facts">
               <div>
                 <dt>

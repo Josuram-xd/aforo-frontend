@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { BellOff, CircleCheck } from 'lucide-react'
+import { BellOff, CircleCheck, CircleDot } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { resolveAlert } from '../../api/alerts'
@@ -90,9 +90,11 @@ export function AlertsPage() {
                   <h2 className="alert-row__title">{t(`alerts.type.${alert.type}`)}</h2>
                   <SeverityBadge severity={alert.severity} />
                   {alert.resolvedAt ? (
-                    <Badge tone="success">{t('alerts.resolved')}</Badge>
+                    <Badge tone="success" icon={<CircleCheck />}>
+                      {t('alerts.resolved')}
+                    </Badge>
                   ) : (
-                    <Badge tone="danger" dot>
+                    <Badge tone="danger" icon={<CircleDot />}>
                       {t('alerts.open')}
                     </Badge>
                   )}

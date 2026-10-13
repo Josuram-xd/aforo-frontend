@@ -9,6 +9,7 @@ import type { UserItem } from '../../api/types'
 import { useSession } from '../../auth/authContext'
 import { ROLE_CODES, type RoleCode } from '../../auth/roles'
 import { FilterBar } from '../../components/FilterBar'
+import { RoleBadge } from '../../components/RoleBadge'
 import { Avatar } from '../../components/ui/Avatar'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
@@ -107,7 +108,7 @@ export function UsersPage() {
       sortValue: (row) => row.role ?? '',
       render: (row) =>
         row.id === me?.id ? (
-          <Badge tone="violet">{t(`roles.${row.role ?? 'viewer'}`)}</Badge>
+          <RoleBadge role={row.role ?? 'viewer'} />
         ) : (
           <SelectInput
             className="input--compact"

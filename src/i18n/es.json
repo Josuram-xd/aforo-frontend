@@ -262,8 +262,8 @@
     "firstAt": "Primera entrada a las {{time}}",
     "peak_one": "Pico del día: {{count}} persona",
     "peak_other": "Pico del día: {{count}} personas",
-    "bodyOnlyCount_one": "{{count}} evento solo por cuerpo",
-    "bodyOnlyCount_other": "{{count}} eventos solo por cuerpo",
+    "bodyOnlyCount_one": "{{count}} solo por cuerpo",
+    "bodyOnlyCount_other": "{{count}} solo por cuerpo",
     "noEventsYet": "Aún no hay eventos hoy",
     "camerasOnline": "Cámaras en línea",
     "camerasHint": "Estado según el último latido",
@@ -277,7 +277,9 @@
     "latestEventsHint": "En vivo · los 10 más recientes",
     "seeHistory": "Ver historial",
     "seeAll": "Ver todas",
-    "noEvents": "Aún no hay eventos"
+    "noEvents": "Aún no hay eventos",
+    "faceCount_one": "{{count}} por rostro",
+    "faceCount_other": "{{count}} por rostro"
   },
   "errors": {
     "generic": "No pudimos completar la acción. Inténtalo de nuevo.",

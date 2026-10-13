@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Pencil, Search, UserPlus, Users } from 'lucide-react'
+import { DoorClosed, DoorOpen, Pencil, Search, UserMinus, UserPlus, Users } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLogView } from '../../api/accessLog'
@@ -111,13 +111,15 @@ export function StudentsPage() {
       sortValue: (row) => (row.is_active ? row.presence : 'Z'),
       render: (row) =>
         !row.is_active ? (
-          <Badge tone="neutral">{t('students.inactive')}</Badge>
+          <Badge tone="neutral" icon={<UserMinus />}>
+            {t('students.inactive')}
+          </Badge>
         ) : row.presence === 'IN' ? (
-          <Badge tone="success" dot>
+          <Badge tone="success" icon={<DoorOpen />}>
             {t('students.presence.in')}
           </Badge>
         ) : (
-          <Badge tone="neutral" dot>
+          <Badge tone="neutral" icon={<DoorClosed />}>
             {t('students.presence.out')}
           </Badge>
         ),

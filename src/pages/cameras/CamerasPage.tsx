@@ -1,4 +1,4 @@
-import { Cctv, VideoOff } from 'lucide-react'
+import { Cctv, Clock, VideoOff, Wifi, WifiOff } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { Camera, Classroom } from '../../api/types'
 import { Badge } from '../../components/ui/Badge'
@@ -34,7 +34,10 @@ function CameraCard({ camera, now }: { camera: Camera; now: number }) {
       <div className="camera-card__body">
         <div className="camera-card__top">
           <h2 className="camera-card__name">{camera.name}</h2>
-          <Badge tone={online ? (stale ? 'warning' : 'success') : 'danger'} dot>
+          <Badge
+            tone={online ? (stale ? 'warning' : 'success') : 'danger'}
+            icon={online ? stale ? <Clock /> : <Wifi /> : <WifiOff />}
+          >
             {online
               ? stale
                 ? t('cameras.status.late')
