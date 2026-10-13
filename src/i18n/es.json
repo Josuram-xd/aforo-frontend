@@ -507,5 +507,51 @@
       "ACCOUNT_ACTIVATE": "Cuenta activada",
       "ACCOUNT_DEACTIVATE": "Cuenta desactivada"
     }
+  },
+  "settings": {
+    "description": "Salones con su aforo máximo, cursos y nombres de las cámaras. Los cambios quedan en la auditoría.",
+    "add": "Agregar",
+    "editNamed": "Editar {{name}}",
+    "deleteNamed": "Eliminar {{name}}",
+    "validation": {
+      "name": "Escribe un nombre.",
+      "code": "Escribe un código.",
+      "capacity": "El aforo máximo debe ser un número entero mayor que cero."
+    },
+    "classrooms": {
+      "title": "Salones",
+      "hint": "El aforo máximo define la barra de capacidad y las alertas.",
+      "createTitle": "Nuevo salón",
+      "editTitle": "Editar salón",
+      "submitCreate": "Crear salón",
+      "formHint": "El aforo máximo se usa para la barra de capacidad y la alerta de aforo superado.",
+      "name": "Nombre",
+      "location": "Ubicación",
+      "capacity": "Aforo máximo",
+      "empty": "No hay salones"
+    },
+    "courses": {
+      "title": "Cursos",
+      "hint": "Cursos a los que pertenecen las sesiones de clase.",
+      "createTitle": "Nuevo curso",
+      "editTitle": "Editar curso",
+      "submitCreate": "Crear curso",
+      "code": "Código",
+      "name": "Nombre del curso",
+      "period": "Periodo académico",
+      "status": "Estado",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "empty": "No hay cursos"
+    },
+    "cameras": {
+      "title": "Cámaras",
+      "hint": "El código y la ubicación los define aforo-vision; aquí solo se cambia el nombre visible.",
+      "name": "Nombre visible",
+      "classroom": "Salón",
+      "rename": "Renombrar",
+      "renameTitle": "Renombrar cámara",
+      "renameHint": "Código técnico: {{code}}"
+    }
   }
 }

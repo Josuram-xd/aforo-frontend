@@ -147,7 +147,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **14.8** `feat(sessions): add class sessions and attendance page` — Crear/editar sesiones; asistencia por sesión (presente, salió, hora de entrada y salida).
 - [x] **14.9** `feat(admin): add users and roles page` — Lista de usuarios, cambiar rol (`set_user_role`), activar/desactivar (`set_user_active`), invitar (Edge Function `invite-user`).
 - [x] **14.10** `feat(admin): add audit log page` — Tabla con filtros por usuario, acción, tabla y fecha; detalle con el antes/después.
-- [ ] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
+- [x] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
 
 ### Task 15 — Diseño visual **(Prioridad 2)**
 - [ ] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).

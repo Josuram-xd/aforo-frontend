@@ -50,7 +50,6 @@ export const router = createBrowserRouter([
         'nav.alerts',
         async () => (await import('./pages/alerts/AlertsPage')).AlertsPage,
       ),
-      // all-routes
       {
         element: <RequireRole roles={STAFF_ROLES} />,
         children: [
@@ -69,7 +68,6 @@ export const router = createBrowserRouter([
             'nav.sessions',
             async () => (await import('./pages/sessions/SessionsPage')).SessionsPage,
           ),
-          // staff-routes
         ],
       },
       {
@@ -85,7 +83,11 @@ export const router = createBrowserRouter([
             'nav.admin.audit',
             async () => (await import('./pages/admin/AuditPage')).AuditPage,
           ),
-          // admin-routes
+          page(
+            'admin/configuracion',
+            'nav.admin.settings',
+            async () => (await import('./pages/admin/SettingsPage')).SettingsPage,
+          ),
         ],
       },
       { path: '*', element: <NotFoundPage />, handle: handle('notFound.title') },
