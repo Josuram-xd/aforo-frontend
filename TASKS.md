@@ -159,4 +159,4 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 ### Task 16 — Despliegue y pruebas **(Prioridad 1 al final)**
 - [ ] **16.1** (sin commit) En Amplify: variables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; quitar `VITE_API_BASE_URL`. En Supabase: agregar la URL de Amplify en Authentication → URL Configuration.
 - [ ] **16.2** (sin commit) Probar con un usuario de cada rol: `viewer` no ve nombres ni la página de estudiantes, `teacher` no ve Admin, `admin` ve todo; sin sesión nada.
-- [ ] **16.3** `test: add component and auth guard tests with vitest` — Vitest + Testing Library: skeletons, `RequireRole`, tarjetas del Inicio y filtros de Eventos con datos mock.
+- [x] **16.3** `test: add component and auth guard tests with vitest` — Vitest + Testing Library: skeletons, `RequireRole`, tarjetas del Inicio y filtros de Eventos con datos mock.

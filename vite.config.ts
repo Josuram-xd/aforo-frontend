@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
 // Same CSP as customHttp.yml (Amplify), so `npm run preview` catches violations before deploying.
 const CONTENT_SECURITY_POLICY = [
@@ -18,6 +18,12 @@ const CONTENT_SECURITY_POLICY = [
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    css: false,
+    restoreMocks: true,
+  },
   preview: {
     headers: {
       'Content-Security-Policy': CONTENT_SECURITY_POLICY,
