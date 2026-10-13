@@ -78,9 +78,11 @@ const text = (data: FormData, key: string) => String(data.get(key) ?? '').trim()
 export function ClassroomDialog({
   classroom,
   onClose,
+  onSaved,
 }: {
   classroom: Classroom | null
   onClose: () => void
+  onSaved: (name: string) => void
 }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
@@ -88,8 +90,9 @@ export function ClassroomDialog({
   const save = useMutation({
     mutationFn: (input: { name: string; location: string | null; max_capacity: number }) =>
       saveClassroom(input, classroom?.id),
-    onSuccess: async () => {
+    onSuccess: async (_, input) => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.classrooms })
+      onSaved(input.name)
       onClose()
     },
   })
@@ -157,7 +160,15 @@ export function ClassroomDialog({
   )
 }
 
-export function CourseDialog({ course, onClose }: { course: Course | null; onClose: () => void }) {
+export function CourseDialog({
+  course,
+  onClose,
+  onSaved,
+}: {
+  course: Course | null
+  onClose: () => void
+  onSaved: (name: string) => void
+}) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [errors, setErrors] = useState<{ code?: string; name?: string }>({})
@@ -168,8 +179,9 @@ export function CourseDialog({ course, onClose }: { course: Course | null; onClo
       academic_period: string | null
       is_active: boolean
     }) => saveCourse(input, course?.id),
-    onSuccess: async () => {
+    onSuccess: async (_, input) => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.courses })
+      onSaved(input.name)
       onClose()
     },
   })
@@ -250,14 +262,23 @@ export function CourseDialog({ course, onClose }: { course: Course | null; onClo
   )
 }
 
-export function CameraDialog({ camera, onClose }: { camera: Camera; onClose: () => void }) {
+export function CameraDialog({
+  camera,
+  onClose,
+  onSaved,
+}: {
+  camera: Camera
+  onClose: () => void
+  onSaved: (name: string) => void
+}) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
   const save = useMutation({
     mutationFn: (name: string) => renameCamera(camera.id, name),
-    onSuccess: async () => {
+    onSuccess: async (_, name) => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.cameras })
+      onSaved(name)
       onClose()
     },
   })

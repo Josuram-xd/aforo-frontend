@@ -10,7 +10,6 @@ import { useSession } from '../../auth/authContext'
 import { STAFF_ROLES, canAccess } from '../../auth/roles'
 import { useRole } from '../../auth/useRole'
 import { SeverityBadge } from '../../components/AlertBadges'
-import { Alert } from '../../components/ui/Alert'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
@@ -18,6 +17,7 @@ import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SegmentedControl } from '../../components/ui/SegmentedControl'
 import { SkeletonList } from '../../components/ui/Skeleton'
+import { useToast } from '../../components/ui/toastContext'
 import { useAlerts } from '../../hooks/queries'
 import { useNow } from '../../hooks/useNow'
 import { formatDateTime, formatRelative } from '../../lib/format'
@@ -36,9 +36,12 @@ export function AlertsPage() {
   const now = useNow(30_000)
   const [tab, setTab] = useState<Tab>('open')
 
+  const toast = useToast()
   const resolve = useMutation({
     mutationFn: (alert: AlertItem) => resolveAlert(alert.id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.alerts }),
+    onSuccess: () => toast.success(t('alerts.toast.resolved')),
+    onError: (error) => toast.error(t(errorMessageKey(error))),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.alerts }),
   })
 
   const all = alerts.data ?? []
@@ -63,13 +66,6 @@ export function AlertsPage() {
           />
         }
       />
-      {resolve.isError && (
-        <div className="page-alert">
-          <Alert tone="danger" live="assertive">
-            {t(errorMessageKey(resolve.error))}
-          </Alert>
-        </div>
-      )}
 
       {alerts.isPending ? (
         <SkeletonList rows={4} />

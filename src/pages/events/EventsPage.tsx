@@ -8,7 +8,6 @@ import { errorMessageKey } from '../../api/errors'
 import { EVENTS_PAGE_SIZE, exportEventsCsv } from '../../api/events'
 import type { Direction, EventFilters, EventItem, EventMethod } from '../../api/types'
 import { DirectionBadge, MethodBadge } from '../../components/EventBadges'
-import { Alert } from '../../components/ui/Alert'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { DataTable, Pagination, type Column } from '../../components/ui/DataTable'
@@ -16,6 +15,7 @@ import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
+import { useToast } from '../../components/ui/toastContext'
 import { useClassrooms, useEventsPage, useStudents } from '../../hooks/queries'
 import { downloadText } from '../../lib/download'
 import { addDays, bogotaDay, formatDate, formatTimeWithSeconds } from '../../lib/format'
@@ -60,6 +60,7 @@ export function EventsPage() {
   const students = useStudents()
   const classrooms = useClassrooms()
 
+  const toast = useToast()
   const exportCsv = useMutation({
     mutationFn: () =>
       exportEventsCsv({
@@ -67,7 +68,11 @@ export function EventsPage() {
         from: filters.from ?? today,
         to: filters.to ?? today,
       }),
-    onSuccess: ({ csv, filename }) => downloadText(csv, filename, 'text/csv;charset=utf-8'),
+    onSuccess: ({ csv, filename }) => {
+      downloadText(csv, filename, 'text/csv;charset=utf-8')
+      toast.success(t('events.toast.exported', { filename }))
+    },
+    onError: (error) => toast.error(`${t('events.exportFailed')}: ${t(errorMessageKey(error))}`),
   })
 
   const defaults = readFilters(new URLSearchParams(), today)
@@ -136,13 +141,6 @@ export function EventsPage() {
           </Button>
         }
       />
-      {exportCsv.isError && (
-        <div className="page-alert">
-          <Alert tone="danger" live="assertive" title={t('events.exportFailed')}>
-            {t(errorMessageKey(exportCsv.error))}
-          </Alert>
-        </div>
-      )}
       <Card>
         <EventsFilterBar
           value={filters}

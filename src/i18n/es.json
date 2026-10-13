@@ -45,6 +45,9 @@
       "student": "Estudiante",
       "method": "Método",
       "confidence": "Confianza"
+    },
+    "toast": {
+      "exported": "Descargamos {{filename}}."
     }
   },
   "auth": {
@@ -217,7 +220,9 @@
     "close": "Cerrar",
     "optional": "Opcional",
     "actions": "Acciones",
-    "edit": "Editar"
+    "edit": "Editar",
+    "dismiss": "Cerrar aviso",
+    "notifications": "Notificaciones"
   },
   "live": {
     "connected": "En vivo",
@@ -331,7 +336,10 @@
     "resolve": "Marcar como resuelta",
     "resolvedAt": "Resuelta el {{when}}",
     "resolvedByYou": "Resuelta por ti el {{when}}",
-    "empty": "No hay alertas en esta vista"
+    "empty": "No hay alertas en esta vista",
+    "toast": {
+      "resolved": "Alerta marcada como resuelta."
+    }
   },
   "filters": {
     "clear": "Limpiar filtros",
@@ -385,7 +393,15 @@
     "empty": "Todavía no hay estudiantes",
     "emptyHint": "Agrega a los estudiantes del curso para que aparezcan en los eventos.",
     "noResults": "Ningún estudiante coincide con la búsqueda",
-    "submitCreate": "Crear estudiante"
+    "submitCreate": "Crear estudiante",
+    "toast": {
+      "created": "Agregamos a {{name}}.",
+      "updated": "Guardamos los cambios de {{name}}.",
+      "deactivated": "{{name}} quedó inactivo.",
+      "reactivated": "{{name}} volvió a estar activo."
+    },
+    "confirmDeactivateTitle": "¿Desactivar estudiante?",
+    "confirmDeactivateText": "{{name}} dejará de aparecer como activo y sus próximos eventos no se asociarán a su nombre. Puedes reactivarlo después."
   },
   "sessions": {
     "description": "Programa las clases y revisa quién estuvo en cada una. La asistencia se llena sola con los eventos de las cámaras.",
@@ -443,6 +459,10 @@
       "left": "Salió",
       "empty": "Sin asistencia registrada",
       "emptyHint": "Aparece cuando un estudiante identificado por rostro entra durante la sesión."
+    },
+    "toast": {
+      "created": "Creamos la sesión «{{title}}».",
+      "updated": "Guardamos la sesión «{{title}}»."
     }
   },
   "admin": {
@@ -470,7 +490,15 @@
         "user": "Usuario",
         "status": "Estado",
         "since": "Desde"
-      }
+      },
+      "toast": {
+        "roleChanged": "{{name}} ahora es {{role}}.",
+        "activated": "Activamos la cuenta de {{name}}.",
+        "deactivated": "Desactivamos la cuenta de {{name}}.",
+        "invited": "Enviamos la invitación a {{email}}."
+      },
+      "confirmDeactivateTitle": "¿Desactivar esta cuenta?",
+      "confirmDeactivateText": "{{name}} no podrá ver ningún dato hasta que la vuelvas a activar. Sus registros de auditoría se conservan."
     }
   },
   "audit": {
@@ -552,6 +580,14 @@
       "rename": "Renombrar",
       "renameTitle": "Renombrar cámara",
       "renameHint": "Código técnico: {{code}}"
+    },
+    "delete": "Eliminar",
+    "confirmDeleteClassroom": "¿Eliminar salón?",
+    "confirmDeleteCourse": "¿Eliminar curso?",
+    "confirmDeleteText": "Vas a eliminar «{{name}}». Esta acción no se puede deshacer y falla si hay datos que dependen de él.",
+    "toast": {
+      "saved": "Guardamos «{{name}}».",
+      "deleted": "Eliminamos «{{name}}»."
     }
   },
   "authPanel": {
