@@ -93,7 +93,20 @@
     },
     "orEmail": "o con tu correo",
     "callbackFailedTitle": "No pudimos completar el acceso",
-    "callbackFailedAlert": "El inicio de sesión no se completó"
+    "callbackFailedAlert": "El inicio de sesión no se completó",
+    "resetTitle": "Recupera tu contraseña",
+    "resetSubtitle": "Escribe el correo de tu cuenta y te enviaremos un enlace para crear una nueva.",
+    "resetSentText": "Si existe una cuenta con ese correo, te enviamos un enlace para crear una nueva contraseña.",
+    "sendResetLink": "Enviar enlace",
+    "rememberedIt": "¿La recordaste?",
+    "newPasswordTitle": "Crea una nueva contraseña",
+    "newPasswordSubtitle": "Elige una contraseña que no uses en otros sitios.",
+    "newPassword": "Nueva contraseña",
+    "saveNewPassword": "Guardar contraseña",
+    "passwordUpdatedTitle": "Contraseña actualizada",
+    "passwordUpdatedText": "Ya puedes usar tu nueva contraseña.",
+    "goToDashboard": "Ir al inicio",
+    "requestNewLink": "Pedir un enlace nuevo"
   },
   "cameras": {
     "title": "Cámaras",

@@ -131,7 +131,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **13.3** `feat(auth): add sign up page with email confirmation` — Nombre, correo, contraseña (mínimo 8 caracteres); mensaje de "revisa tu correo".
 - [x] **13.4** `feat(auth): add google sign in` — Botón "Continuar con Google" y ruta `/auth/callback`.
 - [ ] **13.5** (sin commit) Configurar Google: crear el cliente OAuth en Google Cloud Console, pegar client ID y secret en Supabase (Authentication → Providers → Google) y agregar las URLs de redirección de Amplify y `localhost:5173`.
-- [ ] **13.6** `feat(auth): add password reset flow` — `/recuperar` y la pantalla para definir la nueva contraseña.
+- [x] **13.6** `feat(auth): add password reset flow` — `/recuperar` y la pantalla para definir la nueva contraseña.
 - [ ] **13.7** `feat(auth): protect routes by role` — `RequireRole`: sin sesión → `/login`; sin el rol → página "No tienes permiso".
 - [ ] **13.8** `feat(audit): log logins and sensitive views` — Llamar `log_access` en LOGIN, LOGOUT y al abrir Estudiantes, Eventos y Auditoría.
 - [ ] **13.9** `feat(profile): add profile page` — Nombre, avatar (Google o iniciales), rol y cerrar sesión.
