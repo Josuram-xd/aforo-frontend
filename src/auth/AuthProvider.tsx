@@ -1,6 +1,7 @@
 import type { User } from '@supabase/supabase-js'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { logAccess } from '../api/accessLog'
 import { MOCK_AUTH_USER } from '../api/mock/mockIdentity'
 import { isMockMode } from '../lib/env'
 import { supabase } from '../lib/supabase'
@@ -51,6 +52,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     if (isMockMode) return
+    // Logged before signing out: the RPC needs the still-valid session.
+    await logAccess('LOGOUT')
     await supabase.auth.signOut()
     queryClient.clear()
   }, [queryClient])

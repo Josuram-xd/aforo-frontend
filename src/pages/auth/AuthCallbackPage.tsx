@@ -2,6 +2,7 @@ import { TriangleAlert } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router'
+import { logAccess } from '../../api/accessLog'
 import { useSession } from '../../auth/authContext'
 import { FullPageLoader } from '../../components/FullPageLoader'
 import { Alert } from '../../components/ui/Alert'
@@ -26,6 +27,10 @@ export function AuthCallbackPage() {
   const { t } = useTranslation()
   const { user, loading } = useSession()
   const [failed, setFailed] = useState(readCallbackError)
+
+  useEffect(() => {
+    if (user) void logAccess('LOGIN', 'oauth_or_email_link')
+  }, [user])
 
   useEffect(() => {
     if (user || failed) return

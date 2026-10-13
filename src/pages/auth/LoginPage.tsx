@@ -2,6 +2,7 @@ import { LogIn, Mail } from 'lucide-react'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router'
+import { logAccess } from '../../api/accessLog'
 import { useSession } from '../../auth/authContext'
 import { authErrorKey } from '../../auth/authErrors'
 import { lockRemainingMs, registerFailure, resetFailures } from '../../auth/loginThrottle'
@@ -83,6 +84,7 @@ export function LoginPage() {
     }
 
     resetFailures()
+    void logAccess('LOGIN', 'password')
     navigate(redirectTo, { replace: true })
   }
 
