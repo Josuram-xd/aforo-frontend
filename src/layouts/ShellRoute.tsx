@@ -1,4 +1,6 @@
 import { TopProgressBar } from '../components/ui/TopProgressBar'
+import { LiveIndicator } from '../realtime/LiveIndicator'
+import { RealtimeProvider } from '../realtime/RealtimeProvider'
 import { AppShell, type ShellUser } from './AppShell'
 
 // Placeholder identity until the auth provider lands (task 13).
@@ -10,5 +12,14 @@ const PREVIEW_USER: ShellUser = {
 }
 
 export function ShellRoute() {
-  return <AppShell user={PREVIEW_USER} onSignOut={() => undefined} topSlot={<TopProgressBar />} />
+  return (
+    <RealtimeProvider enabled>
+      <AppShell
+        user={PREVIEW_USER}
+        onSignOut={() => undefined}
+        topSlot={<TopProgressBar />}
+        liveIndicator={<LiveIndicator />}
+      />
+    </RealtimeProvider>
+  )
 }

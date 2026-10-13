@@ -92,5 +92,12 @@
     "empty": "No hay datos para mostrar",
     "error": "No pudimos cargar esta información",
     "errorHint": "Revisa tu conexión e inténtalo de nuevo."
+  },
+  "live": {
+    "connected": "En vivo",
+    "connecting": "Conectando…",
+    "reconnecting": "Reconectando…",
+    "connectedHint": "Los datos se actualizan solos en cuanto hay cambios",
+    "fallbackHint": "Sin conexión en vivo: los datos se actualizan cada 30 segundos"
   }
 }
