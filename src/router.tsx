@@ -80,6 +80,11 @@ export const router = createBrowserRouter([
             'nav.admin.users',
             async () => (await import('./pages/admin/UsersPage')).UsersPage,
           ),
+          page(
+            'admin/auditoria',
+            'nav.admin.audit',
+            async () => (await import('./pages/admin/AuditPage')).AuditPage,
+          ),
           // admin-routes
         ],
       },

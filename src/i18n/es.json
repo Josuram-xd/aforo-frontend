@@ -472,5 +472,40 @@
         "since": "Desde"
       }
     }
+  },
+  "audit": {
+    "description": "Registro de accesos y cambios. Lo escribe la base de datos y no se puede editar desde la aplicación.",
+    "filters": "Filtros de auditoría",
+    "tableCaption": "Registro de auditoría",
+    "empty": "No hay registros",
+    "system": "Sistema",
+    "detailMeta": "{{when}} · {{who}}",
+    "recordId": "Registro",
+    "noChanges": "Esta entrada no guarda cambios de datos (es un acceso o una consulta).",
+    "diffCaption": "Valores antes y después del cambio",
+    "field": "Campo",
+    "before": "Antes",
+    "after": "Después",
+    "changed": "cambió",
+    "columns": {
+      "when": "Fecha",
+      "user": "Usuario",
+      "action": "Acción",
+      "table": "Recurso"
+    },
+    "actions": {
+      "LOGIN": "Inicio de sesión",
+      "LOGOUT": "Cierre de sesión",
+      "VIEW": "Consulta",
+      "EXPORT": "Exportación",
+      "INSERT": "Creación",
+      "UPDATE": "Edición",
+      "DELETE": "Eliminación",
+      "ROLE_GRANT": "Rol asignado",
+      "ROLE_REVOKE": "Rol retirado",
+      "ROLE_CHANGE": "Rol cambiado",
+      "ACCOUNT_ACTIVATE": "Cuenta activada",
+      "ACCOUNT_DEACTIVATE": "Cuenta desactivada"
+    }
   }
 }
