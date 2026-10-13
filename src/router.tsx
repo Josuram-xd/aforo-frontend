@@ -1,4 +1,5 @@
-import { createBrowserRouter } from 'react-router'
+import type { ComponentType } from 'react'
+import { createBrowserRouter, type RouteObject } from 'react-router'
 import { RequireRole } from './auth/RequireRole'
 import { ADMIN_ROLES, STAFF_ROLES } from './auth/roles'
 import type { RouteHandle } from './layouts/AppShell'
@@ -13,6 +14,10 @@ import { HomePage } from './pages/home/HomePage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 const handle = (titleKey: string): RouteHandle => ({ titleKey })
+
+function page(path: string, titleKey: string, load: () => Promise<ComponentType>): RouteObject {
+  return { path, handle: handle(titleKey), lazy: async () => ({ Component: await load() }) }
+}
 
 // Pages other than Inicio are code-split: each route downloads its module on first visit.
 export const router = createBrowserRouter([
@@ -30,28 +35,32 @@ export const router = createBrowserRouter([
     hydrateFallbackElement: <FullPageLoader />,
     children: [
       { index: true, element: <HomePage />, handle: handle('nav.home') },
-      {
-        path: 'perfil',
-        handle: handle('nav.profile'),
-        lazy: async () => ({
-          Component: (await import('./pages/profile/ProfilePage')).ProfilePage,
-        }),
-      },
+      page(
+        'perfil',
+        'nav.profile',
+        async () => (await import('./pages/profile/ProfilePage')).ProfilePage,
+      ),
       {
         element: <RequireRole roles={STAFF_ROLES} />,
         children: [
-          {
-            path: 'eventos',
-            handle: handle('nav.events'),
-            lazy: async () => ({
-              Component: (await import('./pages/events/EventsPage')).EventsPage,
-            }),
-          },
+          page(
+            'eventos',
+            'nav.events',
+            async () => (await import('./pages/events/EventsPage')).EventsPage,
+          ),
+          page(
+            'estudiantes',
+            'nav.students',
+            async () => (await import('./pages/students/StudentsPage')).StudentsPage,
+          ),
+          // staff-routes
         ],
       },
       {
         element: <RequireRole roles={ADMIN_ROLES} />,
-        children: [],
+        children: [
+          // admin-routes
+        ],
       },
       { path: '*', element: <NotFoundPage />, handle: handle('notFound.title') },
     ],

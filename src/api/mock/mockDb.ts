@@ -110,7 +110,11 @@ function build() {
   db.students = STUDENT_NAMES.map((name, index) => ({
     id: uuid('b', index + 1),
     full_name: name,
-    email: `${name.split(' ')[0]!.toLowerCase()}@universidad.edu.co`,
+    email: `${name
+      .split(' ')[0]!
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .toLowerCase()}@universidad.edu.co`,
     student_code: `2026${String(1000 + index * 37)}`,
     is_active: index !== 11,
     presence: 'OUT',

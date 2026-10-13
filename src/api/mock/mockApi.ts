@@ -223,11 +223,11 @@ export function fetchAlerts(status: AlertStatusFilter): Promise<AlertItem[]> {
   )
 }
 
-export async function resolveAlert(alertId: string, userId: string): Promise<void> {
+export async function resolveAlert(alertId: string): Promise<void> {
   const alert = db.alerts.find((a) => a.id === alertId)
   if (alert && !alert.resolved_at) {
     alert.resolved_at = new Date().toISOString()
-    alert.resolved_by = userId
+    alert.resolved_by = MOCK_AUTH_USER.id
   }
   notifyMock('alerts')
   await delay(null)

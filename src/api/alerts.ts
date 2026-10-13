@@ -3,7 +3,8 @@ import { supabase } from '../lib/supabase'
 import { fromPostgrest } from './errors'
 import type { AlertItem, AlertSeverity, AlertType } from './types'
 
-// Alerts: every active role reads; teacher/admin resolve (RLS checks resolved_by = auth.uid()).
+// Alerts: every active role reads; teacher/admin resolve. `resolved_by` is stamped by a DB
+// trigger from the signed-in user, and resolved alerts can no longer be edited.
 
 const mock = () => import('./mock/mockApi')
 
@@ -38,11 +39,11 @@ export async function fetchAlerts(status: AlertStatusFilter): Promise<AlertItem[
   }))
 }
 
-export async function resolveAlert(alertId: string, userId: string): Promise<void> {
-  if (isMockMode) return (await mock()).resolveAlert(alertId, userId)
+export async function resolveAlert(alertId: string): Promise<void> {
+  if (isMockMode) return (await mock()).resolveAlert(alertId)
   const { error } = await supabase
     .from('alerts')
-    .update({ resolved_at: new Date().toISOString(), resolved_by: userId })
+    .update({ resolved_at: new Date().toISOString() })
     .eq('id', alertId)
     .is('resolved_at', null)
   if (error) throw fromPostgrest(error)

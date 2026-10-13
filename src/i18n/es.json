@@ -204,7 +204,10 @@
     "errorHint": "Revisa tu conexión e inténtalo de nuevo.",
     "save": "Guardar cambios",
     "cancel": "Cancelar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "optional": "Opcional",
+    "actions": "Acciones",
+    "edit": "Editar"
   },
   "live": {
     "connected": "En vivo",
@@ -322,5 +325,42 @@
     "table": "Recurso",
     "user": "Usuario",
     "status": "Estado"
+  },
+  "students": {
+    "description_one": "{{inside}} de {{total}} estudiante activo está dentro del salón ahora.",
+    "description_other": "{{inside}} de {{total}} estudiantes activos están dentro del salón ahora.",
+    "create": "Nuevo estudiante",
+    "createTitle": "Nuevo estudiante",
+    "editTitle": "Editar estudiante",
+    "editNamed": "Editar a {{name}}",
+    "formHint": "Los datos se usan para identificar a la persona en los eventos.",
+    "fields": {
+      "name": "Nombre completo",
+      "code": "Código",
+      "email": "Correo institucional"
+    },
+    "filters": "Filtros de estudiantes",
+    "searchPlaceholder": "Nombre, código o correo",
+    "tableCaption": "Estudiantes del curso",
+    "columns": {
+      "name": "Estudiante",
+      "code": "Código",
+      "presence": "Presencia",
+      "lastEvent": "Último evento"
+    },
+    "presence": {
+      "in": "Dentro",
+      "out": "Fuera"
+    },
+    "inactive": "Inactivo",
+    "inactivePlural": "Inactivos",
+    "noEmail": "Sin correo",
+    "never": "Sin eventos",
+    "deactivate": "Desactivar",
+    "reactivate": "Reactivar",
+    "empty": "Todavía no hay estudiantes",
+    "emptyHint": "Agrega a los estudiantes del curso para que aparezcan en los eventos.",
+    "noResults": "Ningún estudiante coincide con la búsqueda",
+    "submitCreate": "Crear estudiante"
   }
 }
