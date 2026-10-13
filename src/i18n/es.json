@@ -84,5 +84,13 @@
     "title": "Página no encontrada",
     "description": "La dirección que abriste no existe o fue movida.",
     "back": "Volver al inicio"
+  },
+  "common": {
+    "loading": "Cargando…",
+    "updating": "Actualizando datos…",
+    "retry": "Reintentar",
+    "empty": "No hay datos para mostrar",
+    "error": "No pudimos cargar esta información",
+    "errorHint": "Revisa tu conexión e inténtalo de nuevo."
   }
 }
