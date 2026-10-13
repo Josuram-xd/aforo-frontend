@@ -1,8 +1,11 @@
 # Design System — aforo-frontend
 
 **Repository:** `aforo-frontend`
-**Last updated:** September 26, 2026
+**Last updated:** October 8, 2026
 **Scope:** One-screen live dashboard for a one-day pilot demo.
+
+> **Version 2 (section 8)** extends this system for the multi-page app: light theme, app shell, icons, skeletons,
+> charts and forms. Sections 1-7 still apply unless section 8 overrides them.
 
 This is intentionally a small, pragmatic design system — enough to keep the dashboard consistent and legible when projected in a classroom, not a full product design language.
 
@@ -99,3 +102,95 @@ All UI strings live in a single i18n resource file (Spanish) via `react-i18next`
 
 - Color is never the only signal — every status also has a text label (important given the success/danger palette is a reused pair, not semantically "good/bad").
 - Minimum contrast ratio 4.5:1 for all text against its background (the chosen dark palette already satisfies this).
+
+## 8. Version 2 — Product UI (planned)
+
+Feedback from the first review: the dashboard looked "very basic, missing things and decoration". v2 keeps the principles of section 1 and adds what a real product needs.
+
+### 8.1 Themes
+
+- **Dark** (default, projector) keeps the palette of section 2.
+- **Light** for daytime/laptop use. Same token names, redefined under `[data-theme="light"]`; the user's choice is remembered.
+
+| Token | Light value |
+|---|---|
+| `--color-bg` | `#F8FAFC` |
+| `--color-surface` | `#FFFFFF` |
+| `--color-text-primary` | `#0F172A` |
+| `--color-text-secondary` | `#475569` |
+| `--color-accent` | `#0284C7` |
+| `--color-success` | `#16A34A` |
+| `--color-warning` | `#CA8A04` |
+| `--color-danger` | `#DC2626` |
+| `--color-border` | `#E2E8F0` |
+
+New tokens for both themes: `--color-surface-2` (hover/zebra rows), `--radius-sm/md/lg` (6/10/16px), `--shadow-card`, `--space-1..8` (4px scale), `--skeleton-base` and `--skeleton-shine`.
+
+### 8.2 Typography
+
+**Inter** (Google Fonts, weights 400/500/600/700) with the system stack as fallback; tabular numbers (`font-variant-numeric: tabular-nums`) for counters, times and tables. The hero occupancy number stays 96px on the dashboard.
+
+### 8.3 App shell
+
+```
+┌──────────┬──────────────────────────────────────────────┐
+│ ◉ Aforo  │  Inicio                    🔔 3   ☀/☾   (JR)▾ │  <- topbar: page title, alerts, theme, user menu
+│          ├──────────────────────────────────────────────┤
+│ Inicio   │                                              │
+│ Eventos  │   page content (max-width 1280px, 24px gap)  │
+│ Estudian.│                                              │
+│ Sesiones │                                              │
+│ Cámaras  │                                              │
+│ Alertas  │                                              │
+│ ──────── │                                              │
+│ Admin ▸  │                                              │
+│  Usuarios│                                              │
+│  Auditor.│                                              │
+│  Config. │                                              │
+└──────────┴──────────────────────────────────────────────┘
+```
+
+- Sidebar with a lucide icon + label per item; only the items the user's role can open are shown. Collapses to icons below 1024px and becomes a drawer below 768px (mobile is now supported).
+- A small "En vivo" indicator in the topbar shows the Realtime connection (green dot / grey "Reconectando…").
+
+### 8.4 Dashboard (Inicio)
+
+```
+┌ Aforo actual ─────────┐┌ Entradas hoy ┐┌ Salidas hoy ┐┌ Identificados ┐
+│   18 / 30  ▓▓▓▓▓░░░   ││     42       ││     24      ││   71% rostro  │
+└───────────────────────┘└──────────────┘└─────────────┘└───────────────┘
+┌ Entradas y salidas por hora (área/barras) ───────┐┌ Alertas abiertas ──┐
+│                                                  ││ ⚠ Cámara pasillo…   │
+└──────────────────────────────────────────────────┘└────────────────────┘
+┌ Últimos eventos (en vivo) ──────────────────────────────────────────────┐
+```
+
+- The occupancy card shows a capacity bar: accent until 80%, warning 80-100%, danger above 100% (plus a text label, never color only).
+- A new event slides in at the top of "Últimos eventos" and the occupancy number pulses briefly.
+
+### 8.5 Skeletons ("diseño fantasma")
+
+- Each component has a skeleton with the **same size and layout** as the loaded content (no layout shift): text lines as rounded bars, avatars as circles, charts as a grey area with axis placeholders, tables as 5 placeholder rows.
+- Shimmer: a linear gradient from `--skeleton-base` to `--skeleton-shine` moving left→right in 1.4 s; disabled with `prefers-reduced-motion`.
+- Shown only on the first load of a query (`isPending`); background refetches keep the old data and show the thin top progress bar instead.
+- Accessibility: the region gets `aria-busy="true"` and a visually hidden "Cargando…".
+
+### 8.6 Other components
+
+`Button` (primary, secondary, ghost, danger; loading state with spinner), `Badge` (direction, method, role, status), `Card`, `StatCard`, `Table` (sortable headers, sticky header, pagination), `FilterBar`, `Dialog` (confirmations; destructive actions require confirming), `Toast` (success/error, 4 s), `EmptyState` (lucide icon + one sentence + optional action), `Avatar` (Google photo or initials), `Field` (label, help text, inline error).
+
+### 8.7 Auth pages
+
+Split layout: left panel with the product name, a short description and an illustration of the classroom door/cameras (SVG, no stock photos of people); right panel with the form. "Continuar con Google" button first, then email + password. Errors from Supabase are translated to Spanish messages.
+
+### 8.8 New copy keys (examples)
+
+| Key | Spanish text |
+|---|---|
+| `nav.home` / `nav.events` / `nav.students` / `nav.sessions` / `nav.cameras` / `nav.alerts` | "Inicio" / "Eventos" / "Estudiantes" / "Sesiones" / "Cámaras" / "Alertas" |
+| `nav.admin.users` / `nav.admin.audit` / `nav.admin.settings` | "Usuarios" / "Auditoría" / "Configuración" |
+| `auth.signup` / `auth.google` / `auth.forgot` | "Crear cuenta" / "Continuar con Google" / "¿Olvidaste tu contraseña?" |
+| `common.loading` / `common.retry` / `common.empty` | "Cargando…" / "Reintentar" / "No hay datos para mostrar" |
+| `live.connected` / `live.reconnecting` | "En vivo" / "Reconectando…" |
+| `occupancy.ofCapacity` | "{{current}} de {{max}}" |
+| `roles.admin` / `roles.teacher` / `roles.viewer` | "Administrador" / "Docente" / "Observador" |

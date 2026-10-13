@@ -55,3 +55,20 @@ Un dashboard web simple que muestre:
 
 - El aforo mostrado en pantalla siempre coincide con lo que se ve realmente entrando/saliendo del salón.
 - El profesor puede entender el estado del sistema de un vistazo, sin explicación adicional.
+
+## 9. Versión 2 (octubre 2026)
+
+En la primera entrega el profe dijo que el frontend era "muy básico, le faltan cosas y decoración", que no había registro ni inicio de sesión y que los datos se veían sin restricción desde el navegador. La v2 convierte el dashboard en una aplicación:
+
+**Requisitos funcionales v2:**
+1. **Cuentas:** registro abierto, inicio de sesión con correo o con Google, recuperación de contraseña y perfil. Toda cuenta nueva entra como `viewer`.
+2. **Roles:** `viewer` ve el aforo, las cámaras y las alertas, pero no los nombres de estudiantes. `teacher` ve además estudiantes, eventos, sesiones y asistencia. `admin` administra todo: usuarios, roles, auditoría y configuración.
+3. **Inicio en tiempo real:** aforo actual frente al máximo, entradas y salidas de hoy, porcentaje identificado por rostro, gráfica por hora, últimos eventos y alertas abiertas. Todo se actualiza solo, sin recargar.
+4. **Páginas:** Eventos (con filtros y exportación a CSV), Estudiantes, Sesiones y asistencia, Cámaras, Alertas, Usuarios, Auditoría y Configuración.
+5. **Pantallas de carga "fantasma" (skeletons)** mientras llegan los datos, estados vacíos y mensajes de error con opción de reintentar.
+6. **Diseño visual nuevo:** menú lateral con iconos, tema claro y oscuro, tarjetas, gráficas e ilustración en el login. Funciona en móvil.
+7. Se mantiene la distinción `FACE` / `BODY_ONLY` en toda la UI y todo el texto sigue en español.
+
+**Cambios respecto a v1:** se elimina el no-objetivo de "no hay registro abierto ni administración de usuarios"; ahora sí hay. El móvil pasa a ser soportado.
+
+**Métricas de éxito v2:** sin sesión no se ve ningún dato; cada rol ve solo lo suyo; un evento aparece en pantalla en menos de 2 s; ninguna pantalla muestra un espacio en blanco mientras carga.
