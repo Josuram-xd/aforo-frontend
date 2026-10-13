@@ -315,7 +315,21 @@
     "type": {
       "capacity_exceeded": "Aforo superado",
       "camera_offline": "Cámara sin conexión"
-    }
+    },
+    "descriptionStaff": "Avisos del sistema: aforo superado y cámaras sin conexión. Resuélvelos cuando los atiendas.",
+    "descriptionViewer": "Avisos del sistema: aforo superado y cámaras sin conexión.",
+    "filter": "Mostrar alertas",
+    "tabs": {
+      "open": "Abiertas",
+      "resolved": "Resueltas",
+      "all": "Todas"
+    },
+    "open": "Abierta",
+    "resolved": "Resuelta",
+    "resolve": "Marcar como resuelta",
+    "resolvedAt": "Resuelta el {{when}}",
+    "resolvedByYou": "Resuelta por ti el {{when}}",
+    "empty": "No hay alertas en esta vista"
   },
   "filters": {
     "clear": "Limpiar filtros",

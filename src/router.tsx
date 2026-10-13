@@ -45,6 +45,11 @@ export const router = createBrowserRouter([
         'nav.cameras',
         async () => (await import('./pages/cameras/CamerasPage')).CamerasPage,
       ),
+      page(
+        'alertas',
+        'nav.alerts',
+        async () => (await import('./pages/alerts/AlertsPage')).AlertsPage,
+      ),
       // all-routes
       {
         element: <RequireRole roles={STAFF_ROLES} />,
