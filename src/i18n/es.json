@@ -138,19 +138,27 @@
   },
   "cameras": {
     "title": "Cámaras",
-    "lanOnly": "El video solo está disponible en la red local del piloto",
+    "lanOnly": "El video solo está disponible en la red local del piloto; aquí se muestra el estado de cada cámara.",
     "cardHint": "Estado de las cámaras del salón",
     "empty": "No hay cámaras registradas",
     "status": {
       "online": "En línea",
-      "offline": "Sin conexión"
+      "offline": "Sin conexión",
+      "late": "Latido atrasado"
     },
     "position": {
       "outside": "Pasillo (afuera)",
       "inside": "Salón (adentro)"
     },
     "lastSeen": "último latido {{when}}",
-    "neverSeen": "sin latidos todavía"
+    "neverSeen": "sin latidos todavía",
+    "description": "Estado de cada cámara según su último latido. Se actualiza en vivo.",
+    "summary": "{{online}} de {{total}} en línea",
+    "emptyHint": "Las cámaras se registran desde aforo-vision al enviar su primer latido.",
+    "fields": {
+      "position": "Ubicación",
+      "heartbeat": "Último latido"
+    }
   },
   "nav": {
     "sections": {

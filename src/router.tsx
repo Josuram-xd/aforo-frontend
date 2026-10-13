@@ -40,6 +40,12 @@ export const router = createBrowserRouter([
         'nav.profile',
         async () => (await import('./pages/profile/ProfilePage')).ProfilePage,
       ),
+      page(
+        'camaras',
+        'nav.cameras',
+        async () => (await import('./pages/cameras/CamerasPage')).CamerasPage,
+      ),
+      // all-routes
       {
         element: <RequireRole roles={STAFF_ROLES} />,
         children: [
