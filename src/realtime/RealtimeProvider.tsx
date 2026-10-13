@@ -23,6 +23,25 @@ export function RealtimeProvider({ enabled, children }: RealtimeProviderProps) {
   const queryClient = useQueryClient()
   const [status, setStatus] = useState<LiveStatus>(isMockMode ? 'connected' : 'connecting')
 
+  // Mock mode: the in-memory sample DB emits change notifications instead of a websocket.
+  useEffect(() => {
+    if (!enabled || !isMockMode) return
+    let unsubscribe: (() => void) | undefined
+    let cancelled = false
+    void import('../api/mock/mockDb').then(({ subscribeMock }) => {
+      if (cancelled) return
+      unsubscribe = subscribeMock((table) => {
+        for (const queryKey of REALTIME_INVALIDATIONS[table]) {
+          void queryClient.invalidateQueries({ queryKey })
+        }
+      })
+    })
+    return () => {
+      cancelled = true
+      unsubscribe?.()
+    }
+  }, [enabled, queryClient])
+
   useEffect(() => {
     if (!enabled || isMockMode) return
 

@@ -137,17 +137,17 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **13.9** `feat(profile): add profile page` — Nombre, avatar (Google o iniciales), rol y cerrar sesión.
 
 ### Task 14 — Páginas **(Prioridad 1-2)**
-- [ ] **14.1** `feat(dashboard): add stat cards and capacity bar` — Aforo actual vs. máximo con barra de capacidad, entradas y salidas de hoy, % identificado por rostro.
-- [ ] **14.2** `feat(dashboard): add entries per hour chart` — Recharts: entradas y salidas por hora del día (zona `America/Bogota`).
-- [ ] **14.3** `feat(dashboard): add live latest events and open alerts` — Lista en vivo de los últimos 10 eventos con animación de entrada; alertas abiertas.
-- [ ] **14.4** `feat(events): add events history page with filters` — Filtros por fecha, dirección, método y estudiante; paginación; botón "Exportar CSV" (Edge Function de `aforo-backend` task 13.1).
-- [ ] **14.5** `feat(students): add students page` — Lista con presencia y último evento; crear, editar y desactivar (solo `admin`).
-- [ ] **14.6** `feat(cameras): add cameras status page` — Estado online/offline y último latido de cada cámara, en vivo.
-- [ ] **14.7** `feat(alerts): add alerts page and badge` — Abiertas y resueltas; resolver (`teacher`, `admin`); contador en la campana del topbar.
-- [ ] **14.8** `feat(sessions): add class sessions and attendance page` — Crear/editar sesiones; asistencia por sesión (presente, salió, hora de entrada y salida).
-- [ ] **14.9** `feat(admin): add users and roles page` — Lista de usuarios, cambiar rol (`set_user_role`), activar/desactivar (`set_user_active`), invitar (Edge Function `invite-user`).
-- [ ] **14.10** `feat(admin): add audit log page` — Tabla con filtros por usuario, acción, tabla y fecha; detalle con el antes/después.
-- [ ] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
+- [x] **14.1** `feat(dashboard): add stat cards and capacity bar` — Aforo actual vs. máximo con barra de capacidad, entradas y salidas de hoy, % identificado por rostro.
+- [x] **14.2** `feat(dashboard): add entries per hour chart` — Recharts: entradas y salidas por hora del día (zona `America/Bogota`).
+- [x] **14.3** `feat(dashboard): add live latest events and open alerts` — Lista en vivo de los últimos 10 eventos con animación de entrada; alertas abiertas.
+- [x] **14.4** `feat(events): add events history page with filters` — Filtros por fecha, dirección, método y estudiante; paginación; botón "Exportar CSV" (Edge Function de `aforo-backend` task 13.1).
+- [x] **14.5** `feat(students): add students page` — Lista con presencia y último evento; crear, editar y desactivar (solo `admin`).
+- [x] **14.6** `feat(cameras): add cameras status page` — Estado online/offline y último latido de cada cámara, en vivo.
+- [x] **14.7** `feat(alerts): add alerts page and badge` — Abiertas y resueltas; resolver (`teacher`, `admin`); contador en la campana del topbar.
+- [x] **14.8** `feat(sessions): add class sessions and attendance page` — Crear/editar sesiones; asistencia por sesión (presente, salió, hora de entrada y salida).
+- [x] **14.9** `feat(admin): add users and roles page` — Lista de usuarios, cambiar rol (`set_user_role`), activar/desactivar (`set_user_active`), invitar (Edge Function `invite-user`).
+- [x] **14.10** `feat(admin): add audit log page` — Tabla con filtros por usuario, acción, tabla y fecha; detalle con el antes/después.
+- [x] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
 
 ### Task 15 — Diseño visual **(Prioridad 2)**
 - [ ] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).
