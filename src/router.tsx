@@ -75,6 +75,11 @@ export const router = createBrowserRouter([
       {
         element: <RequireRole roles={ADMIN_ROLES} />,
         children: [
+          page(
+            'admin/usuarios',
+            'nav.admin.users',
+            async () => (await import('./pages/admin/UsersPage')).UsersPage,
+          ),
           // admin-routes
         ],
       },

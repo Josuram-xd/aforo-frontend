@@ -5,6 +5,7 @@ import { ErrorState } from '../components/ui/ErrorState'
 import { AccountBlockedPage } from '../pages/AccountBlockedPage'
 import { ForbiddenPage } from '../pages/ForbiddenPage'
 import { useSession } from './authContext'
+import { mustSetPassword, SET_PASSWORD_PATH } from './passwordSetup'
 import { canAccess, type RoleCode } from './roles'
 import { useMe } from './useRole'
 
@@ -28,6 +29,7 @@ export function RequireRole({ roles, children }: RequireRoleProps) {
   if (!user) {
     return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />
   }
+  if (mustSetPassword()) return <Navigate to={SET_PASSWORD_PATH} replace />
   if (me.isPending) return <FullPageLoader />
   if (me.isError) {
     return <ErrorState onRetry={() => void me.refetch()} retrying={me.isFetching} />

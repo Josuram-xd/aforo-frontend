@@ -134,7 +134,9 @@
       "inactiveText": "Un administrador desactivó esta cuenta. Pídele que la vuelva a activar para entrar.",
       "noRoleTitle": "Tu cuenta aún no tiene un rol",
       "noRoleText": "Un administrador debe asignarte un rol antes de que puedas ver el panel."
-    }
+    },
+    "inviteTitle": "Activa tu cuenta",
+    "inviteSubtitle": "Te invitaron a Aforo. Crea una contraseña para terminar de activar tu cuenta."
   },
   "cameras": {
     "title": "Cámaras",
@@ -441,6 +443,34 @@
       "left": "Salió",
       "empty": "Sin asistencia registrada",
       "emptyHint": "Aparece cuando un estudiante identificado por rostro entra durante la sesión."
+    }
+  },
+  "admin": {
+    "users": {
+      "description": "Quién puede entrar y qué puede ver. Los cambios de rol y de estado quedan en la auditoría.",
+      "invite": "Invitar usuario",
+      "inviteTitle": "Invitar usuario",
+      "inviteHint": "Le enviaremos un correo con un enlace para crear su contraseña.",
+      "sendInvite": "Enviar invitación",
+      "inviteExists": "Ya existe una cuenta con ese correo. Cambia su rol desde la lista.",
+      "role": "Rol",
+      "roleFor": "Rol de {{name}}",
+      "noRole": "Sin rol",
+      "noName": "Sin nombre",
+      "you": "tú",
+      "active": "Activa",
+      "inactive": "Desactivada",
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "filters": "Filtros de usuarios",
+      "searchPlaceholder": "Nombre o correo",
+      "tableCaption": "Usuarios de Aforo",
+      "noResults": "Ningún usuario coincide",
+      "columns": {
+        "user": "Usuario",
+        "status": "Estado",
+        "since": "Desde"
+      }
     }
   }
 }
