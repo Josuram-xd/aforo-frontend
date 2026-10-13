@@ -150,7 +150,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
 
 ### Task 15 — Diseño visual **(Prioridad 2)**
-- [ ] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).
+- [x] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).
 - [ ] **15.2** `feat(ui): add toasts and confirm dialogs` — Toast en cada mutación; confirmación en acciones destructivas.
 - [ ] **15.3** `feat(ui): add icons and badges across pages` — lucide-react en menú, tarjetas, estados vacíos y badges.
 - [ ] **15.4** `feat(ui): animate occupancy and new events` — Pulso del número al cambiar y entrada deslizada de eventos nuevos; respetar `prefers-reduced-motion`.

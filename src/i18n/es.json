@@ -553,5 +553,15 @@
       "renameTitle": "Renombrar cámara",
       "renameHint": "Código técnico: {{code}}"
     }
+  },
+  "authPanel": {
+    "label": "Sobre Aforo",
+    "eyebrow": "Piloto de aforo inteligente",
+    "headline": "El aforo del salón, en vivo y sin listas en papel.",
+    "lead": "Dos cámaras en la puerta cuentan cada entrada y salida, identifican por rostro cuando pueden y avisan cuando el salón se llena.",
+    "featureLive": "Actualización en tiempo real, sin recargar la página",
+    "featureFace": "Distingue identificación por rostro y conteo por cuerpo",
+    "featureRoles": "Acceso por roles: cada quien ve solo lo que le corresponde",
+    "illustrationFace": "71 % rostro"
   }
 }
