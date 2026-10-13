@@ -1,10 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import '@fontsource-variable/inter'
 import './i18n'
 import './styles/tokens.css'
 import './index.css'
+import { initTheme } from './theme/theme'
 import App from './App.tsx'
+
+initTheme()
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -123,7 +123,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [ ] **12.3** `feat(layout): add app shell with sidebar and topbar` — `AppShell` con menú lateral por rol, título de página, campana de alertas, selector de tema y menú de usuario. Responsive (cajón en móvil).
 - [ ] **12.4** `feat(ui): add skeleton loaders and empty states` — `Skeleton` (texto, círculo, tarjeta, tabla, gráfica) con shimmer y `aria-busy`; `EmptyState`; barra de progreso superior para recargas en segundo plano.
 - [ ] **12.5** `feat(realtime): invalidate queries on database changes` — Suscripción a `events`, `classrooms`, `cameras` y `alerts`; cada cambio invalida las queries afectadas. Indicador "En vivo" / "Reconectando…" y polling de 30 s como respaldo.
-- [ ] **12.6** `feat(ui): add design tokens v2 and light theme` — Tokens de `DESIGN_SYSTEM.md` 8.1, fuente Inter, tema claro/oscuro recordado por usuario.
+- [x] **12.6** `feat(ui): add design tokens v2 and light theme` — Tokens de `DESIGN_SYSTEM.md` 8.1, fuente Inter, tema claro/oscuro recordado por usuario.
 
 ### Task 13 — Registro e inicio de sesión **(Prioridad 1)**
 - [ ] **13.1** `feat(auth): add auth provider and session hooks` — `AuthProvider`, `useSession`, `useRole` (lee `user_roles` una vez por sesión).
