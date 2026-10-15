@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { BrandMark } from '../../components/BrandMark'
+import { AuthEmblem } from './AuthEmblem'
 import { AuthIllustration } from './AuthIllustration'
 import './AuthLayout.css'
 
@@ -16,7 +17,8 @@ interface AuthLayoutProps {
 
 /**
  * Split layout for sign-in, sign-up and password pages (DESIGN_SYSTEM.md §8.7): product panel
- * with an SVG illustration on the left, the form on the right. The panel hides on small screens.
+ * with an SVG illustration on the left, the form on the right with an emblem above it. The panel
+ * and the emblem hide on small screens, where the compact brand takes their place.
  */
 export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProps) {
   const { t } = useTranslation()
@@ -65,6 +67,7 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
             <span>{t('app.name')}</span>
           </Link>
         </div>
+        <AuthEmblem />
         <div className="auth__panel">
           <header className="auth__header">
             <h1 className="auth__title">{title}</h1>
