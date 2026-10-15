@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import type { EventItem } from '../../api/types'
 import { bucketByHour } from '../../lib/hourBuckets'
-import { useTheme } from '../../theme/theme'
 import { CHART_COLORS } from './chartTheme'
 import './charts.css'
 
@@ -45,8 +44,7 @@ interface EntriesPerHourChartProps {
 /** Entries and exits per hour of the day (America/Bogota), grouped bars + table view. */
 export default function EntriesPerHourChart({ events, height = 280 }: EntriesPerHourChartProps) {
   const { t } = useTranslation()
-  const { theme } = useTheme()
-  const colors = CHART_COLORS[theme]
+  const colors = CHART_COLORS
   const data = useMemo(() => bucketByHour(events), [events])
   const [showTable, setShowTable] = useState(false)
   const entriesLabel = t('chart.entries')

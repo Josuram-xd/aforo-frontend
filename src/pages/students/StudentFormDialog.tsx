@@ -9,9 +9,12 @@ import { Alert } from '../../components/ui/Alert'
 import { Button } from '../../components/ui/Button'
 import { Dialog } from '../../components/ui/Dialog'
 import { Field, TextInput } from '../../components/ui/Field'
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const NAME_MAX = 120
+import {
+  PERSON_NAME_MAX,
+  normalizePersonName,
+  validateEmail,
+  validatePersonName,
+} from '../../lib/validation'
 
 interface StudentFormDialogProps {
   open: boolean
@@ -38,14 +41,15 @@ export function StudentFormDialog({ open, student, onClose, onSaved }: StudentFo
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const fullName = String(data.get('fullName') ?? '').trim()
+    const fullName = normalizePersonName(String(data.get('fullName') ?? ''))
     const email = String(data.get('email') ?? '').trim()
     const code = String(data.get('code') ?? '').trim()
 
     const next: typeof errors = {}
-    if (fullName === '') next.name = t('auth.validation.nameRequired')
-    else if (fullName.length > NAME_MAX) next.name = t('auth.validation.nameTooLong')
-    if (email !== '' && !EMAIL_PATTERN.test(email)) next.email = t('auth.validation.email')
+    const nameCheck = validatePersonName(fullName)
+    if (nameCheck) next.name = t(nameCheck.key, nameCheck.values)
+    const emailCheck = email === '' ? null : validateEmail(email)
+    if (emailCheck) next.email = t(emailCheck.key, emailCheck.values)
     setErrors(next)
     if (Object.keys(next).length > 0) return
 
@@ -84,7 +88,7 @@ export function StudentFormDialog({ open, student, onClose, onSaved }: StudentFo
               name="fullName"
               autoFocus
               defaultValue={student?.full_name ?? ''}
-              maxLength={NAME_MAX}
+              maxLength={PERSON_NAME_MAX}
               autoComplete="off"
               required
               aria-describedby={describedBy}

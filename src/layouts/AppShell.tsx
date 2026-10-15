@@ -5,7 +5,6 @@ import { Link, NavLink, Outlet, useLocation, useMatches } from 'react-router'
 import { canAccess, type RoleCode } from '../auth/roles'
 import { BrandMark } from '../components/BrandMark'
 import { NAV_SECTIONS } from './navigation'
-import { ThemeToggle } from './ThemeToggle'
 import { UserMenu } from './UserMenu'
 import './AppShell.css'
 
@@ -187,7 +186,6 @@ export function AppShell({
                 </span>
               )}
             </Link>
-            <ThemeToggle />
             <span className="topbar__divider" aria-hidden="true" />
             <UserMenu user={user} onSignOut={onSignOut} />
           </div>

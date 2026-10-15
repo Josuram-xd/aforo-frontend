@@ -10,8 +10,7 @@ import { Alert } from '../../components/ui/Alert'
 import { Button } from '../../components/ui/Button'
 import { Dialog } from '../../components/ui/Dialog'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+import { validateEmail } from '../../lib/validation'
 
 interface InviteUserDialogProps {
   open: boolean
@@ -41,8 +40,9 @@ export function InviteUserDialog({ open, onClose, onInvited }: InviteUserDialogP
       .trim()
       .toLowerCase()
     const role = String(data.get('role') ?? 'viewer') as RoleCode
-    if (!EMAIL_PATTERN.test(email) || email.length > 254) {
-      setEmailError(t('auth.validation.email'))
+    const emailCheck = validateEmail(email)
+    if (emailCheck) {
+      setEmailError(t(emailCheck.key, emailCheck.values))
       return
     }
     setEmailError(null)

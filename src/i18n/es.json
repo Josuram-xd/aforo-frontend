@@ -72,12 +72,17 @@
     "lockedText_one": "Por seguridad, espera {{seconds}} segundo antes de intentarlo de nuevo.",
     "lockedText_other": "Por seguridad, espera {{seconds}} segundos antes de intentarlo de nuevo.",
     "validation": {
-      "email": "Escribe un correo válido.",
+      "email": "Escribe un correo válido, por ejemplo nombre@dominio.com.",
+      "emailRequired": "Escribe el correo.",
+      "emailTooLong": "El correo no puede pasar de {{max}} caracteres.",
       "passwordRequired": "Escribe tu contraseña.",
       "passwordMin": "La contraseña debe tener al menos 8 caracteres.",
       "passwordMismatch": "Las contraseñas no coinciden.",
-      "nameRequired": "Escribe tu nombre.",
-      "nameTooLong": "El nombre no puede pasar de 120 caracteres."
+      "nameRequired": "Escribe el nombre.",
+      "nameTooShort": "El nombre debe tener al menos {{min}} caracteres.",
+      "nameTooLong": "El nombre no puede pasar de {{max}} caracteres.",
+      "nameInvalid": "El nombre solo puede tener letras, espacios, puntos, apóstrofes y guiones.",
+      "nameCounter": "{{count}} de {{max}} caracteres"
     },
     "errors": {
       "generic": "Algo salió mal. Inténtalo de nuevo en unos segundos.",
@@ -193,10 +198,6 @@
     "alertsWithCount_one": "Alertas: {{count}} abierta",
     "alertsWithCount_other": "Alertas: {{count}} abiertas",
     "signedInAs": "Sesión activa · {{role}}"
-  },
-  "theme": {
-    "toLight": "Cambiar a tema claro",
-    "toDark": "Cambiar a tema oscuro"
   },
   "roles": {
     "admin": "Administrador",

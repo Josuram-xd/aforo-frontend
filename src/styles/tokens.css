@@ -1,11 +1,10 @@
 /*
  * Design tokens (DESIGN_SYSTEM.md §2 and §8.1).
- * Dark is the default (projector); light is enabled with [data-theme='light'] on <html>.
+ * Dark theme only (projector and app).
  * The `*-fg` tokens are text colors on top of the matching `*-soft` backgrounds; they are tuned
- * to keep a 4.5:1 contrast ratio in both themes (§7).
+ * to keep a 4.5:1 contrast ratio (§7).
  */
-:root,
-[data-theme='dark'] {
+:root {
   color-scheme: dark;
 
   --color-bg: #0f172a;
@@ -49,49 +48,6 @@
   --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
   --backdrop: rgb(2 6 23 / 0.66);
   --glow-accent: radial-gradient(60rem 30rem at 85% -10%, rgb(56 189 248 / 0.1), transparent 60%);
-}
-
-[data-theme='light'] {
-  color-scheme: light;
-
-  --color-bg: #f8fafc;
-  --color-bg-elevated: #f1f5f9;
-  --color-surface: #ffffff;
-  --color-surface-2: #f1f5f9;
-  --color-surface-3: #e2e8f0;
-  --color-text-primary: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-muted: #5b6b82;
-  --color-border: #e2e8f0;
-  --color-border-strong: #cbd5e1;
-
-  --color-accent: #0284c7;
-  --color-accent-strong: #0369a1;
-  --color-accent-soft: rgb(2 132 199 / 0.1);
-  --color-accent-fg: #0369a1;
-  --color-on-accent: #ffffff;
-
-  --color-success: #16a34a;
-  --color-success-soft: rgb(22 163 74 / 0.1);
-  --color-success-fg: #166534;
-  --color-warning: #ca8a04;
-  --color-warning-soft: rgb(202 138 4 / 0.12);
-  --color-warning-fg: #854d0e;
-  --color-danger: #dc2626;
-  --color-danger-soft: rgb(220 38 38 / 0.09);
-  --color-danger-fg: #b91c1c;
-  --color-on-danger: #ffffff;
-  --color-violet: #7c3aed;
-  --color-violet-soft: rgb(124 58 237 / 0.1);
-  --color-violet-fg: #6d28d9;
-
-  --skeleton-base: #e8edf3;
-  --skeleton-shine: #f6f8fb;
-
-  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px -16px rgb(15 23 42 / 0.18);
-  --shadow-pop: 0 20px 50px -12px rgb(15 23 42 / 0.25), 0 2px 6px rgb(15 23 42 / 0.08);
-  --backdrop: rgb(15 23 42 / 0.45);
-  --glow-accent: radial-gradient(60rem 30rem at 85% -10%, rgb(2 132 199 / 0.07), transparent 60%);
 }
 
 :root {

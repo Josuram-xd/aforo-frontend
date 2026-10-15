@@ -8,9 +8,8 @@ import { Alert } from '../../components/ui/Alert'
 import { Button, ButtonLink } from '../../components/ui/Button'
 import { Field, TextInput } from '../../components/ui/Field'
 import { supabase } from '../../lib/supabase'
+import { EMAIL_MAX, validateEmail } from '../../lib/validation'
 import { AuthLayout } from './AuthLayout'
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 /** Step 1 of the reset: always answers the same way, whether or not the email exists. */
 export function RequestResetPage() {
@@ -23,8 +22,9 @@ export function RequestResetPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const email = String(new FormData(event.currentTarget).get('email') ?? '').trim()
-    if (!EMAIL_PATTERN.test(email)) {
-      setEmailError(t('auth.validation.email'))
+    const emailCheck = validateEmail(email)
+    if (emailCheck) {
+      setEmailError(t(emailCheck.key, emailCheck.values))
       return
     }
     setEmailError(null)
@@ -90,6 +90,7 @@ export function RequestResetPage() {
               inputMode="email"
               autoCapitalize="off"
               spellCheck={false}
+              maxLength={EMAIL_MAX}
               required
               icon={<Mail size={16} />}
               placeholder={t('auth.emailPlaceholder')}

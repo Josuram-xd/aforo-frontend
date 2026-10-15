@@ -7,10 +7,7 @@ import './styles/tokens.css'
 import './index.css'
 import { AuthProvider } from './auth/AuthProvider'
 import { ToastProvider } from './components/ui/Toast'
-import { initTheme } from './theme/theme'
 import App from './App.tsx'
-
-initTheme()
 
 const queryClient = new QueryClient({
   defaultOptions: {

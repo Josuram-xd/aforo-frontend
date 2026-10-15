@@ -50,10 +50,6 @@
     box-shadow var(--duration-fast) ease;
 }
 
-[data-theme='light'] .input {
-  background: var(--color-surface);
-}
-
 .input::placeholder {
   color: var(--color-text-muted);
 }

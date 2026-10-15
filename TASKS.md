@@ -166,3 +166,8 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 - [ ] **17.1** `feat(cameras): add live stream per camera` — En la página de Cámaras (14.6), el video de cada cámara para `viewer`, `teacher` y `admin`, enviando el JWT de Supabase al servidor de `aforo-vision`. Si el servidor está en la red local por `http://`, desde Amplify (HTTPS) el navegador bloquea la imagen: mostrar un mensaje que lo explique en vez de un cuadro vacío.
 - [ ] **17.2** `feat(cameras): add admin analysis overlay view` — Solo `admin`: los streams con cajas, IDs de track, nombre + confianza y dirección (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.
+
+### Task 18 — Ajustes después de la primera prueba en Amplify **(Prioridad 1)**
+- [x] **18.1** `feat(auth): validate name length and email format` — Reglas compartidas en `src/lib/validation.ts`: nombre de 3 a 60 caracteres, solo letras, espacios, puntos, apóstrofes y guiones, con contador visible; correo con `@`, dominio y extensión de al menos 2 letras (máx. 254). Se usan en registro, login, recuperar contraseña, perfil, invitar usuario y estudiantes.
+- [x] **18.2** `refactor(theme): remove light theme` — Solo tema oscuro: quitar el botón de tema, `src/theme/theme.ts`, los tokens y estilos `[data-theme='light']` y los colores claros de las gráficas.
+- [x] **18.3** `feat(auth): add emblem above auth form` — En escritorio, un emblema SVG (logo con anillos de detección y las dos cámaras) arriba del formulario y un brillo de fondo, para que el lado derecho no se vea vacío frente al panel izquierdo.

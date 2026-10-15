@@ -58,10 +58,6 @@
     0 4px 14px -6px var(--color-accent);
 }
 
-[data-theme='light'] .btn--primary {
-  background: linear-gradient(180deg, var(--color-accent), var(--color-accent-strong));
-}
-
 .btn--primary:hover:not(:disabled) {
   filter: brightness(1.06);
 }
