@@ -104,8 +104,8 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 > Depende de: task 11 de este repo (login).
 
-- [ ] ~~**9.1** `feat(ui): add cameras page with live streams` — Ruta `/camaras` (`viewer` y `dev`) con `LiveCameraPreview` por cámara (`/stream/<cameraId>?token=...`). Solo funciona abierta desde la red del laptop por HTTP: desde Amplify (HTTPS) el navegador bloquea una imagen `http://` de la red local; mostrar el mensaje `cameras.lanOnly` en ese caso.~~ → se adapta en la task 14.6 (estado de cámaras; video según `aforo-vision` task 15).
-- [ ] ~~**9.2** `feat(ui): add dev analysis page` — Ruta `/dev` (solo grupo `dev`) con los streams anotados (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.~~ → pendiente de la decisión de `aforo-vision` task 15.2.
+- [ ] ~~**9.1** `feat(ui): add cameras page with live streams` — Ruta `/camaras` (`viewer` y `dev`) con `LiveCameraPreview` por cámara (`/stream/<cameraId>?token=...`). Solo funciona abierta desde la red del laptop por HTTP: desde Amplify (HTTPS) el navegador bloquea una imagen `http://` de la red local; mostrar el mensaje `cameras.lanOnly` en ese caso.~~ → el estado de cámaras quedó en la task 14.6; el video pasa a la task 17.1.
+- [ ] ~~**9.2** `feat(ui): add dev analysis page` — Ruta `/dev` (solo grupo `dev`) con los streams anotados (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.~~ → pasa a la task 17.2 (solo `admin`; el grupo `dev` de Cognito ya no existe).
 
 ### Task 10 — Tests
 - [ ] ~~**10.1** `test: add component tests with vitest` — Vitest + Testing Library para `OccupancyCard`, `PeopleList` y `EventTimeline` con los fixtures de 4.3.~~ → ampliada en la task 16.3.
@@ -118,45 +118,51 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 > Depende de: `aforo-db` task 7 (proyecto Supabase y esquema). Mientras no exista, se avanza con `VITE_USE_MOCK=true`.
 
 ### Task 12 — Base de la app **(Prioridad 1)**
-- [ ] **12.1** `chore(deps): add supabase js, react router, recharts and lucide` — Verificar versiones vigentes antes de fijarlas (regla 7).
-- [ ] **12.2** `feat(api): add supabase client and generated types` — `src/lib/supabase.ts` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; `src/types/database.ts` generado con `supabase gen types typescript`. Actualizar `.env.example` y quitar `VITE_API_BASE_URL`.
-- [ ] **12.3** `feat(layout): add app shell with sidebar and topbar` — `AppShell` con menú lateral por rol, título de página, campana de alertas, selector de tema y menú de usuario. Responsive (cajón en móvil).
-- [ ] **12.4** `feat(ui): add skeleton loaders and empty states` — `Skeleton` (texto, círculo, tarjeta, tabla, gráfica) con shimmer y `aria-busy`; `EmptyState`; barra de progreso superior para recargas en segundo plano.
-- [ ] **12.5** `feat(realtime): invalidate queries on database changes` — Suscripción a `events`, `classrooms`, `cameras` y `alerts`; cada cambio invalida las queries afectadas. Indicador "En vivo" / "Reconectando…" y polling de 30 s como respaldo.
-- [ ] **12.6** `feat(ui): add design tokens v2 and light theme` — Tokens de `DESIGN_SYSTEM.md` 8.1, fuente Inter, tema claro/oscuro recordado por usuario.
+- [x] **12.1** `chore(deps): add supabase js, react router, recharts and lucide` — Verificar versiones vigentes antes de fijarlas (regla 7).
+- [x] **12.2** `feat(api): add supabase client and generated types` — `src/lib/supabase.ts` con `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; `src/types/database.ts` generado con `supabase gen types typescript`. Actualizar `.env.example` y quitar `VITE_API_BASE_URL`.
+- [x] **12.3** `feat(layout): add app shell with sidebar and topbar` — `AppShell` con menú lateral por rol, título de página, campana de alertas, selector de tema y menú de usuario. Responsive (cajón en móvil).
+- [x] **12.4** `feat(ui): add skeleton loaders and empty states` — `Skeleton` (texto, círculo, tarjeta, tabla, gráfica) con shimmer y `aria-busy`; `EmptyState`; barra de progreso superior para recargas en segundo plano.
+- [x] **12.5** `feat(realtime): invalidate queries on database changes` — Suscripción a `events`, `classrooms`, `cameras` y `alerts`; cada cambio invalida las queries afectadas. Indicador "En vivo" / "Reconectando…" y polling de 30 s como respaldo.
+- [x] **12.6** `feat(ui): add design tokens v2 and light theme` — Tokens de `DESIGN_SYSTEM.md` 8.1, fuente Inter, tema claro/oscuro recordado por usuario.
 
 ### Task 13 — Registro e inicio de sesión **(Prioridad 1)**
-- [ ] **13.1** `feat(auth): add auth provider and session hooks` — `AuthProvider`, `useSession`, `useRole` (lee `user_roles` una vez por sesión).
-- [ ] **13.2** `feat(auth): add login page with email and password` — Errores de Supabase traducidos al español.
-- [ ] **13.3** `feat(auth): add sign up page with email confirmation` — Nombre, correo, contraseña (mínimo 8 caracteres); mensaje de "revisa tu correo".
-- [ ] **13.4** `feat(auth): add google sign in` — Botón "Continuar con Google" y ruta `/auth/callback`.
+- [x] **13.1** `feat(auth): add auth provider and session hooks` — `AuthProvider`, `useSession`, `useRole` (lee `user_roles` una vez por sesión).
+- [x] **13.2** `feat(auth): add login page with email and password` — Errores de Supabase traducidos al español.
+- [x] **13.3** `feat(auth): add sign up page with email confirmation` — Nombre, correo, contraseña (mínimo 8 caracteres); mensaje de "revisa tu correo".
+- [x] **13.4** `feat(auth): add google sign in` — Botón "Continuar con Google" y ruta `/auth/callback`.
 - [ ] **13.5** (sin commit) Configurar Google: crear el cliente OAuth en Google Cloud Console, pegar client ID y secret en Supabase (Authentication → Providers → Google) y agregar las URLs de redirección de Amplify y `localhost:5173`.
-- [ ] **13.6** `feat(auth): add password reset flow` — `/recuperar` y la pantalla para definir la nueva contraseña.
-- [ ] **13.7** `feat(auth): protect routes by role` — `RequireRole`: sin sesión → `/login`; sin el rol → página "No tienes permiso".
-- [ ] **13.8** `feat(audit): log logins and sensitive views` — Llamar `log_access` en LOGIN, LOGOUT y al abrir Estudiantes, Eventos y Auditoría.
-- [ ] **13.9** `feat(profile): add profile page` — Nombre, avatar (Google o iniciales), rol y cerrar sesión.
+- [x] **13.6** `feat(auth): add password reset flow` — `/recuperar` y la pantalla para definir la nueva contraseña.
+- [x] **13.7** `feat(auth): protect routes by role` — `RequireRole`: sin sesión → `/login`; sin el rol → página "No tienes permiso".
+- [x] **13.8** `feat(audit): log logins and sensitive views` — Llamar `log_access` en LOGIN, LOGOUT y al abrir Estudiantes, Eventos y Auditoría.
+- [x] **13.9** `feat(profile): add profile page` — Nombre, avatar (Google o iniciales), rol y cerrar sesión.
 
 ### Task 14 — Páginas **(Prioridad 1-2)**
-- [ ] **14.1** `feat(dashboard): add stat cards and capacity bar` — Aforo actual vs. máximo con barra de capacidad, entradas y salidas de hoy, % identificado por rostro.
-- [ ] **14.2** `feat(dashboard): add entries per hour chart` — Recharts: entradas y salidas por hora del día (zona `America/Bogota`).
-- [ ] **14.3** `feat(dashboard): add live latest events and open alerts` — Lista en vivo de los últimos 10 eventos con animación de entrada; alertas abiertas.
-- [ ] **14.4** `feat(events): add events history page with filters` — Filtros por fecha, dirección, método y estudiante; paginación; botón "Exportar CSV" (Edge Function de `aforo-backend` task 13.1).
-- [ ] **14.5** `feat(students): add students page` — Lista con presencia y último evento; crear, editar y desactivar (solo `admin`).
-- [ ] **14.6** `feat(cameras): add cameras status page` — Estado online/offline y último latido de cada cámara, en vivo.
-- [ ] **14.7** `feat(alerts): add alerts page and badge` — Abiertas y resueltas; resolver (`teacher`, `admin`); contador en la campana del topbar.
-- [ ] **14.8** `feat(sessions): add class sessions and attendance page` — Crear/editar sesiones; asistencia por sesión (presente, salió, hora de entrada y salida).
-- [ ] **14.9** `feat(admin): add users and roles page` — Lista de usuarios, cambiar rol (`set_user_role`), activar/desactivar (`set_user_active`), invitar (Edge Function `invite-user`).
-- [ ] **14.10** `feat(admin): add audit log page` — Tabla con filtros por usuario, acción, tabla y fecha; detalle con el antes/después.
-- [ ] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
+- [x] **14.1** `feat(dashboard): add stat cards and capacity bar` — Aforo actual vs. máximo con barra de capacidad, entradas y salidas de hoy, % identificado por rostro.
+- [x] **14.2** `feat(dashboard): add entries per hour chart` — Recharts: entradas y salidas por hora del día (zona `America/Bogota`).
+- [x] **14.3** `feat(dashboard): add live latest events and open alerts` — Lista en vivo de los últimos 10 eventos con animación de entrada; alertas abiertas.
+- [x] **14.4** `feat(events): add events history page with filters` — Filtros por fecha, dirección, método y estudiante; paginación; botón "Exportar CSV" (Edge Function de `aforo-backend` task 13.1).
+- [x] **14.5** `feat(students): add students page` — Lista con presencia y último evento; crear, editar y desactivar (solo `admin`).
+- [x] **14.6** `feat(cameras): add cameras status page` — Estado online/offline y último latido de cada cámara, en vivo.
+- [x] **14.7** `feat(alerts): add alerts page and badge` — Abiertas y resueltas; resolver (`teacher`, `admin`); contador en la campana del topbar.
+- [x] **14.8** `feat(sessions): add class sessions and attendance page` — Crear/editar sesiones; asistencia por sesión (presente, salió, hora de entrada y salida).
+- [x] **14.9** `feat(admin): add users and roles page` — Lista de usuarios, cambiar rol (`set_user_role`), activar/desactivar (`set_user_active`), invitar (Edge Function `invite-user`).
+- [x] **14.10** `feat(admin): add audit log page` — Tabla con filtros por usuario, acción, tabla y fecha; detalle con el antes/después.
+- [x] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
 
 ### Task 15 — Diseño visual **(Prioridad 2)**
-- [ ] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).
-- [ ] **15.2** `feat(ui): add toasts and confirm dialogs` — Toast en cada mutación; confirmación en acciones destructivas.
-- [ ] **15.3** `feat(ui): add icons and badges across pages` — lucide-react en menú, tarjetas, estados vacíos y badges.
-- [ ] **15.4** `feat(ui): animate occupancy and new events` — Pulso del número al cambiar y entrada deslizada de eventos nuevos; respetar `prefers-reduced-motion`.
-- [ ] **15.5** `fix(a11y): audit contrast labels and keyboard navigation` — Contraste 4.5:1 en ambos temas, todo estado con texto, foco visible, navegación con teclado en menú, tablas y diálogos.
+- [x] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).
+- [x] **15.2** `feat(ui): add toasts and confirm dialogs` — Toast en cada mutación; confirmación en acciones destructivas.
+- [x] **15.3** `feat(ui): add icons and badges across pages` — lucide-react en menú, tarjetas, estados vacíos y badges.
+- [x] **15.4** `feat(ui): animate occupancy and new events` — Pulso del número al cambiar y entrada deslizada de eventos nuevos; respetar `prefers-reduced-motion`.
+- [x] **15.5** `fix(a11y): audit contrast labels and keyboard navigation` — Contraste 4.5:1 en ambos temas, todo estado con texto, foco visible, navegación con teclado en menú, tablas y diálogos.
 
 ### Task 16 — Despliegue y pruebas **(Prioridad 1 al final)**
 - [ ] **16.1** (sin commit) En Amplify: variables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; quitar `VITE_API_BASE_URL`. En Supabase: agregar la URL de Amplify en Authentication → URL Configuration.
 - [ ] **16.2** (sin commit) Probar con un usuario de cada rol: `viewer` no ve nombres ni la página de estudiantes, `teacher` no ve Admin, `admin` ve todo; sin sesión nada.
-- [ ] **16.3** `test: add component and auth guard tests with vitest` — Vitest + Testing Library: skeletons, `RequireRole`, tarjetas del Inicio y filtros de Eventos con datos mock.
+- [x] **16.3** `test: add component and auth guard tests with vitest` — Vitest + Testing Library: skeletons, `RequireRole`, tarjetas del Inicio y filtros de Eventos con datos mock.
+
+### Task 17 — Video en vivo de las cámaras **(Prioridad 3)**
+> Depende de: `aforo-vision` tasks 12.1 y 12.3 (servidor de video) y la decisión de la task 15.2 (dónde corre el pipeline).
+
+- [ ] **17.1** `feat(cameras): add live stream per camera` — En la página de Cámaras (14.6), el video de cada cámara para `viewer`, `teacher` y `admin`, enviando el JWT de Supabase al servidor de `aforo-vision`. Si el servidor está en la red local por `http://`, desde Amplify (HTTPS) el navegador bloquea la imagen: mostrar un mensaje que lo explique en vez de un cuadro vacío.
+- [ ] **17.2** `feat(cameras): add admin analysis overlay view` — Solo `admin`: los streams con cajas, IDs de track, nombre + confianza y dirección (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.

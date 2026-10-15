@@ -1,22 +1,136 @@
-:root {
-  /* Colors (DESIGN_SYSTEM.md §2) */
+/*
+ * Design tokens (DESIGN_SYSTEM.md §2 and §8.1).
+ * Dark is the default (projector); light is enabled with [data-theme='light'] on <html>.
+ * The `*-fg` tokens are text colors on top of the matching `*-soft` backgrounds; they are tuned
+ * to keep a 4.5:1 contrast ratio in both themes (§7).
+ */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
   --color-bg: #0f172a;
+  --color-bg-elevated: #111c33;
   --color-surface: #1e293b;
+  --color-surface-2: #263449;
+  --color-surface-3: #2e3d55;
   --color-text-primary: #f8fafc;
   --color-text-secondary: #94a3b8;
-  --color-accent: #38bdf8;
-  --color-success: #4ade80;
-  --color-warning: #facc15;
-  --color-danger: #f87171;
+  --color-text-muted: #8391a7;
   --color-border: #334155;
+  --color-border-strong: #475569;
 
-  /* Typography (DESIGN_SYSTEM.md §3) */
-  --font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --color-accent: #38bdf8;
+  --color-accent-strong: #7dd3fc;
+  --color-accent-soft: rgb(56 189 248 / 0.14);
+  --color-accent-fg: #7dd3fc;
+  --color-on-accent: #04111f;
+
+  --color-success: #4ade80;
+  --color-success-soft: rgb(74 222 128 / 0.14);
+  --color-success-fg: #86efac;
+  --color-warning: #facc15;
+  --color-warning-soft: rgb(250 204 21 / 0.14);
+  --color-warning-fg: #fde047;
+  --color-danger: #f87171;
+  --color-danger-soft: rgb(248 113 113 / 0.14);
+  --color-danger-fg: #fca5a5;
+  --color-on-danger: #1f0606;
+  --color-violet: #a78bfa;
+  --color-violet-soft: rgb(167 139 250 / 0.16);
+  --color-violet-fg: #c4b5fd;
+
+  --skeleton-base: #253247;
+  --skeleton-shine: #33445e;
+
+  --shadow-card:
+    0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.3),
+    0 8px 24px -12px rgb(0 0 0 / 0.5);
+  --shadow-pop: 0 18px 50px -12px rgb(0 0 0 / 0.65), 0 2px 6px rgb(0 0 0 / 0.35);
+  --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+  --backdrop: rgb(2 6 23 / 0.66);
+  --glow-accent: radial-gradient(60rem 30rem at 85% -10%, rgb(56 189 248 / 0.1), transparent 60%);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --color-bg: #f8fafc;
+  --color-bg-elevated: #f1f5f9;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f5f9;
+  --color-surface-3: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #5b6b82;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
+  --color-accent: #0284c7;
+  --color-accent-strong: #0369a1;
+  --color-accent-soft: rgb(2 132 199 / 0.1);
+  --color-accent-fg: #0369a1;
+  --color-on-accent: #ffffff;
+
+  --color-success: #16a34a;
+  --color-success-soft: rgb(22 163 74 / 0.1);
+  --color-success-fg: #166534;
+  --color-warning: #ca8a04;
+  --color-warning-soft: rgb(202 138 4 / 0.12);
+  --color-warning-fg: #854d0e;
+  --color-danger: #dc2626;
+  --color-danger-soft: rgb(220 38 38 / 0.09);
+  --color-danger-fg: #b91c1c;
+  --color-on-danger: #ffffff;
+  --color-violet: #7c3aed;
+  --color-violet-soft: rgb(124 58 237 / 0.1);
+  --color-violet-fg: #6d28d9;
+
+  --skeleton-base: #e8edf3;
+  --skeleton-shine: #f6f8fb;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.05), 0 8px 24px -16px rgb(15 23 42 / 0.18);
+  --shadow-pop: 0 20px 50px -12px rgb(15 23 42 / 0.25), 0 2px 6px rgb(15 23 42 / 0.08);
+  --backdrop: rgb(15 23 42 / 0.45);
+  --glow-accent: radial-gradient(60rem 30rem at 85% -10%, rgb(2 132 199 / 0.07), transparent 60%);
+}
+
+:root {
+  /* Typography (§3, §8.2) */
+  --font-family: 'Inter Variable', Inter, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-size-hero: 96px;
+  --font-size-display: 40px;
   --font-size-heading: 24px;
-  --font-size-body: 16px;
+  --font-size-title: 18px;
+  --font-size-body: 15px;
+  --font-size-small: 14px;
   --font-size-meta: 13px;
+  --font-size-tiny: 12px;
   --font-weight-regular: 400;
+  --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+
+  /* Spacing — 4px scale (§8.1) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  --sidebar-width: 248px;
+  --sidebar-width-collapsed: 72px;
+  --topbar-height: 64px;
+  --content-max-width: 1280px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
 }

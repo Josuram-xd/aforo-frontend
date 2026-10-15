@@ -1,16 +1,8 @@
-import { DashboardLayout } from './components/DashboardLayout'
-import { EventTimeline } from './components/EventTimeline'
-import { OccupancyCard } from './components/OccupancyCard'
-import { PeopleList } from './components/PeopleList'
+import { RouterProvider } from 'react-router'
+import { router } from './router'
 
 function App() {
-  return (
-    <DashboardLayout
-      occupancy={<OccupancyCard />}
-      people={<PeopleList />}
-      events={<EventTimeline />}
-    />
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

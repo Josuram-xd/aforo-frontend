@@ -1,15 +1,20 @@
 {
   "app": {
-    "title": "Aforo — Piloto"
+    "name": "Aforo",
+    "tagline": "Control de aforo"
   },
   "occupancy": {
-    "title": "Aforo actual"
-  },
-  "people": {
-    "title": "Personas enroladas",
-    "status": {
-      "in": "Dentro",
-      "out": "Fuera"
+    "title": "Aforo actual",
+    "capacity": "Capacidad del salón",
+    "ofCapacity": "{{current}} de {{max}}",
+    "ofMax": "/ {{max}}",
+    "meterText": "{{current}} de {{max}} personas ({{percent}} %)",
+    "percentOfCapacity": "{{percent}} % de la capacidad",
+    "updated": "Actualizado {{when}}",
+    "level": {
+      "normal": "Con espacio",
+      "high": "Casi lleno",
+      "over": "Sobre el aforo máximo"
     }
   },
   "events": {
@@ -20,24 +25,582 @@
     },
     "method": {
       "face": "Rostro",
-      "body": "Cuerpo"
+      "body": "Cuerpo",
+      "faceHint": "Identificado por reconocimiento facial",
+      "bodyHint": "Contado por la silueta, sin identificar a la persona"
     },
-    "unidentified": "No identificado"
+    "unidentified": "No identificado",
+    "latestList": "Últimos eventos",
+    "confidence": "Confianza {{value}} %",
+    "description": "Cada entrada y salida registrada por las cámaras, con el método de identificación.",
+    "export": "Exportar CSV",
+    "exportFailed": "No se pudo exportar",
+    "exportRangeTooLong": "El rango máximo para exportar es de 31 días.",
+    "tableCaption": "Eventos de entrada y salida",
+    "noResults": "No hay eventos con esos filtros",
+    "noResultsHint": "Prueba con otro rango de fechas o quita algunos filtros.",
+    "columns": {
+      "time": "Hora",
+      "direction": "Dirección",
+      "student": "Estudiante",
+      "method": "Método",
+      "confidence": "Confianza"
+    },
+    "toast": {
+      "exported": "Descargamos {{filename}}."
+    }
   },
   "auth": {
     "login": "Iniciar sesión",
     "logout": "Cerrar sesión",
-    "forbidden": "No tienes permiso para ver esta página"
+    "forbidden": "No tienes permiso para ver esta página",
+    "signup": "Crear cuenta",
+    "google": "Continuar con Google",
+    "forgot": "¿Olvidaste tu contraseña?",
+    "loginTitle": "Bienvenido de nuevo",
+    "loginSubtitle": "Inicia sesión para ver el aforo del salón en tiempo real.",
+    "noAccount": "¿No tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "or": "o",
+    "legal": "Solo personal autorizado. Los accesos quedan registrados en la auditoría.",
+    "lockedTitle": "Demasiados intentos fallidos",
+    "lockedText_one": "Por seguridad, espera {{seconds}} segundo antes de intentarlo de nuevo.",
+    "lockedText_other": "Por seguridad, espera {{seconds}} segundos antes de intentarlo de nuevo.",
+    "validation": {
+      "email": "Escribe un correo válido.",
+      "passwordRequired": "Escribe tu contraseña.",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres.",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "nameRequired": "Escribe tu nombre.",
+      "nameTooLong": "El nombre no puede pasar de 120 caracteres."
+    },
+    "errors": {
+      "generic": "Algo salió mal. Inténtalo de nuevo en unos segundos.",
+      "loginFailed": "No pudimos iniciar sesión. Inténtalo de nuevo.",
+      "invalidCredentials": "Correo o contraseña incorrectos.",
+      "emailNotConfirmed": "Confirma tu correo antes de iniciar sesión. Revisa tu bandeja de entrada.",
+      "accountBlocked": "Esta cuenta no puede iniciar sesión. Habla con el administrador.",
+      "rateLimited": "Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.",
+      "emailRateLimited": "Ya enviamos varios correos. Espera unos minutos antes de pedir otro.",
+      "network": "No hay conexión con el servidor. Revisa tu internet.",
+      "weakPassword": "La contraseña es muy débil. Usa una más larga y variada.",
+      "samePassword": "La nueva contraseña debe ser distinta de la anterior.",
+      "invalidEmail": "Ese correo no es válido.",
+      "signupDisabled": "El registro está deshabilitado en este momento.",
+      "linkExpired": "El enlace no es válido o ya venció. Pide uno nuevo desde este mismo navegador."
+    },
+    "signupTitle": "Crea tu cuenta",
+    "signupSubtitle": "Regístrate con tu correo. Un administrador asigna los permisos.",
+    "signupRoleNote": "Las cuentas nuevas empiezan como Observador: ven el aforo, las cámaras y las alertas, sin nombres de estudiantes.",
+    "fullName": "Nombre completo",
+    "fullNamePlaceholder": "Ana Gómez",
+    "confirmPassword": "Repite la contraseña",
+    "signupSent": "Si el correo es válido, te enviamos un enlace de confirmación.",
+    "checkEmailTitle": "Revisa tu correo",
+    "checkEmailText": "Si el correo es válido, te enviamos un enlace para confirmar tu cuenta.",
+    "checkEmailAlertTitle": "Enlace enviado",
+    "checkEmailHint": "Abre el enlace desde este mismo navegador. Si no lo ves, revisa la carpeta de spam.",
+    "backToLogin": "Volver a iniciar sesión",
+    "strength": {
+      "hint": "Mínimo 8 caracteres. Mezcla mayúsculas, números y símbolos.",
+      "label": "Seguridad: {{level}}",
+      "veryWeak": "muy débil",
+      "weak": "débil",
+      "fair": "aceptable",
+      "good": "buena",
+      "strong": "fuerte"
+    },
+    "orEmail": "o con tu correo",
+    "callbackFailedTitle": "No pudimos completar el acceso",
+    "callbackFailedAlert": "El inicio de sesión no se completó",
+    "resetTitle": "Recupera tu contraseña",
+    "resetSubtitle": "Escribe el correo de tu cuenta y te enviaremos un enlace para crear una nueva.",
+    "resetSentText": "Si existe una cuenta con ese correo, te enviamos un enlace para crear una nueva contraseña.",
+    "sendResetLink": "Enviar enlace",
+    "rememberedIt": "¿La recordaste?",
+    "newPasswordTitle": "Crea una nueva contraseña",
+    "newPasswordSubtitle": "Elige una contraseña que no uses en otros sitios.",
+    "newPassword": "Nueva contraseña",
+    "saveNewPassword": "Guardar contraseña",
+    "passwordUpdatedTitle": "Contraseña actualizada",
+    "passwordUpdatedText": "Ya puedes usar tu nueva contraseña.",
+    "goToDashboard": "Ir al inicio",
+    "requestNewLink": "Pedir un enlace nuevo",
+    "forbiddenHint": "Tu rol no incluye esta sección. Si crees que es un error, habla con el administrador.",
+    "blocked": {
+      "inactiveTitle": "Tu cuenta está desactivada",
+      "inactiveText": "Un administrador desactivó esta cuenta. Pídele que la vuelva a activar para entrar.",
+      "noRoleTitle": "Tu cuenta aún no tiene un rol",
+      "noRoleText": "Un administrador debe asignarte un rol antes de que puedas ver el panel."
+    },
+    "inviteTitle": "Activa tu cuenta",
+    "inviteSubtitle": "Te invitaron a Aforo. Crea una contraseña para terminar de activar tu cuenta."
   },
   "cameras": {
     "title": "Cámaras",
-    "lanOnly": "El video solo está disponible en la red local del piloto"
+    "lanOnly": "El video solo está disponible en la red local del piloto; aquí se muestra el estado de cada cámara.",
+    "cardHint": "Estado de las cámaras del salón",
+    "empty": "No hay cámaras registradas",
+    "status": {
+      "online": "En línea",
+      "offline": "Sin conexión",
+      "late": "Latido atrasado"
+    },
+    "position": {
+      "outside": "Pasillo (afuera)",
+      "inside": "Salón (adentro)"
+    },
+    "lastSeen": "último latido {{when}}",
+    "neverSeen": "sin latidos todavía",
+    "description": "Estado de cada cámara según su último latido. Se actualiza en vivo.",
+    "summary": "{{online}} de {{total}} en línea",
+    "emptyHint": "Las cámaras se registran desde aforo-vision al enviar su primer latido.",
+    "fields": {
+      "position": "Ubicación",
+      "heartbeat": "Último latido"
+    }
   },
-  "dev": {
-    "title": "Vista de análisis (dev)"
+  "nav": {
+    "sections": {
+      "main": "Principal",
+      "admin": "Administración"
+    },
+    "home": "Inicio",
+    "events": "Eventos",
+    "students": "Estudiantes",
+    "sessions": "Sesiones",
+    "cameras": "Cámaras",
+    "alerts": "Alertas",
+    "profile": "Mi perfil",
+    "admin": {
+      "users": "Usuarios",
+      "audit": "Auditoría",
+      "settings": "Configuración"
+    }
   },
-  "status": {
+  "shell": {
+    "skipToContent": "Saltar al contenido",
+    "navigation": "Navegación principal",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "userMenu": "Menú de usuario",
+    "alertsNone": "Alertas: ninguna abierta",
+    "alertsWithCount_one": "Alertas: {{count}} abierta",
+    "alertsWithCount_other": "Alertas: {{count}} abiertas",
+    "signedInAs": "Sesión activa · {{role}}"
+  },
+  "theme": {
+    "toLight": "Cambiar a tema claro",
+    "toDark": "Cambiar a tema oscuro"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "teacher": "Docente",
+    "viewer": "Observador"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La dirección que abriste no existe o fue movida.",
+    "back": "Volver al inicio"
+  },
+  "common": {
     "loading": "Cargando…",
-    "error": "Sin conexión con el servidor"
+    "updating": "Actualizando datos…",
+    "retry": "Reintentar",
+    "empty": "No hay datos para mostrar",
+    "error": "No pudimos cargar esta información",
+    "errorHint": "Revisa tu conexión e inténtalo de nuevo.",
+    "save": "Guardar cambios",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "optional": "Opcional",
+    "actions": "Acciones",
+    "edit": "Editar",
+    "dismiss": "Cerrar aviso",
+    "notifications": "Notificaciones"
+  },
+  "live": {
+    "connected": "En vivo",
+    "connecting": "Conectando…",
+    "reconnecting": "Reconectando…",
+    "connectedHint": "Los datos se actualizan solos en cuanto hay cambios",
+    "fallbackHint": "Sin conexión en vivo: los datos se actualizan cada 30 segundos"
+  },
+  "profile": {
+    "description": "Tu información personal y lo que puedes hacer en Aforo.",
+    "memberSince": "Miembro desde",
+    "personalTitle": "Datos personales",
+    "personalDescription": "Este nombre aparece en el menú y en la auditoría.",
+    "saved": "Guardamos tu nombre.",
+    "saveError": "No pudimos guardar el cambio. Inténtalo de nuevo.",
+    "permissionsTitle": "Tus permisos",
+    "permissions": {
+      "admin": "Administrador: ves y gestionas todo, incluidos usuarios, roles, auditoría y configuración.",
+      "teacher": "Docente: ves estudiantes, eventos, sesiones y asistencia, y puedes resolver alertas.",
+      "viewer": "Observador: ves el aforo, las cámaras y las alertas, sin nombres de estudiantes."
+    },
+    "permissionsNote": "Los permisos los asigna un administrador. La base de datos aplica estas reglas aunque se intente acceder por otra vía.",
+    "securityTitle": "Seguridad",
+    "securityDescription": "Cambia tu contraseña de acceso con correo.",
+    "changePassword": "Cambiar contraseña"
+  },
+  "dashboard": {
+    "intro": "{{name}} · {{location}}. Todo se actualiza solo, en tiempo real.",
+    "noLocation": "sin ubicación",
+    "pickClassroom": "Elegir salón",
+    "noClassrooms": "Todavía no hay salones",
+    "noClassroomsHint": "Un administrador debe crear el salón del piloto en Configuración.",
+    "entriesToday": "Entradas hoy",
+    "exitsToday": "Salidas hoy",
+    "identified": "Identificados por rostro",
+    "percentFace": "%",
+    "firstAt": "Primera entrada a las {{time}}",
+    "peak_one": "Pico del día: {{count}} persona",
+    "peak_other": "Pico del día: {{count}} personas",
+    "bodyOnlyCount_one": "{{count}} solo por cuerpo",
+    "bodyOnlyCount_other": "{{count}} solo por cuerpo",
+    "noEventsYet": "Aún no hay eventos hoy",
+    "camerasOnline": "Cámaras en línea",
+    "camerasHint": "Estado según el último latido",
+    "openAlerts": "Alertas abiertas",
+    "openAlertsHint": "Revisa la sección Alertas",
+    "noOpenAlerts": "Todo en orden",
+    "nextSession": "Próxima sesión",
+    "currentSession": "Sesión en curso",
+    "noSession": "Sin sesiones programadas",
+    "latestEvents": "Últimos eventos",
+    "latestEventsHint": "En vivo · los 10 más recientes",
+    "seeHistory": "Ver historial",
+    "seeAll": "Ver todas",
+    "noEvents": "Aún no hay eventos",
+    "faceCount_one": "{{count}} por rostro",
+    "faceCount_other": "{{count}} por rostro"
+  },
+  "errors": {
+    "generic": "No pudimos completar la acción. Inténtalo de nuevo.",
+    "forbidden": "Tu rol no permite hacer esto.",
+    "duplicate": "Ya existe un registro con esos datos.",
+    "invalid": "Algunos datos no son válidos. Revísalos e inténtalo de nuevo.",
+    "inUse": "No se puede eliminar porque otros datos dependen de este registro.",
+    "rateLimited": "Demasiadas solicitudes. Espera un momento.",
+    "functionUnavailable": "Este servicio aún no está disponible. Inténtalo más tarde."
+  },
+  "table": {
+    "sortBy": "(ordenar)",
+    "pagination": "Paginación",
+    "showing": "Mostrando {{first}}–{{last}} de {{total}}",
+    "page": "Página {{page}} de {{pages}}",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "chart": {
+    "title": "Entradas y salidas por hora",
+    "description": "Hoy, hora de Bogotá",
+    "entries": "Entradas",
+    "exits": "Salidas",
+    "hour": "Hora",
+    "legend": "Leyenda",
+    "hourRange": "{{hour}} – siguiente hora",
+    "showTable": "Ver como tabla",
+    "showChart": "Ver gráfica",
+    "tableCaption": "Entradas y salidas por hora de hoy",
+    "ariaSummary": "Gráfica de barras por hora. Total del día: {{entries}} entradas y {{exits}} salidas.",
+    "empty": "Aún no hay movimientos hoy",
+    "emptyHint": "La gráfica se llena sola cuando las cámaras registren entradas o salidas."
+  },
+  "alerts": {
+    "title": "Alertas",
+    "allClear": "No hay nada pendiente por revisar.",
+    "severity": {
+      "info": "Información",
+      "warning": "Advertencia",
+      "critical": "Crítica"
+    },
+    "type": {
+      "capacity_exceeded": "Aforo superado",
+      "camera_offline": "Cámara sin conexión"
+    },
+    "descriptionStaff": "Avisos del sistema: aforo superado y cámaras sin conexión. Resuélvelos cuando los atiendas.",
+    "descriptionViewer": "Avisos del sistema: aforo superado y cámaras sin conexión.",
+    "filter": "Mostrar alertas",
+    "tabs": {
+      "open": "Abiertas",
+      "resolved": "Resueltas",
+      "all": "Todas"
+    },
+    "open": "Abierta",
+    "resolved": "Resuelta",
+    "resolve": "Marcar como resuelta",
+    "resolvedAt": "Resuelta el {{when}}",
+    "resolvedByYou": "Resuelta por ti el {{when}}",
+    "empty": "No hay alertas en esta vista",
+    "toast": {
+      "resolved": "Alerta marcada como resuelta."
+    }
+  },
+  "filters": {
+    "clear": "Limpiar filtros",
+    "events": "Filtros de eventos",
+    "from": "Desde",
+    "to": "Hasta",
+    "direction": "Dirección",
+    "method": "Método",
+    "student": "Estudiante",
+    "classroom": "Salón",
+    "all": "Todos",
+    "allStudents": "Todos los estudiantes",
+    "search": "Buscar",
+    "action": "Acción",
+    "table": "Recurso",
+    "user": "Usuario",
+    "status": "Estado"
+  },
+  "students": {
+    "description_one": "{{inside}} de {{total}} estudiante activo está dentro del salón ahora.",
+    "description_other": "{{inside}} de {{total}} estudiantes activos están dentro del salón ahora.",
+    "create": "Nuevo estudiante",
+    "createTitle": "Nuevo estudiante",
+    "editTitle": "Editar estudiante",
+    "editNamed": "Editar a {{name}}",
+    "formHint": "Los datos se usan para identificar a la persona en los eventos.",
+    "fields": {
+      "name": "Nombre completo",
+      "code": "Código",
+      "email": "Correo institucional"
+    },
+    "filters": "Filtros de estudiantes",
+    "searchPlaceholder": "Nombre, código o correo",
+    "tableCaption": "Estudiantes del curso",
+    "columns": {
+      "name": "Estudiante",
+      "code": "Código",
+      "presence": "Presencia",
+      "lastEvent": "Último evento"
+    },
+    "presence": {
+      "in": "Dentro",
+      "out": "Fuera"
+    },
+    "inactive": "Inactivo",
+    "inactivePlural": "Inactivos",
+    "noEmail": "Sin correo",
+    "never": "Sin eventos",
+    "deactivate": "Desactivar",
+    "reactivate": "Reactivar",
+    "empty": "Todavía no hay estudiantes",
+    "emptyHint": "Agrega a los estudiantes del curso para que aparezcan en los eventos.",
+    "noResults": "Ningún estudiante coincide con la búsqueda",
+    "submitCreate": "Crear estudiante",
+    "toast": {
+      "created": "Agregamos a {{name}}.",
+      "updated": "Guardamos los cambios de {{name}}.",
+      "deactivated": "{{name}} quedó inactivo.",
+      "reactivated": "{{name}} volvió a estar activo."
+    },
+    "confirmDeactivateTitle": "¿Desactivar estudiante?",
+    "confirmDeactivateText": "{{name}} dejará de aparecer como activo y sus próximos eventos no se asociarán a su nombre. Puedes reactivarlo después."
+  },
+  "sessions": {
+    "description": "Programa las clases y revisa quién estuvo en cada una. La asistencia se llena sola con los eventos de las cámaras.",
+    "create": "Nueva sesión",
+    "submitCreate": "Crear sesión",
+    "createTitle": "Nueva sesión de clase",
+    "editTitle": "Editar sesión",
+    "editNamed": "Editar la sesión {{title}}",
+    "formHint": "Las horas se interpretan en hora de Bogotá.",
+    "titlePlaceholder": "Clase 11 · Repaso",
+    "bogotaTime": "Hora de Bogotá",
+    "fields": {
+      "title": "Título",
+      "course": "Curso",
+      "classroom": "Salón",
+      "starts": "Inicio",
+      "ends": "Fin",
+      "status": "Estado"
+    },
+    "validation": {
+      "title": "Escribe un título.",
+      "course": "Elige un curso.",
+      "range": "La hora de fin debe ser posterior a la de inicio."
+    },
+    "status": {
+      "scheduled": "Programada",
+      "cancelled": "Cancelada"
+    },
+    "phase": {
+      "live": "En curso",
+      "upcoming": "Próxima",
+      "finished": "Finalizada",
+      "cancelled": "Cancelada"
+    },
+    "listTitle": "Sesiones",
+    "listHint": "Elige una sesión para ver su asistencia",
+    "columns": {
+      "session": "Sesión",
+      "when": "Horario",
+      "classroom": "Salón",
+      "status": "Estado"
+    },
+    "empty": "No hay sesiones todavía",
+    "emptyHint": "Crea la primera sesión para empezar a medir la asistencia.",
+    "attendance": {
+      "title": "Asistencia",
+      "titleFor": "Asistencia · {{title}}",
+      "pick": "Elige una sesión de la lista",
+      "summary": "{{present}} presentes ahora · {{left}} salieron",
+      "student": "Estudiante",
+      "status": "Estado",
+      "entry": "Entrada",
+      "exit": "Salida",
+      "present": "Presente",
+      "left": "Salió",
+      "empty": "Sin asistencia registrada",
+      "emptyHint": "Aparece cuando un estudiante identificado por rostro entra durante la sesión."
+    },
+    "toast": {
+      "created": "Creamos la sesión «{{title}}».",
+      "updated": "Guardamos la sesión «{{title}}»."
+    }
+  },
+  "admin": {
+    "users": {
+      "description": "Quién puede entrar y qué puede ver. Los cambios de rol y de estado quedan en la auditoría.",
+      "invite": "Invitar usuario",
+      "inviteTitle": "Invitar usuario",
+      "inviteHint": "Le enviaremos un correo con un enlace para crear su contraseña.",
+      "sendInvite": "Enviar invitación",
+      "inviteExists": "Ya existe una cuenta con ese correo. Cambia su rol desde la lista.",
+      "role": "Rol",
+      "roleFor": "Rol de {{name}}",
+      "noRole": "Sin rol",
+      "noName": "Sin nombre",
+      "you": "tú",
+      "active": "Activa",
+      "inactive": "Desactivada",
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "filters": "Filtros de usuarios",
+      "searchPlaceholder": "Nombre o correo",
+      "tableCaption": "Usuarios de Aforo",
+      "noResults": "Ningún usuario coincide",
+      "columns": {
+        "user": "Usuario",
+        "status": "Estado",
+        "since": "Desde"
+      },
+      "toast": {
+        "roleChanged": "{{name}} ahora es {{role}}.",
+        "activated": "Activamos la cuenta de {{name}}.",
+        "deactivated": "Desactivamos la cuenta de {{name}}.",
+        "invited": "Enviamos la invitación a {{email}}."
+      },
+      "confirmDeactivateTitle": "¿Desactivar esta cuenta?",
+      "confirmDeactivateText": "{{name}} no podrá ver ningún dato hasta que la vuelvas a activar. Sus registros de auditoría se conservan."
+    }
+  },
+  "audit": {
+    "description": "Registro de accesos y cambios. Lo escribe la base de datos y no se puede editar desde la aplicación.",
+    "filters": "Filtros de auditoría",
+    "tableCaption": "Registro de auditoría",
+    "empty": "No hay registros",
+    "system": "Sistema",
+    "detailMeta": "{{when}} · {{who}}",
+    "recordId": "Registro",
+    "noChanges": "Esta entrada no guarda cambios de datos (es un acceso o una consulta).",
+    "diffCaption": "Valores antes y después del cambio",
+    "field": "Campo",
+    "before": "Antes",
+    "after": "Después",
+    "changed": "cambió",
+    "columns": {
+      "when": "Fecha",
+      "user": "Usuario",
+      "action": "Acción",
+      "table": "Recurso"
+    },
+    "actions": {
+      "LOGIN": "Inicio de sesión",
+      "LOGOUT": "Cierre de sesión",
+      "VIEW": "Consulta",
+      "EXPORT": "Exportación",
+      "INSERT": "Creación",
+      "UPDATE": "Edición",
+      "DELETE": "Eliminación",
+      "ROLE_GRANT": "Rol asignado",
+      "ROLE_REVOKE": "Rol retirado",
+      "ROLE_CHANGE": "Rol cambiado",
+      "ACCOUNT_ACTIVATE": "Cuenta activada",
+      "ACCOUNT_DEACTIVATE": "Cuenta desactivada"
+    }
+  },
+  "settings": {
+    "description": "Salones con su aforo máximo, cursos y nombres de las cámaras. Los cambios quedan en la auditoría.",
+    "add": "Agregar",
+    "editNamed": "Editar {{name}}",
+    "deleteNamed": "Eliminar {{name}}",
+    "validation": {
+      "name": "Escribe un nombre.",
+      "code": "Escribe un código.",
+      "capacity": "El aforo máximo debe ser un número entero mayor que cero."
+    },
+    "classrooms": {
+      "title": "Salones",
+      "hint": "El aforo máximo define la barra de capacidad y las alertas.",
+      "createTitle": "Nuevo salón",
+      "editTitle": "Editar salón",
+      "submitCreate": "Crear salón",
+      "formHint": "El aforo máximo se usa para la barra de capacidad y la alerta de aforo superado.",
+      "name": "Nombre",
+      "location": "Ubicación",
+      "capacity": "Aforo máximo",
+      "empty": "No hay salones"
+    },
+    "courses": {
+      "title": "Cursos",
+      "hint": "Cursos a los que pertenecen las sesiones de clase.",
+      "createTitle": "Nuevo curso",
+      "editTitle": "Editar curso",
+      "submitCreate": "Crear curso",
+      "code": "Código",
+      "name": "Nombre del curso",
+      "period": "Periodo académico",
+      "status": "Estado",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "empty": "No hay cursos"
+    },
+    "cameras": {
+      "title": "Cámaras",
+      "hint": "El código y la ubicación los define aforo-vision; aquí solo se cambia el nombre visible.",
+      "name": "Nombre visible",
+      "classroom": "Salón",
+      "rename": "Renombrar",
+      "renameTitle": "Renombrar cámara",
+      "renameHint": "Código técnico: {{code}}",
+      "renameNamed": "Renombrar {{name}}"
+    },
+    "delete": "Eliminar",
+    "confirmDeleteClassroom": "¿Eliminar salón?",
+    "confirmDeleteCourse": "¿Eliminar curso?",
+    "confirmDeleteText": "Vas a eliminar «{{name}}». Esta acción no se puede deshacer y falla si hay datos que dependen de él.",
+    "toast": {
+      "saved": "Guardamos «{{name}}».",
+      "deleted": "Eliminamos «{{name}}»."
+    }
+  },
+  "authPanel": {
+    "label": "Sobre Aforo",
+    "eyebrow": "Piloto de aforo inteligente",
+    "headline": "El aforo del salón, en vivo y sin listas en papel.",
+    "lead": "Dos cámaras en la puerta cuentan cada entrada y salida, identifican por rostro cuando pueden y avisan cuando el salón se llena.",
+    "featureLive": "Actualización en tiempo real, sin recargar la página",
+    "featureFace": "Distingue identificación por rostro y conteo por cuerpo",
+    "featureRoles": "Acceso por roles: cada quien ve solo lo que le corresponde",
+    "illustrationFace": "71 % rostro"
   }
 }
