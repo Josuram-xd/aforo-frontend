@@ -104,8 +104,8 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 > Depende de: task 11 de este repo (login).
 
-- [ ] ~~**9.1** `feat(ui): add cameras page with live streams` — Ruta `/camaras` (`viewer` y `dev`) con `LiveCameraPreview` por cámara (`/stream/<cameraId>?token=...`). Solo funciona abierta desde la red del laptop por HTTP: desde Amplify (HTTPS) el navegador bloquea una imagen `http://` de la red local; mostrar el mensaje `cameras.lanOnly` en ese caso.~~ → se adapta en la task 14.6 (estado de cámaras; video según `aforo-vision` task 15).
-- [ ] ~~**9.2** `feat(ui): add dev analysis page` — Ruta `/dev` (solo grupo `dev`) con los streams anotados (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.~~ → pendiente de la decisión de `aforo-vision` task 15.2.
+- [ ] ~~**9.1** `feat(ui): add cameras page with live streams` — Ruta `/camaras` (`viewer` y `dev`) con `LiveCameraPreview` por cámara (`/stream/<cameraId>?token=...`). Solo funciona abierta desde la red del laptop por HTTP: desde Amplify (HTTPS) el navegador bloquea una imagen `http://` de la red local; mostrar el mensaje `cameras.lanOnly` en ese caso.~~ → el estado de cámaras quedó en la task 14.6; el video pasa a la task 17.1.
+- [ ] ~~**9.2** `feat(ui): add dev analysis page` — Ruta `/dev` (solo grupo `dev`) con los streams anotados (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.~~ → pasa a la task 17.2 (solo `admin`; el grupo `dev` de Cognito ya no existe).
 
 ### Task 10 — Tests
 - [ ] ~~**10.1** `test: add component tests with vitest` — Vitest + Testing Library para `OccupancyCard`, `PeopleList` y `EventTimeline` con los fixtures de 4.3.~~ → ampliada en la task 16.3.
@@ -160,3 +160,9 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [ ] **16.1** (sin commit) En Amplify: variables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; quitar `VITE_API_BASE_URL`. En Supabase: agregar la URL de Amplify en Authentication → URL Configuration.
 - [ ] **16.2** (sin commit) Probar con un usuario de cada rol: `viewer` no ve nombres ni la página de estudiantes, `teacher` no ve Admin, `admin` ve todo; sin sesión nada.
 - [x] **16.3** `test: add component and auth guard tests with vitest` — Vitest + Testing Library: skeletons, `RequireRole`, tarjetas del Inicio y filtros de Eventos con datos mock.
+
+### Task 17 — Video en vivo de las cámaras **(Prioridad 3)**
+> Depende de: `aforo-vision` tasks 12.1 y 12.3 (servidor de video) y la decisión de la task 15.2 (dónde corre el pipeline).
+
+- [ ] **17.1** `feat(cameras): add live stream per camera` — En la página de Cámaras (14.6), el video de cada cámara para `viewer`, `teacher` y `admin`, enviando el JWT de Supabase al servidor de `aforo-vision`. Si el servidor está en la red local por `http://`, desde Amplify (HTTPS) el navegador bloquea la imagen: mostrar un mensaje que lo explique en vez de un cuadro vacío.
+- [ ] **17.2** `feat(cameras): add admin analysis overlay view` — Solo `admin`: los streams con cajas, IDs de track, nombre + confianza y dirección (`/stream/<cameraId>/dev`) de las dos cámaras lado a lado.
