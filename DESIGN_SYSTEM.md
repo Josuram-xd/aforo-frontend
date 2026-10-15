@@ -4,7 +4,7 @@
 **Last updated:** October 8, 2026
 **Scope:** One-screen live dashboard for a one-day pilot demo.
 
-> **Version 2 (section 8)** extends this system for the multi-page app: light theme, app shell, icons, skeletons,
+> **Version 2 (section 8)** extends this system for the multi-page app: app shell, icons, skeletons,
 > charts and forms. Sections 1-7 still apply unless section 8 overrides them.
 
 This is intentionally a small, pragmatic design system — enough to keep the dashboard consistent and legible when projected in a classroom, not a full product design language.
@@ -109,22 +109,9 @@ Feedback from the first review: the dashboard looked "very basic, missing things
 
 ### 8.1 Themes
 
-- **Dark** (default, projector) keeps the palette of section 2.
-- **Light** for daytime/laptop use. Same token names, redefined under `[data-theme="light"]`; the user's choice is remembered.
+- **Dark only.** It keeps the palette of section 2. A light theme existed during v2 and was removed on 2026-10-15 at the team's request (`TASKS.md` 18.2).
 
-| Token | Light value |
-|---|---|
-| `--color-bg` | `#F8FAFC` |
-| `--color-surface` | `#FFFFFF` |
-| `--color-text-primary` | `#0F172A` |
-| `--color-text-secondary` | `#475569` |
-| `--color-accent` | `#0284C7` |
-| `--color-success` | `#16A34A` |
-| `--color-warning` | `#CA8A04` |
-| `--color-danger` | `#DC2626` |
-| `--color-border` | `#E2E8F0` |
-
-New tokens for both themes: `--color-surface-2` (hover/zebra rows), `--radius-sm/md/lg` (6/10/16px), `--shadow-card`, `--space-1..8` (4px scale), `--skeleton-base` and `--skeleton-shine`.
+New tokens: `--color-surface-2` (hover/zebra rows), `--radius-sm/md/lg` (6/10/16px), `--shadow-card`, `--space-1..8` (4px scale), `--skeleton-base` and `--skeleton-shine`.
 
 ### 8.2 Typography
 
@@ -134,7 +121,7 @@ New tokens for both themes: `--color-surface-2` (hover/zebra rows), `--radius-sm
 
 ```
 ┌──────────┬──────────────────────────────────────────────┐
-│ ◉ Aforo  │  Inicio                    🔔 3   ☀/☾   (JR)▾ │  <- topbar: page title, alerts, theme, user menu
+│ ◉ Aforo  │  Inicio                         🔔 3   (JR)▾ │  <- topbar: page title, alerts, user menu
 │          ├──────────────────────────────────────────────┤
 │ Inicio   │                                              │
 │ Eventos  │   page content (max-width 1280px, 24px gap)  │

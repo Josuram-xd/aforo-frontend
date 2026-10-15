@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { BrandMark } from '../../components/BrandMark'
-import { ThemeToggle } from '../../layouts/ThemeToggle'
 import { AuthIllustration } from './AuthIllustration'
 import './AuthLayout.css'
 
@@ -65,7 +64,6 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
             <BrandMark size={30} />
             <span>{t('app.name')}</span>
           </Link>
-          <ThemeToggle />
         </div>
         <div className="auth__panel">
           <header className="auth__header">

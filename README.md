@@ -41,7 +41,7 @@ aforo-frontend/
 │   ├── hooks/            # hooks de TanStack Query
 │   ├── lib/              # cliente de Supabase, variables de entorno, formato de fechas, utilidades
 │   ├── i18n/             # textos en español (es.json)
-│   ├── styles/ · theme/  # tokens de diseño (colores, espacios) y tema claro/oscuro
+│   ├── styles/           # tokens de diseño (colores, espacios); solo tema oscuro
 │   ├── types/            # tipos generados de la base de datos (database.ts)
 │   └── test/             # configuración de Vitest y helper de render
 ├── public/               # archivos estáticos

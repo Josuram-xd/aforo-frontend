@@ -199,10 +199,6 @@
     "alertsWithCount_other": "Alertas: {{count}} abiertas",
     "signedInAs": "Sesión activa · {{role}}"
   },
-  "theme": {
-    "toLight": "Cambiar a tema claro",
-    "toDark": "Cambiar a tema oscuro"
-  },
   "roles": {
     "admin": "Administrador",
     "teacher": "Docente",
