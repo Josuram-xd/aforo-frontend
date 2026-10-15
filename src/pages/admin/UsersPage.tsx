@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Search, UserPlus, Users } from 'lucide-react'
+import { Search, Trash2, UserPlus, Users } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { setUserActive, setUserRole } from '../../api/admin'
+import { deleteUser, setUserActive, setUserRole } from '../../api/admin'
 import { errorMessageKey } from '../../api/errors'
 import { queryKeys } from '../../api/queryKeys'
 import type { UserItem } from '../../api/types'
@@ -21,6 +21,7 @@ import { ErrorState } from '../../components/ui/ErrorState'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
+import { TypedConfirmDialog } from '../../components/ui/TypedConfirmDialog'
 import { useToast } from '../../components/ui/toastContext'
 import { useUsers } from '../../hooks/queries'
 import { formatDate } from '../../lib/format'
@@ -33,7 +34,7 @@ function normalize(text: string): string {
     .toLowerCase()
 }
 
-/** Usuarios: roles (set_user_role), activation (set_user_active) and invitations (admin). */
+/** Usuarios: roles (set_user_role), activation (set_user_active), deletion (delete_user) and invitations. */
 export function UsersPage() {
   const { t } = useTranslation()
   const { user: me } = useSession()
@@ -67,6 +68,17 @@ export function UsersPage() {
         }),
       )
       setConfirming(null)
+    },
+    onError: showError,
+    onSettled: refresh,
+  })
+
+  const [deleting, setDeleting] = useState<UserItem | null>(null)
+  const remove = useMutation({
+    mutationFn: (target: UserItem) => deleteUser(target.id),
+    onSuccess: (_, target) => {
+      toast.success(t('admin.users.toast.deleted', { name: displayName(target) }))
+      setDeleting(null)
     },
     onError: showError,
     onSettled: refresh,
@@ -154,14 +166,26 @@ export function UsersPage() {
       align: 'right',
       render: (row) =>
         row.id === me?.id ? null : (
-          <Button
-            variant="ghost"
-            size="sm"
-            loading={toggleActive.isPending && toggleActive.variables?.id === row.id}
-            onClick={() => (row.isActive ? setConfirming(row) : toggleActive.mutate(row))}
-          >
-            {row.isActive ? t('admin.users.deactivate') : t('admin.users.activate')}
-          </Button>
+          <span className="cell-actions">
+            <Button
+              variant="ghost"
+              size="sm"
+              loading={toggleActive.isPending && toggleActive.variables?.id === row.id}
+              onClick={() => (row.isActive ? setConfirming(row) : toggleActive.mutate(row))}
+            >
+              {row.isActive ? t('admin.users.deactivate') : t('admin.users.activate')}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="btn--danger-text"
+              icon={<Trash2 size={14} aria-hidden="true" />}
+              onClick={() => setDeleting(row)}
+              aria-label={t('admin.users.deleteNamed', { name: displayName(row) })}
+            >
+              {t('admin.users.delete')}
+            </Button>
+          </span>
         ),
     },
   ]
@@ -249,6 +273,19 @@ export function UsersPage() {
         loading={toggleActive.isPending}
         onConfirm={() => confirming && toggleActive.mutate(confirming)}
         onCancel={() => setConfirming(null)}
+      />
+      <TypedConfirmDialog
+        key={deleting?.id ?? 'closed'}
+        open={deleting !== null}
+        title={t('admin.users.confirmDeleteTitle')}
+        description={t('admin.users.confirmDeleteText', {
+          name: deleting ? displayName(deleting) : '',
+        })}
+        expected={deleting ? (deleting.email ?? displayName(deleting)) : ''}
+        confirmLabel={t('admin.users.delete')}
+        loading={remove.isPending}
+        onConfirm={() => deleting && remove.mutate(deleting)}
+        onCancel={() => setDeleting(null)}
       />
     </>
   )
