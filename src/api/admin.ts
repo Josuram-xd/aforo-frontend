@@ -55,6 +55,13 @@ export async function setUserActive(userId: string, active: boolean): Promise<vo
   if (error) throw fromPostgrest(error)
 }
 
+/** Permanent account deletion (admin, never the own account), through the delete_user RPC. */
+export async function deleteUser(userId: string): Promise<void> {
+  if (isMockMode) return (await mock()).deleteUser(userId)
+  const { error } = await supabase.rpc('delete_user', { p_user_id: userId })
+  if (error) throw fromPostgrest(error)
+}
+
 /** Invitation email through the `invite-user` Edge Function (aforo-backend). */
 export async function inviteUser(email: string, role: RoleCode): Promise<void> {
   if (isMockMode) return (await mock()).inviteUser(email, role)

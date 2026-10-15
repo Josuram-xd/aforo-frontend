@@ -1,11 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { DoorClosed, DoorOpen, Pencil, Search, UserMinus, UserPlus, Users } from 'lucide-react'
+import {
+  DoorClosed,
+  DoorOpen,
+  Pencil,
+  Search,
+  Trash2,
+  UserMinus,
+  UserPlus,
+  Users,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLogView } from '../../api/accessLog'
 import { errorMessageKey } from '../../api/errors'
 import { queryKeys } from '../../api/queryKeys'
-import { setStudentActive } from '../../api/students'
+import { deleteStudent, setStudentActive } from '../../api/students'
 import type { Student } from '../../api/types'
 import { useRole } from '../../auth/useRole'
 import { FilterBar } from '../../components/FilterBar'
@@ -20,6 +29,7 @@ import { ErrorState } from '../../components/ui/ErrorState'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
+import { TypedConfirmDialog } from '../../components/ui/TypedConfirmDialog'
 import { useToast } from '../../components/ui/toastContext'
 import { useStudents } from '../../hooks/queries'
 import { formatDateTime, formatRelative } from '../../lib/format'
@@ -59,6 +69,17 @@ export function StudentsPage() {
         }),
       )
       setConfirming(null)
+    },
+    onError: (error) => toast.error(t(errorMessageKey(error))),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.students }),
+  })
+
+  const [deleting, setDeleting] = useState<Student | null>(null)
+  const remove = useMutation({
+    mutationFn: (student: Student) => deleteStudent(student.id),
+    onSuccess: (_, student) => {
+      toast.success(t('students.toast.deleted', { name: student.full_name }))
+      setDeleting(null)
     },
     onError: (error) => toast.error(t(errorMessageKey(error))),
     onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.students }),
@@ -164,6 +185,16 @@ export function StudentsPage() {
             loading={toggleActive.isPending && toggleActive.variables?.id === row.id}
           >
             {row.is_active ? t('students.deactivate') : t('students.reactivate')}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="btn--danger-text"
+            icon={<Trash2 size={14} aria-hidden="true" />}
+            onClick={() => setDeleting(row)}
+            aria-label={t('students.deleteNamed', { name: row.full_name })}
+          >
+            {t('students.delete')}
           </Button>
         </span>
       ),
@@ -275,6 +306,20 @@ export function StudentsPage() {
         loading={toggleActive.isPending}
         onConfirm={() => confirming && toggleActive.mutate(confirming)}
         onCancel={() => setConfirming(null)}
+      />
+      <TypedConfirmDialog
+        key={deleting?.id ?? 'closed'}
+        open={deleting !== null}
+        title={t('students.confirmDeleteTitle')}
+        description={t('students.confirmDeleteText', {
+          name: deleting?.full_name ?? '',
+          id: deleting?.id ?? '',
+        })}
+        expected={deleting?.full_name ?? ''}
+        confirmLabel={t('students.delete')}
+        loading={remove.isPending}
+        onConfirm={() => deleting && remove.mutate(deleting)}
+        onCancel={() => setDeleting(null)}
       />
     </>
   )
