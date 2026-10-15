@@ -177,7 +177,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 - [x] **19.1** `feat(students): add delete student action for admin` — Botón "Eliminar" (solo `admin`) en Estudiantes. La confirmación pide escribir el nombre del estudiante, explica que es definitivo (borra su asistencia; sus eventos quedan sin nombre) y recuerda borrar su biometría en el equipo de visión (`aforo-vision` task 17.1). Llama a la RPC `delete_student`.
 - [x] **19.2** `feat(admin): add delete user action` — Botón "Eliminar cuenta" en Admin → Usuarios, oculto para la propia cuenta, con la misma confirmación escribiendo el correo. Llama a la RPC `delete_user`.
-- [ ] **19.3** `test: cover delete confirmations` — El botón de confirmar solo se habilita al escribir el nombre/correo exacto; `teacher` no ve "Eliminar".
+- [x] **19.3** `test: cover delete confirmations` — El botón de confirmar solo se habilita al escribir el nombre/correo exacto; `teacher` no ve "Eliminar".
 
 ### Task 20 — Higiene de seguridad **(Prioridad 2)**
 - [ ] **20.1** `chore: ignore local env files` — Agregar `.env` y `.env.*` (excepto `.env.example`) al `.gitignore`; hoy solo se ignora `*.local`.
