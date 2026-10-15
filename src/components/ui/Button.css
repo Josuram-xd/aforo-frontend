@@ -84,6 +84,12 @@
   color: var(--color-text-primary);
 }
 
+/* Ghost button for destructive row actions (e.g. "Eliminar"): red text, no fill. */
+.btn--ghost.btn--danger-text,
+.btn--ghost.btn--danger-text:hover:not(:disabled) {
+  color: var(--color-danger-fg);
+}
+
 .btn--danger {
   background: var(--color-danger);
   color: var(--color-on-danger);

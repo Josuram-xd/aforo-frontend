@@ -257,6 +257,12 @@ export async function setStudentActive(id: string, isActive: boolean): Promise<v
   await delay(null)
 }
 
+export async function deleteStudent(id: string): Promise<void> {
+  db.students = db.students.filter((s) => s.id !== id)
+  for (const event of db.events) if (event.student_id === id) event.student_id = null
+  await delay(null)
+}
+
 export function fetchSessions(): Promise<SessionItem[]> {
   return delay(
     [...db.class_sessions]
@@ -337,6 +343,12 @@ export async function setUserRole(userId: string, role: RoleCode): Promise<void>
 export async function setUserActive(userId: string, active: boolean): Promise<void> {
   const profile = db.profiles.find((p) => p.id === userId)
   if (profile) profile.is_active = active
+  await delay(null)
+}
+
+export async function deleteUser(userId: string): Promise<void> {
+  db.profiles = db.profiles.filter((p) => p.id !== userId)
+  db.user_roles = db.user_roles.filter((r) => r.user_id !== userId)
   await delay(null)
 }
 

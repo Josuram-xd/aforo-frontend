@@ -210,6 +210,7 @@
     "back": "Volver al inicio"
   },
   "common": {
+    "typeToConfirm": "Para confirmar, escribe «{{text}}»",
     "loading": "Cargando…",
     "updating": "Actualizando datos…",
     "retry": "Reintentar",
@@ -401,10 +402,15 @@
       "created": "Agregamos a {{name}}.",
       "updated": "Guardamos los cambios de {{name}}.",
       "deactivated": "{{name}} quedó inactivo.",
-      "reactivated": "{{name}} volvió a estar activo."
+      "reactivated": "{{name}} volvió a estar activo.",
+      "deleted": "Eliminamos a {{name}}. Falta borrar su biometría en el equipo de visión."
     },
     "confirmDeactivateTitle": "¿Desactivar estudiante?",
-    "confirmDeactivateText": "{{name}} dejará de aparecer como activo y sus próximos eventos no se asociarán a su nombre. Puedes reactivarlo después."
+    "confirmDeactivateText": "{{name}} dejará de aparecer como activo y sus próximos eventos no se asociarán a su nombre. Puedes reactivarlo después.",
+    "delete": "Eliminar",
+    "deleteNamed": "Eliminar a {{name}}",
+    "confirmDeleteTitle": "¿Eliminar estudiante para siempre?",
+    "confirmDeleteText": "Se borran los datos de {{name}} y su asistencia, y su nombre desaparece de la auditoría. Sus entradas y salidas pasadas se conservan sin nombre. No se puede deshacer. Después borra su biometría en el equipo de visión con: python -m enrollment.remove_student --person-id {{id}}"
   },
   "sessions": {
     "description": "Programa las clases y revisa quién estuvo en cada una. La asistencia se llena sola con los eventos de las cámaras.",
@@ -498,10 +504,15 @@
         "roleChanged": "{{name}} ahora es {{role}}.",
         "activated": "Activamos la cuenta de {{name}}.",
         "deactivated": "Desactivamos la cuenta de {{name}}.",
-        "invited": "Enviamos la invitación a {{email}}."
+        "invited": "Enviamos la invitación a {{email}}.",
+        "deleted": "Eliminamos la cuenta de {{name}}."
       },
       "confirmDeactivateTitle": "¿Desactivar esta cuenta?",
-      "confirmDeactivateText": "{{name}} no podrá ver ningún dato hasta que la vuelvas a activar. Sus registros de auditoría se conservan."
+      "confirmDeactivateText": "{{name}} no podrá ver ningún dato hasta que la vuelvas a activar. Sus registros de auditoría se conservan.",
+      "delete": "Eliminar",
+      "deleteNamed": "Eliminar la cuenta de {{name}}",
+      "confirmDeleteTitle": "¿Eliminar esta cuenta para siempre?",
+      "confirmDeleteText": "{{name}} pierde el acceso de inmediato y su cuenta se borra. Lo que hizo sigue en la auditoría, pero sin su nombre ni su correo. No se puede deshacer; si solo quieres quitarle el acceso por un tiempo, desactívala."
     }
   },
   "audit": {

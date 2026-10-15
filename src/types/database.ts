@@ -607,6 +607,8 @@ export type Database = {
         Args: { p_camera_code: string; p_online: boolean }
         Returns: Json
       }
+      delete_student: { Args: { p_student_id: string }; Returns: undefined }
+      delete_user: { Args: { p_user_id: string }; Returns: undefined }
       ingest_event: { Args: { p_event: Json }; Returns: Json }
       log_access: {
         Args: { p_action: string; p_resource?: string }

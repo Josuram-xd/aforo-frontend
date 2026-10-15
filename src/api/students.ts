@@ -4,7 +4,8 @@ import type { TablesInsert } from '../types/database'
 import { fromPostgrest } from './errors'
 import type { Student } from './types'
 
-// Students: teacher/admin read, admin writes (RLS). No hard delete from the UI: deactivate.
+// Students: teacher/admin read, admin writes (RLS). Deleting goes only through the delete_student RPC,
+// which also strips the student's personal data from the audit log (aforo-db task 11).
 
 const mock = () => import('./mock/mockApi')
 
@@ -28,5 +29,12 @@ export async function saveStudent(input: StudentInput, id?: string): Promise<voi
 export async function setStudentActive(id: string, isActive: boolean): Promise<void> {
   if (isMockMode) return (await mock()).setStudentActive(id, isActive)
   const { error } = await supabase.from('students').update({ is_active: isActive }).eq('id', id)
+  if (error) throw fromPostgrest(error)
+}
+
+/** Permanent deletion (admin): attendance goes with it; past events stay, without the name. */
+export async function deleteStudent(id: string): Promise<void> {
+  if (isMockMode) return (await mock()).deleteStudent(id)
+  const { error } = await supabase.rpc('delete_student', { p_student_id: id })
   if (error) throw fromPostgrest(error)
 }
