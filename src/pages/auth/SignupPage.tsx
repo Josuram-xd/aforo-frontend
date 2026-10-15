@@ -10,13 +10,17 @@ import { Alert } from '../../components/ui/Alert'
 import { Button, ButtonLink } from '../../components/ui/Button'
 import { Field, PasswordInput, TextInput } from '../../components/ui/Field'
 import { supabase } from '../../lib/supabase'
+import {
+  EMAIL_MAX,
+  PERSON_NAME_MAX,
+  normalizePersonName,
+  validateEmail,
+  validatePersonName,
+} from '../../lib/validation'
 import { AuthLayout } from './AuthLayout'
 import { GoogleButton } from './GoogleButton'
 import { PasswordStrengthMeter } from './PasswordStrengthMeter'
 import './PasswordStrength.css'
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const NAME_MAX = 120
 
 interface SignupErrors {
   name?: string
@@ -28,6 +32,7 @@ interface SignupErrors {
 export function SignupPage() {
   const { t } = useTranslation()
   const { user } = useSession()
+  const [nameLength, setNameLength] = useState(0)
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [errors, setErrors] = useState<SignupErrors>({})
@@ -40,15 +45,16 @@ export function SignupPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const fullName = String(data.get('fullName') ?? '').trim()
+    const fullName = normalizePersonName(String(data.get('fullName') ?? ''))
     const email = String(data.get('email') ?? '').trim()
     const chosenPassword = password
     const repeated = confirm
 
     const next: SignupErrors = {}
-    if (fullName === '') next.name = t('auth.validation.nameRequired')
-    else if (fullName.length > NAME_MAX) next.name = t('auth.validation.nameTooLong')
-    if (!EMAIL_PATTERN.test(email)) next.email = t('auth.validation.email')
+    const nameCheck = validatePersonName(fullName)
+    if (nameCheck) next.name = t(nameCheck.key, nameCheck.values)
+    const emailCheck = validateEmail(email)
+    if (emailCheck) next.email = t(emailCheck.key, emailCheck.values)
     if (chosenPassword.length < PASSWORD_MIN_LENGTH)
       next.password = t('auth.validation.passwordMin')
     else if (passwordStrength(chosenPassword) === 0) next.password = t('auth.errors.weakPassword')
@@ -115,14 +121,19 @@ export function SignupPage() {
       <GoogleButton onError={setErrorKey} />
       <p className="auth__divider">{t('auth.orEmail')}</p>
       <form className="auth__form" onSubmit={handleSubmit} noValidate>
-        <Field label={t('auth.fullName')} error={errors.name}>
+        <Field
+          label={t('auth.fullName')}
+          error={errors.name}
+          hint={t('auth.validation.nameCounter', { count: nameLength, max: PERSON_NAME_MAX })}
+        >
           {({ id, describedBy, invalid }) => (
             <TextInput
               id={id}
               name="fullName"
               autoComplete="name"
-              maxLength={NAME_MAX}
+              maxLength={PERSON_NAME_MAX}
               required
+              onChange={(event) => setNameLength(event.target.value.length)}
               icon={<UserRound size={16} />}
               placeholder={t('auth.fullNamePlaceholder')}
               aria-describedby={describedBy}
@@ -140,6 +151,7 @@ export function SignupPage() {
               inputMode="email"
               autoCapitalize="off"
               spellCheck={false}
+              maxLength={EMAIL_MAX}
               required
               icon={<Mail size={16} />}
               placeholder={t('auth.emailPlaceholder')}

@@ -2,6 +2,7 @@ import type { AuthUser } from '../auth/authContext'
 import { isRoleCode, type RoleCode } from '../auth/roles'
 import { isMockMode } from '../lib/env'
 import { supabase } from '../lib/supabase'
+import { PERSON_NAME_MAX, normalizePersonName } from '../lib/validation'
 import { MOCK_AUTH_USER, MOCK_ROLE } from './mock/mockIdentity'
 
 export interface Me {
@@ -66,14 +67,12 @@ export async function fetchMe(user: AuthUser): Promise<Me> {
   }
 }
 
-export const FULL_NAME_MAX = 120
-
 /** Own display name. RLS only allows active accounts to edit their own profile row. */
 export async function updateMyName(userId: string, fullName: string): Promise<void> {
   if (isMockMode) return
   const { error } = await supabase
     .from('profiles')
-    .update({ full_name: fullName.trim().slice(0, FULL_NAME_MAX) })
+    .update({ full_name: normalizePersonName(fullName).slice(0, PERSON_NAME_MAX) })
     .eq('id', userId)
   if (error) throw error
 }

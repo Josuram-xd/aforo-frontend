@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { CalendarDays, KeyRound, LogOut, Mail, Save, ShieldCheck, UserRound } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FULL_NAME_MAX, updateMyName } from '../../api/me'
+import { updateMyName } from '../../api/me'
 import { queryKeys } from '../../api/queryKeys'
 import { useSession } from '../../auth/authContext'
 import { useMe } from '../../auth/useRole'
@@ -16,6 +16,7 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonCard } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { formatDate } from '../../lib/format'
+import { PERSON_NAME_MAX, normalizePersonName, validatePersonName } from '../../lib/validation'
 import './ProfilePage.css'
 
 export function ProfilePage() {
@@ -24,6 +25,7 @@ export function ProfilePage() {
   const me = useMe()
   const queryClient = useQueryClient()
   const [nameError, setNameError] = useState<string | null>(null)
+  const [nameLength, setNameLength] = useState<number | null>(null)
 
   const toast = useToast()
   const saveName = useMutation({
@@ -48,9 +50,12 @@ export function ProfilePage() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const fullName = String(new FormData(event.currentTarget).get('fullName') ?? '').trim()
-    if (fullName === '') {
-      setNameError(t('auth.validation.nameRequired'))
+    const fullName = normalizePersonName(
+      String(new FormData(event.currentTarget).get('fullName') ?? ''),
+    )
+    const nameCheck = validatePersonName(fullName)
+    if (nameCheck) {
+      setNameError(t(nameCheck.key, nameCheck.values))
       return
     }
     setNameError(null)
@@ -102,14 +107,22 @@ export function ProfilePage() {
               description={t('profile.personalDescription')}
             />
             <form className="profile-form" onSubmit={handleSubmit} noValidate>
-              <Field label={t('auth.fullName')} error={nameError}>
+              <Field
+                label={t('auth.fullName')}
+                error={nameError}
+                hint={t('auth.validation.nameCounter', {
+                  count: nameLength ?? profile.fullName.length,
+                  max: PERSON_NAME_MAX,
+                })}
+              >
                 {({ id, describedBy, invalid }) => (
                   <TextInput
                     id={id}
                     name="fullName"
                     autoComplete="name"
-                    maxLength={FULL_NAME_MAX}
+                    maxLength={PERSON_NAME_MAX}
                     defaultValue={profile.fullName}
+                    onChange={(event) => setNameLength(event.target.value.length)}
                     aria-describedby={describedBy}
                     aria-invalid={invalid || undefined}
                   />

@@ -11,10 +11,9 @@ import { Alert } from '../../components/ui/Alert'
 import { Button } from '../../components/ui/Button'
 import { Field, PasswordInput, TextInput } from '../../components/ui/Field'
 import { supabase } from '../../lib/supabase'
+import { validateEmail } from '../../lib/validation'
 import { AuthLayout } from './AuthLayout'
 import { GoogleButton } from './GoogleButton'
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function useLockCountdown(): [number, (ms: number) => void] {
   const [lockedUntil, setLockedUntil] = useState(() => Date.now() + lockRemainingMs())
@@ -60,7 +59,8 @@ export function LoginPage() {
     if (passwordInput instanceof HTMLInputElement) passwordInput.value = ''
 
     const errors: typeof fieldErrors = {}
-    if (!EMAIL_PATTERN.test(email)) errors.email = t('auth.validation.email')
+    const emailCheck = validateEmail(email)
+    if (emailCheck) errors.email = t(emailCheck.key, emailCheck.values)
     if (password === '') errors.password = t('auth.validation.passwordRequired')
     setFieldErrors(errors)
     if (Object.keys(errors).length > 0) return
