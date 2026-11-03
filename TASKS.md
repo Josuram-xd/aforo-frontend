@@ -194,3 +194,4 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 ### Task 23 — Revisión de seguridad y conexión **(Prioridad 1)**
 - [x] **23.1** `fix(security): allow student photos and camera in headers` — La CSP no permitía las fotos firmadas de Supabase Storage (`img-src`) y `Permissions-Policy: camera=()` bloqueaba la cámara del registro de rostro. Ahora `img-src` incluye el proyecto de Supabase y `camera=(self)`; igual en `vite.config.ts` (preview).
+- [x] **23.2** `fix(ui): widen classrooms card in settings` — Con los cursos fuera de Configuración, la tarjeta de salones queda a todo el ancho.
