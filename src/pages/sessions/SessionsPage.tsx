@@ -1,4 +1,4 @@
-import { CalendarPlus, ClipboardList, Pencil } from 'lucide-react'
+import { CalendarPlus, ClipboardList, LogOut, Pencil, UserCheck } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
@@ -145,11 +145,13 @@ export function SessionsPage() {
       sortValue: (row) => row.status,
       render: (row) =>
         row.status === 'present' ? (
-          <Badge tone="success" dot>
+          <Badge tone="success" icon={<UserCheck />}>
             {t('sessions.attendance.present')}
           </Badge>
         ) : (
-          <Badge tone="neutral">{t('sessions.attendance.left')}</Badge>
+          <Badge tone="neutral" icon={<LogOut />}>
+            {t('sessions.attendance.left')}
+          </Badge>
         ),
     },
     {

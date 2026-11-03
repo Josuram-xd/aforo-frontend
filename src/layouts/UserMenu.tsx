@@ -2,6 +2,7 @@ import { ChevronDown, LogOut, UserRound } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
+import { RoleBadge } from '../components/RoleBadge'
 import { Avatar } from '../components/ui/Avatar'
 import type { ShellUser } from './AppShell'
 
@@ -71,7 +72,9 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
             <div className="user-menu__identity">
               <span className="user-menu__header-name">{user.name}</span>
               {user.email && <span className="user-menu__email">{user.email}</span>}
-              <span className="user-menu__role">{t(`roles.${user.role}`)}</span>
+              <span className="user-menu__role">
+                <RoleBadge role={user.role} />
+              </span>
             </div>
           </div>
           <Link

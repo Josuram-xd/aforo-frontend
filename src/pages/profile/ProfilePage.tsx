@@ -8,12 +8,13 @@ import { useSession } from '../../auth/authContext'
 import { useMe } from '../../auth/useRole'
 import { Alert } from '../../components/ui/Alert'
 import { Avatar } from '../../components/ui/Avatar'
-import { Badge } from '../../components/ui/Badge'
+import { RoleBadge } from '../../components/RoleBadge'
 import { Button, ButtonLink } from '../../components/ui/Button'
 import { Card, CardHeader } from '../../components/ui/Card'
 import { Field, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonCard } from '../../components/ui/Skeleton'
+import { useToast } from '../../components/ui/toastContext'
 import { formatDate } from '../../lib/format'
 import './ProfilePage.css'
 
@@ -24,9 +25,13 @@ export function ProfilePage() {
   const queryClient = useQueryClient()
   const [nameError, setNameError] = useState<string | null>(null)
 
+  const toast = useToast()
   const saveName = useMutation({
     mutationFn: (fullName: string) => updateMyName(user!.id, fullName),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.me }),
+    onSuccess: () => {
+      toast.success(t('profile.saved'))
+      return queryClient.invalidateQueries({ queryKey: queryKeys.me })
+    },
   })
 
   if (me.isPending || !me.data) {
@@ -61,9 +66,7 @@ export function ProfilePage() {
           <div className="profile-hero__body">
             <Avatar name={profile.fullName} imageUrl={profile.avatarUrl} size="xl" />
             <h2 className="profile-hero__name">{profile.fullName}</h2>
-            <Badge tone={role === 'admin' ? 'violet' : role === 'teacher' ? 'accent' : 'neutral'}>
-              {t(`roles.${role}`)}
-            </Badge>
+            <RoleBadge role={role} />
             <dl className="profile-hero__facts">
               <div>
                 <dt>
@@ -112,11 +115,6 @@ export function ProfilePage() {
                   />
                 )}
               </Field>
-              {saveName.isSuccess && (
-                <Alert tone="success" live="polite">
-                  {t('profile.saved')}
-                </Alert>
-              )}
               {saveName.isError && (
                 <Alert tone="danger" live="assertive">
                   {t('profile.saveError')}

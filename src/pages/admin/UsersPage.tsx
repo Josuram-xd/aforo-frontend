@@ -9,17 +9,19 @@ import type { UserItem } from '../../api/types'
 import { useSession } from '../../auth/authContext'
 import { ROLE_CODES, type RoleCode } from '../../auth/roles'
 import { FilterBar } from '../../components/FilterBar'
-import { Alert } from '../../components/ui/Alert'
+import { RoleBadge } from '../../components/RoleBadge'
 import { Avatar } from '../../components/ui/Avatar'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
+import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
+import { useToast } from '../../components/ui/toastContext'
 import { useUsers } from '../../hooks/queries'
 import { formatDate } from '../../lib/format'
 import { InviteUserDialog } from './InviteUserDialog'
@@ -41,16 +43,34 @@ export function UsersPage() {
   const [roleFilter, setRoleFilter] = useState<RoleCode | ''>('')
   const [inviteOpen, setInviteOpen] = useState(false)
 
+  const toast = useToast()
+  const [confirming, setConfirming] = useState<UserItem | null>(null)
+  const displayName = (user: UserItem) => user.fullName ?? user.email ?? t('admin.users.noName')
   const refresh = () => queryClient.invalidateQueries({ queryKey: queryKeys.users })
+  const showError = (error: unknown) => toast.error(t(errorMessageKey(error)))
+
   const changeRole = useMutation({
-    mutationFn: ({ id, role }: { id: string; role: RoleCode }) => setUserRole(id, role),
+    mutationFn: ({ user, role }: { user: UserItem; role: RoleCode }) => setUserRole(user.id, role),
+    onSuccess: (_, { user, role }) =>
+      toast.success(
+        t('admin.users.toast.roleChanged', { name: displayName(user), role: t(`roles.${role}`) }),
+      ),
+    onError: showError,
     onSettled: refresh,
   })
   const toggleActive = useMutation({
     mutationFn: (target: UserItem) => setUserActive(target.id, !target.isActive),
+    onSuccess: (_, target) => {
+      toast.success(
+        t(target.isActive ? 'admin.users.toast.deactivated' : 'admin.users.toast.activated', {
+          name: displayName(target),
+        }),
+      )
+      setConfirming(null)
+    },
+    onError: showError,
     onSettled: refresh,
   })
-  const mutationError = changeRole.error ?? toggleActive.error
 
   const rows = useMemo(() => {
     const term = normalize(search.trim())
@@ -88,15 +108,15 @@ export function UsersPage() {
       sortValue: (row) => row.role ?? '',
       render: (row) =>
         row.id === me?.id ? (
-          <Badge tone="violet">{t(`roles.${row.role ?? 'viewer'}`)}</Badge>
+          <RoleBadge role={row.role ?? 'viewer'} />
         ) : (
           <SelectInput
             className="input--compact"
             value={row.role ?? ''}
             aria-label={t('admin.users.roleFor', { name: row.fullName ?? row.email ?? '' })}
-            disabled={changeRole.isPending && changeRole.variables?.id === row.id}
+            disabled={changeRole.isPending && changeRole.variables?.user.id === row.id}
             onChange={(event) =>
-              changeRole.mutate({ id: row.id, role: event.target.value as RoleCode })
+              changeRole.mutate({ user: row, role: event.target.value as RoleCode })
             }
           >
             {row.role === null && <option value="">{t('admin.users.noRole')}</option>}
@@ -138,7 +158,7 @@ export function UsersPage() {
             variant="ghost"
             size="sm"
             loading={toggleActive.isPending && toggleActive.variables?.id === row.id}
-            onClick={() => toggleActive.mutate(row)}
+            onClick={() => (row.isActive ? setConfirming(row) : toggleActive.mutate(row))}
           >
             {row.isActive ? t('admin.users.deactivate') : t('admin.users.activate')}
           </Button>
@@ -159,13 +179,6 @@ export function UsersPage() {
           </Button>
         }
       />
-      {mutationError && (
-        <div className="page-alert">
-          <Alert tone="danger" live="assertive">
-            {t(errorMessageKey(mutationError))}
-          </Alert>
-        </div>
-      )}
       <Card>
         <FilterBar
           label={t('admin.users.filters')}
@@ -224,6 +237,18 @@ export function UsersPage() {
         key={inviteOpen ? 'open' : 'closed'}
         open={inviteOpen}
         onClose={() => setInviteOpen(false)}
+        onInvited={(email) => toast.success(t('admin.users.toast.invited', { email }))}
+      />
+      <ConfirmDialog
+        open={confirming !== null}
+        title={t('admin.users.confirmDeactivateTitle')}
+        description={t('admin.users.confirmDeactivateText', {
+          name: confirming ? displayName(confirming) : '',
+        })}
+        confirmLabel={t('admin.users.deactivate')}
+        loading={toggleActive.isPending}
+        onConfirm={() => confirming && toggleActive.mutate(confirming)}
+        onCancel={() => setConfirming(null)}
       />
     </>
   )

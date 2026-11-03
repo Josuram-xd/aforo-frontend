@@ -6,6 +6,7 @@ import './i18n'
 import './styles/tokens.css'
 import './index.css'
 import { AuthProvider } from './auth/AuthProvider'
+import { ToastProvider } from './components/ui/Toast'
 import { initTheme } from './theme/theme'
 import App from './App.tsx'
 
@@ -23,9 +24,11 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ToastProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

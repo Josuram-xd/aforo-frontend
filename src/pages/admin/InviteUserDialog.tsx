@@ -90,6 +90,7 @@ export function InviteUserDialog({ open, onClose, onInvited }: InviteUserDialogP
             <TextInput
               id={id}
               name="email"
+              autoFocus
               type="email"
               autoComplete="off"
               inputMode="email"

@@ -6,15 +6,16 @@ import { errorMessageKey } from '../../api/errors'
 import { deleteClassroom, deleteCourse } from '../../api/facilities'
 import { queryKeys } from '../../api/queryKeys'
 import type { Camera, Classroom, Course } from '../../api/types'
-import { Alert } from '../../components/ui/Alert'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { Card, CardHeader } from '../../components/ui/Card'
+import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
+import { useToast } from '../../components/ui/toastContext'
 import { useCameras, useClassrooms, useCourses } from '../../hooks/queries'
 import { CameraDialog, ClassroomDialog, CourseDialog } from './SettingsDialogs'
 import './SettingsPage.css'
@@ -34,15 +35,32 @@ export function SettingsPage() {
   const queryClient = useQueryClient()
   const [editing, setEditing] = useState<Editing>(null)
 
+  const toast = useToast()
+  const [deleting, setDeleting] = useState<
+    { kind: 'classroom'; item: Classroom } | { kind: 'course'; item: Course } | null
+  >(null)
+  const onDeleted = (name: string) => {
+    toast.success(t('settings.toast.deleted', { name }))
+    setDeleting(null)
+  }
+  const onDeleteError = (error: unknown) => {
+    toast.error(t(errorMessageKey(error)))
+    setDeleting(null)
+  }
+
   const removeClassroom = useMutation({
     mutationFn: (room: Classroom) => deleteClassroom(room.id),
+    onSuccess: (_, room) => onDeleted(room.name),
+    onError: onDeleteError,
     onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.classrooms }),
   })
   const removeCourse = useMutation({
     mutationFn: (course: Course) => deleteCourse(course.id),
+    onSuccess: (_, course) => onDeleted(course.name),
+    onError: onDeleteError,
     onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.courses }),
   })
-  const deleteError = removeClassroom.error ?? removeCourse.error
+  const saved = (name: string) => toast.success(t('settings.toast.saved', { name }))
 
   const roomName = (id: string) => classrooms.data?.find((room) => room.id === id)?.name ?? '—'
 
@@ -84,7 +102,7 @@ export function SettingsPage() {
             icon={<Trash2 size={14} aria-hidden="true" />}
             aria-label={t('settings.deleteNamed', { name: row.name })}
             loading={removeClassroom.isPending && removeClassroom.variables?.id === row.id}
-            onClick={() => removeClassroom.mutate(row)}
+            onClick={() => setDeleting({ kind: 'classroom', item: row })}
           />
         </span>
       ),
@@ -135,7 +153,7 @@ export function SettingsPage() {
             icon={<Trash2 size={14} aria-hidden="true" />}
             aria-label={t('settings.deleteNamed', { name: row.name })}
             loading={removeCourse.isPending && removeCourse.variables?.id === row.id}
-            onClick={() => removeCourse.mutate(row)}
+            onClick={() => setDeleting({ kind: 'course', item: row })}
           />
         </span>
       ),
@@ -174,7 +192,7 @@ export function SettingsPage() {
           size="sm"
           icon={<Pencil size={14} aria-hidden="true" />}
           onClick={() => setEditing({ kind: 'camera', item: row })}
-          aria-label={t('settings.editNamed', { name: row.name })}
+          aria-label={t('settings.cameras.renameNamed', { name: row.name })}
         >
           {t('settings.cameras.rename')}
         </Button>
@@ -212,13 +230,6 @@ export function SettingsPage() {
   return (
     <>
       <PageIntro description={t('settings.description')} />
-      {deleteError && (
-        <div className="page-alert">
-          <Alert tone="danger" live="assertive">
-            {t(errorMessageKey(deleteError))}
-          </Alert>
-        </div>
-      )}
       <div className="settings-grid">
         <Card>
           <CardHeader
@@ -287,14 +298,34 @@ export function SettingsPage() {
       </div>
 
       {editing?.kind === 'classroom' && (
-        <ClassroomDialog classroom={editing.item} onClose={() => setEditing(null)} />
+        <ClassroomDialog
+          classroom={editing.item}
+          onClose={() => setEditing(null)}
+          onSaved={saved}
+        />
       )}
       {editing?.kind === 'course' && (
-        <CourseDialog course={editing.item} onClose={() => setEditing(null)} />
+        <CourseDialog course={editing.item} onClose={() => setEditing(null)} onSaved={saved} />
       )}
       {editing?.kind === 'camera' && (
-        <CameraDialog camera={editing.item} onClose={() => setEditing(null)} />
+        <CameraDialog camera={editing.item} onClose={() => setEditing(null)} onSaved={saved} />
       )}
+      <ConfirmDialog
+        open={deleting !== null}
+        title={t(
+          deleting?.kind === 'course'
+            ? 'settings.confirmDeleteCourse'
+            : 'settings.confirmDeleteClassroom',
+        )}
+        description={t('settings.confirmDeleteText', { name: deleting?.item.name ?? '' })}
+        confirmLabel={t('settings.delete')}
+        loading={removeClassroom.isPending || removeCourse.isPending}
+        onConfirm={() => {
+          if (deleting?.kind === 'classroom') removeClassroom.mutate(deleting.item)
+          if (deleting?.kind === 'course') removeCourse.mutate(deleting.item)
+        }}
+        onCancel={() => setDeleting(null)}
+      />
     </>
   )
 }

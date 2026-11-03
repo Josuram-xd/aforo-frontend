@@ -74,3 +74,35 @@
     font-size: 80px;
   }
 }
+
+.occupancy-number--pulse-up,
+.occupancy-number--pulse-down {
+  animation: occupancy-pulse 900ms var(--ease-out);
+}
+
+.occupancy-number--pulse-up {
+  --pulse-color: var(--color-success);
+}
+
+.occupancy-number--pulse-down {
+  --pulse-color: var(--color-danger);
+}
+
+@keyframes occupancy-pulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  25% {
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 18px var(--pulse-color));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+
+.dashboard__occupancy .stat-card__value {
+  transform-origin: left center;
+}

@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Pencil, Search, UserPlus, Users } from 'lucide-react'
+import { DoorClosed, DoorOpen, Pencil, Search, UserMinus, UserPlus, Users } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLogView } from '../../api/accessLog'
+import { errorMessageKey } from '../../api/errors'
 import { queryKeys } from '../../api/queryKeys'
 import { setStudentActive } from '../../api/students'
 import type { Student } from '../../api/types'
@@ -12,12 +13,14 @@ import { Avatar } from '../../components/ui/Avatar'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
+import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
 import { DataTable, type Column } from '../../components/ui/DataTable'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
+import { useToast } from '../../components/ui/toastContext'
 import { useStudents } from '../../hooks/queries'
 import { formatDateTime, formatRelative } from '../../lib/format'
 import { StudentFormDialog } from './StudentFormDialog'
@@ -44,9 +47,21 @@ export function StudentsPage() {
   const [editing, setEditing] = useState<Student | null>(null)
   const [formOpen, setFormOpen] = useState(false)
 
+  const toast = useToast()
+  const [confirming, setConfirming] = useState<Student | null>(null)
+
   const toggleActive = useMutation({
     mutationFn: (student: Student) => setStudentActive(student.id, !student.is_active),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.students }),
+    onSuccess: (_, student) => {
+      toast.success(
+        t(student.is_active ? 'students.toast.deactivated' : 'students.toast.reactivated', {
+          name: student.full_name,
+        }),
+      )
+      setConfirming(null)
+    },
+    onError: (error) => toast.error(t(errorMessageKey(error))),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.students }),
   })
 
   const rows = useMemo(() => {
@@ -96,13 +111,15 @@ export function StudentsPage() {
       sortValue: (row) => (row.is_active ? row.presence : 'Z'),
       render: (row) =>
         !row.is_active ? (
-          <Badge tone="neutral">{t('students.inactive')}</Badge>
+          <Badge tone="neutral" icon={<UserMinus />}>
+            {t('students.inactive')}
+          </Badge>
         ) : row.presence === 'IN' ? (
-          <Badge tone="success" dot>
+          <Badge tone="success" icon={<DoorOpen />}>
             {t('students.presence.in')}
           </Badge>
         ) : (
-          <Badge tone="neutral" dot>
+          <Badge tone="neutral" icon={<DoorClosed />}>
             {t('students.presence.out')}
           </Badge>
         ),
@@ -143,7 +160,7 @@ export function StudentsPage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => toggleActive.mutate(row)}
+            onClick={() => (row.is_active ? setConfirming(row) : toggleActive.mutate(row))}
             loading={toggleActive.isPending && toggleActive.variables?.id === row.id}
           >
             {row.is_active ? t('students.deactivate') : t('students.reactivate')}
@@ -243,8 +260,22 @@ export function StudentsPage() {
           open={formOpen}
           student={editing}
           onClose={() => setFormOpen(false)}
+          onSaved={(name) =>
+            toast.success(
+              t(editing ? 'students.toast.updated' : 'students.toast.created', { name }),
+            )
+          }
         />
       )}
+      <ConfirmDialog
+        open={confirming !== null}
+        title={t('students.confirmDeactivateTitle')}
+        description={t('students.confirmDeactivateText', { name: confirming?.full_name ?? '' })}
+        confirmLabel={t('students.deactivate')}
+        loading={toggleActive.isPending}
+        onConfirm={() => confirming && toggleActive.mutate(confirming)}
+        onCancel={() => setConfirming(null)}
+      />
     </>
   )
 }

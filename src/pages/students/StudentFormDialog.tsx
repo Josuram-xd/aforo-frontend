@@ -82,6 +82,7 @@ export function StudentFormDialog({ open, student, onClose, onSaved }: StudentFo
             <TextInput
               id={id}
               name="fullName"
+              autoFocus
               defaultValue={student?.full_name ?? ''}
               maxLength={NAME_MAX}
               autoComplete="off"

@@ -150,11 +150,11 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **14.11** `feat(admin): add settings page for courses rooms and cameras` — CRUD de cursos y salones (aforo máximo) y nombres de cámaras.
 
 ### Task 15 — Diseño visual **(Prioridad 2)**
-- [ ] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).
-- [ ] **15.2** `feat(ui): add toasts and confirm dialogs` — Toast en cada mutación; confirmación en acciones destructivas.
-- [ ] **15.3** `feat(ui): add icons and badges across pages` — lucide-react en menú, tarjetas, estados vacíos y badges.
-- [ ] **15.4** `feat(ui): animate occupancy and new events` — Pulso del número al cambiar y entrada deslizada de eventos nuevos; respetar `prefers-reduced-motion`.
-- [ ] **15.5** `fix(a11y): audit contrast labels and keyboard navigation` — Contraste 4.5:1 en ambos temas, todo estado con texto, foco visible, navegación con teclado en menú, tablas y diálogos.
+- [x] **15.1** `feat(auth): add split layout and illustration for auth pages` — Panel con nombre del producto e ilustración SVG (sin fotos de personas).
+- [x] **15.2** `feat(ui): add toasts and confirm dialogs` — Toast en cada mutación; confirmación en acciones destructivas.
+- [x] **15.3** `feat(ui): add icons and badges across pages` — lucide-react en menú, tarjetas, estados vacíos y badges.
+- [x] **15.4** `feat(ui): animate occupancy and new events` — Pulso del número al cambiar y entrada deslizada de eventos nuevos; respetar `prefers-reduced-motion`.
+- [x] **15.5** `fix(a11y): audit contrast labels and keyboard navigation` — Contraste 4.5:1 en ambos temas, todo estado con texto, foco visible, navegación con teclado en menú, tablas y diálogos.
 
 ### Task 16 — Despliegue y pruebas **(Prioridad 1 al final)**
 - [ ] **16.1** (sin commit) En Amplify: variables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; quitar `VITE_API_BASE_URL`. En Supabase: agregar la URL de Amplify en Authentication → URL Configuration.
