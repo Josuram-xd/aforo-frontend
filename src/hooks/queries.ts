@@ -10,7 +10,8 @@ import {
 import { fetchCameras, fetchClassrooms, fetchCourses } from '../api/facilities'
 import { queryKeys } from '../api/queryKeys'
 import { fetchAttendance, fetchSessions } from '../api/sessions'
-import { fetchStudents } from '../api/students'
+import { fetchCourseStudentIds, fetchEnrollmentCounts } from '../api/courseStudents'
+import { fetchPhotoUrls, fetchStudents } from '../api/students'
 import type { AuditFilters, EventFilters } from '../api/types'
 import { endOfBogotaDay, startOfBogotaDay } from '../lib/format'
 import { useFallbackRefetchInterval } from '../realtime/realtimeContext'
@@ -114,5 +115,30 @@ export function useAuditPage(filters: AuditFilters, page: number) {
     queryKey: [...queryKeys.audit, filters, page],
     queryFn: () => fetchAuditPage(filters, page),
     placeholderData: keepPreviousData,
+  })
+}
+
+export function useEnrollmentCounts() {
+  return useQuery({
+    queryKey: [...queryKeys.courseStudents, 'counts'],
+    queryFn: fetchEnrollmentCounts,
+  })
+}
+
+export function useCourseStudentIds(courseId: string) {
+  return useQuery({
+    queryKey: [...queryKeys.courseStudents, courseId],
+    queryFn: () => fetchCourseStudentIds(courseId),
+  })
+}
+
+/** Signed URLs for the students' optional photos, keyed by storage path. */
+export function useStudentPhotoUrls(paths: string[]) {
+  const sorted = [...paths].sort()
+  return useQuery({
+    queryKey: [...queryKeys.studentPhotos, sorted],
+    queryFn: () => fetchPhotoUrls(sorted),
+    staleTime: 50 * 60_000, // signed URLs last 1 h
+    enabled: sorted.length > 0,
   })
 }

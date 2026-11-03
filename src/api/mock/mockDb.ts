@@ -47,6 +47,7 @@ export const db = {
   events: [] as Row<'events'>[],
   alerts: [] as Row<'alerts'>[],
   courses: [] as Row<'courses'>[],
+  course_students: [] as Row<'course_students'>[],
   class_sessions: [] as Row<'class_sessions'>[],
   attendance: [] as Row<'attendance'>[],
   profiles: [] as Row<'profiles'>[],
@@ -117,10 +118,18 @@ function build() {
       .toLowerCase()}@universidad.edu.co`,
     student_code: `2026${String(1000 + index * 37)}`,
     is_active: index !== 11,
+    photo_path: null,
+    enrollment_status: index % 3 === 0 ? 'none' : 'enrolled',
+    enrollment_updated_at: null,
     presence: 'OUT',
     last_event_at: null,
     created_at: '2026-08-10T15:00:00Z',
     updated_at: '2026-08-10T15:00:00Z',
+  }))
+  db.course_students = db.students.map((student) => ({
+    course_id: db.courses[0]!.id,
+    student_id: student.id,
+    enrolled_at: '2026-08-10T15:00:00Z',
   }))
 
   const sessionStart = dayStart + 7 * 60 * MINUTE

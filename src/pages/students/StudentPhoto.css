@@ -1,0 +1,40 @@
+.student-photo {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.student-photo__body {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.student-photo__label {
+  font-weight: var(--font-weight-medium);
+}
+
+.student-photo__hint {
+  font-size: var(--font-size-meta);
+  color: var(--color-text-secondary);
+}
+
+.student-photo__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.student-photo__actions label:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
+.student-photo__error {
+  font-size: var(--font-size-meta);
+  color: var(--color-danger-fg);
+}

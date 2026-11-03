@@ -13,6 +13,9 @@ const STUDENT: Student = {
   student_code: 'COD-1',
   email: null,
   is_active: true,
+  photo_path: null,
+  enrollment_status: 'none',
+  enrollment_updated_at: null,
   presence: 'OUT',
   last_event_at: null,
   created_at: '2026-10-01T12:00:00Z',
@@ -25,6 +28,7 @@ vi.mock('../../auth/useRole', () => ({
 vi.mock('../../api/accessLog', () => ({ useLogView: () => undefined }))
 vi.mock('../../hooks/queries', () => ({
   useStudents: () => ({ data: [STUDENT], isPending: false, isError: false, refetch: vi.fn() }),
+  useStudentPhotoUrls: () => ({ data: {} }),
 }))
 
 describe('StudentsPage delete action', () => {
@@ -37,10 +41,12 @@ describe('StudentsPage delete action', () => {
     expect(screen.getByRole('button', { name: 'Eliminar a Ana María Peña' })).toBeInTheDocument()
   })
 
-  it('hides "Eliminar" from teachers', () => {
+  it('lets teachers delete and enroll students too', () => {
     role.value = 'teacher'
     renderWithProviders(<StudentsPage />)
-    expect(screen.getByText('Ana María Peña')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /Eliminar/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Eliminar a Ana María Peña' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Registrar rostro de Ana María Peña' }),
+    ).toBeInTheDocument()
   })
 })

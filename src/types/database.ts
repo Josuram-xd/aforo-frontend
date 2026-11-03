@@ -492,10 +492,13 @@ export type Database = {
         Row: {
           created_at: string
           email: string | null
+          enrollment_status: string
+          enrollment_updated_at: string | null
           full_name: string
           id: string
           is_active: boolean
           last_event_at: string | null
+          photo_path: string | null
           presence: string
           student_code: string | null
           updated_at: string
@@ -503,10 +506,13 @@ export type Database = {
         Insert: {
           created_at?: string
           email?: string | null
+          enrollment_status?: string
+          enrollment_updated_at?: string | null
           full_name: string
           id?: string
           is_active?: boolean
           last_event_at?: string | null
+          photo_path?: string | null
           presence?: string
           student_code?: string | null
           updated_at?: string
@@ -514,10 +520,13 @@ export type Database = {
         Update: {
           created_at?: string
           email?: string | null
+          enrollment_status?: string
+          enrollment_updated_at?: string | null
           full_name?: string
           id?: string
           is_active?: boolean
           last_event_at?: string | null
+          photo_path?: string | null
           presence?: string
           student_code?: string | null
           updated_at?: string
@@ -609,6 +618,10 @@ export type Database = {
       }
       delete_student: { Args: { p_student_id: string }; Returns: undefined }
       delete_user: { Args: { p_user_id: string }; Returns: undefined }
+      submit_enrollment: {
+        Args: { p_student_id: string; p_images: string[] }
+        Returns: undefined
+      }
       ingest_event: { Args: { p_event: Json }; Returns: Json }
       log_access: {
         Args: { p_action: string; p_resource?: string }
