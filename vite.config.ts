@@ -6,7 +6,7 @@ const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "script-src 'self'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://*.googleusercontent.com",
+  "img-src 'self' data: blob: https://*.googleusercontent.com https://uezrriyikquncmcgwwzo.supabase.co",
   "font-src 'self' data:",
   "connect-src 'self' https://uezrriyikquncmcgwwzo.supabase.co wss://uezrriyikquncmcgwwzo.supabase.co",
   "object-src 'none'",
@@ -30,6 +30,7 @@ export default defineConfig({
       'X-Frame-Options': 'DENY',
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Permissions-Policy': 'camera=(self), microphone=(), geolocation=(), payment=(), usb=()',
     },
   },
 })

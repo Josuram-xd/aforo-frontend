@@ -1,13 +1,14 @@
 # Security headers for AWS Amplify Hosting (applied to every response).
 # The CSP only allows our own bundle plus the Supabase project (REST, Auth, Realtime websocket,
-# Edge Functions) and Google profile pictures. Google sign-in is a top-level redirect handled by
+# Edge Functions, signed student photos from Storage) and Google profile pictures. The camera is
+# allowed for this origin only (face enrollment); everything else in Permissions-Policy stays off. Google sign-in is a top-level redirect handled by
 # Supabase Auth, so it needs no extra CSP entry. If the Supabase project changes, update
 # connect-src here and in vite.config.ts (preview headers).
 customHeaders:
   - pattern: '**/*'
     headers:
       - key: Content-Security-Policy
-        value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.googleusercontent.com; font-src 'self' data:; connect-src 'self' https://uezrriyikquncmcgwwzo.supabase.co wss://uezrriyikquncmcgwwzo.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.googleusercontent.com https://uezrriyikquncmcgwwzo.supabase.co; font-src 'self' data:; connect-src 'self' https://uezrriyikquncmcgwwzo.supabase.co wss://uezrriyikquncmcgwwzo.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
       - key: Strict-Transport-Security
         value: max-age=31536000; includeSubDomains
       - key: X-Frame-Options
@@ -17,7 +18,7 @@ customHeaders:
       - key: Referrer-Policy
         value: strict-origin-when-cross-origin
       - key: Permissions-Policy
-        value: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+        value: camera=(self), microphone=(), geolocation=(), payment=(), usb=()
       - key: Cross-Origin-Opener-Policy
         value: same-origin
   - pattern: '/assets/**/*'

@@ -167,7 +167,7 @@ export function SettingsPage() {
     <>
       <PageIntro description={t('settings.description')} />
       <div className="settings-grid">
-        <Card>
+        <Card className="settings-grid__wide">
           <CardHeader
             icon={<DoorOpen size={18} />}
             title={t('settings.classrooms.title')}
