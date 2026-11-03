@@ -243,10 +243,48 @@ export async function saveStudent(input: StudentInput, id?: string): Promise<voi
       email: input.email ?? null,
       student_code: input.student_code ?? null,
       is_active: true,
+      photo_path: input.photo_path ?? null,
+      enrollment_status: 'none',
+      enrollment_updated_at: null,
       presence: 'OUT',
       last_event_at: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
+    })
+  await delay(null)
+}
+
+export async function submitEnrollment(id: string): Promise<void> {
+  const student = db.students.find((s) => s.id === id)
+  if (student) student.enrollment_status = 'pending'
+  await delay(null)
+}
+
+export async function fetchCourseStudentIds(courseId: string): Promise<string[]> {
+  return delay(
+    db.course_students.filter((cs) => cs.course_id === courseId).map((cs) => cs.student_id),
+  )
+}
+
+export async function fetchEnrollmentCounts(): Promise<Record<string, number>> {
+  const counts: Record<string, number> = {}
+  for (const cs of db.course_students) counts[cs.course_id] = (counts[cs.course_id] ?? 0) + 1
+  return delay(counts)
+}
+
+export async function setCourseEnrollment(
+  courseId: string,
+  studentId: string,
+  enrolled: boolean,
+): Promise<void> {
+  db.course_students = db.course_students.filter(
+    (cs) => !(cs.course_id === courseId && cs.student_id === studentId),
+  )
+  if (enrolled)
+    db.course_students.push({
+      course_id: courseId,
+      student_id: studentId,
+      enrolled_at: new Date().toISOString(),
     })
   await delay(null)
 }

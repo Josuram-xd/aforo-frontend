@@ -9,6 +9,8 @@ export const queryKeys = {
   sessions: ['sessions'] as const,
   attendance: ['attendance'] as const,
   courses: ['courses'] as const,
+  courseStudents: ['course-students'] as const,
+  studentPhotos: ['student-photos'] as const,
   users: ['users'] as const,
   audit: ['audit'] as const,
   me: ['me'] as const,

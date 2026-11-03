@@ -20,11 +20,12 @@ function hueOf(name: string): number {
   return hash
 }
 
-/** Only https images are rendered (Google avatars); anything else falls back to initials. */
+/** Only https (Google avatars, signed photo URLs) and local blob previews render; else initials. */
 function isSafeImageUrl(url: string | null | undefined): url is string {
   if (!url) return false
   try {
-    return new URL(url).protocol === 'https:'
+    const protocol = new URL(url).protocol
+    return protocol === 'https:' || protocol === 'blob:'
   } catch {
     return false
   }

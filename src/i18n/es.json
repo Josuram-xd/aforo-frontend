@@ -186,7 +186,8 @@
       "users": "Usuarios",
       "audit": "Auditoría",
       "settings": "Configuración"
-    }
+    },
+    "courses": "Cursos"
   },
   "shell": {
     "skipToContent": "Saltar al contenido",
@@ -382,7 +383,8 @@
       "name": "Estudiante",
       "code": "Código",
       "presence": "Presencia",
-      "lastEvent": "Último evento"
+      "lastEvent": "Último evento",
+      "biometrics": "Biometría"
     },
     "presence": {
       "in": "Dentro",
@@ -395,7 +397,7 @@
     "deactivate": "Desactivar",
     "reactivate": "Reactivar",
     "empty": "Todavía no hay estudiantes",
-    "emptyHint": "Agrega a los estudiantes del curso para que aparezcan en los eventos.",
+    "emptyHint": "Agrega estudiantes con el botón «Nuevo estudiante»; puedes registrar su rostro y una foto opcional.",
     "noResults": "Ningún estudiante coincide con la búsqueda",
     "submitCreate": "Crear estudiante",
     "toast": {
@@ -403,14 +405,33 @@
       "updated": "Guardamos los cambios de {{name}}.",
       "deactivated": "{{name}} quedó inactivo.",
       "reactivated": "{{name}} volvió a estar activo.",
-      "deleted": "Eliminamos a {{name}}. Falta borrar su biometría en el equipo de visión."
+      "deleted": "Eliminamos a {{name}}. Falta borrar su biometría en el equipo de visión.",
+      "enrollmentSent": "Enviamos las fotos de {{name}} al equipo de visión. Su rostro quedará registrado en unos segundos."
     },
     "confirmDeactivateTitle": "¿Desactivar estudiante?",
     "confirmDeactivateText": "{{name}} dejará de aparecer como activo y sus próximos eventos no se asociarán a su nombre. Puedes reactivarlo después.",
     "delete": "Eliminar",
     "deleteNamed": "Eliminar a {{name}}",
     "confirmDeleteTitle": "¿Eliminar estudiante para siempre?",
-    "confirmDeleteText": "Se borran los datos de {{name}} y su asistencia, y su nombre desaparece de la auditoría. Sus entradas y salidas pasadas se conservan sin nombre. No se puede deshacer. Después borra su biometría en el equipo de visión con: python -m enrollment.remove_student --person-id {{id}}"
+    "confirmDeleteText": "Se borran los datos de {{name}} y su asistencia, y su nombre desaparece de la auditoría. Sus entradas y salidas pasadas se conservan sin nombre. No se puede deshacer. Después borra su biometría en el equipo de visión con: python -m enrollment.remove_student --person-id {{id}}",
+    "enrollment": {
+      "none": "Sin rostro",
+      "pending": "Procesando",
+      "enrolled": "Registrada",
+      "failed": "Falló"
+    },
+    "enroll": "Registrar rostro",
+    "reenroll": "Volver a registrar",
+    "enrollNamed": "Registrar rostro de {{name}}",
+    "photo": {
+      "label": "Foto del estudiante",
+      "hint": "Opcional. Solo la ven docentes y administradores; sirve para saber quién es.",
+      "choose": "Elegir foto",
+      "change": "Cambiar foto",
+      "remove": "Quitar foto",
+      "type": "Usa una imagen JPG, PNG o WebP.",
+      "unreadable": "No pudimos leer esa imagen."
+    }
   },
   "sessions": {
     "description": "Programa las clases y revisa quién estuvo en cada una. La asistencia se llena sola con los eventos de las cámaras.",
@@ -551,7 +572,7 @@
     }
   },
   "settings": {
-    "description": "Salones con su aforo máximo, cursos y nombres de las cámaras. Los cambios quedan en la auditoría.",
+    "description": "Salones con su aforo máximo y nombres de las cámaras. Los cambios quedan en la auditoría.",
     "add": "Agregar",
     "editNamed": "Editar {{name}}",
     "deleteNamed": "Eliminar {{name}}",
@@ -614,5 +635,37 @@
     "featureFace": "Distingue identificación por rostro y conteo por cuerpo",
     "featureRoles": "Acceso por roles: cada quien ve solo lo que le corresponde",
     "illustrationFace": "71 % rostro"
+  },
+  "enrollment": {
+    "title": "Registrar el rostro de {{name}}",
+    "description": "Toma de 3 a 5 fotos con buena luz, de frente y con ligeros giros de cabeza.",
+    "starting": "Iniciando cámara…",
+    "noCamera": "Este navegador no permite usar la cámara.",
+    "cameraDenied": "No pudimos acceder a la cámara. Revisa el permiso del navegador e inténtalo de nuevo.",
+    "take": "Tomar foto",
+    "count": "{{count}} de {{max}} fotos (mínimo {{min}})",
+    "shotAlt": "Foto {{n}}",
+    "removeShot": "Quitar foto {{n}}",
+    "tips": "Las fotos viajan cifradas al equipo de visión, que calcula el registro del rostro y las borra enseguida. Solo se guarda el registro matemático, en ese equipo.",
+    "consent": "La persona autorizó el tratamiento de sus datos biométricos para controlar el aforo (Ley 1581 de 2012).",
+    "send": "Enviar al equipo de visión"
+  },
+  "courses": {
+    "description": "Crea cursos e inscribe a sus estudiantes. Las sesiones de clase pertenecen a un curso.",
+    "create": "Nuevo curso",
+    "tableCaption": "Cursos",
+    "students": "Estudiantes",
+    "manage": "Estudiantes",
+    "manageNamed": "Gestionar estudiantes de {{name}}",
+    "enrolledCount_one": "{{count}} inscrito",
+    "enrolledCount_other": "{{count}} inscritos",
+    "empty": "Todavía no hay cursos",
+    "emptyHint": "Crea el primero con «Nuevo curso».",
+    "enrollTitle": "Estudiantes de {{name}}",
+    "enrollHint": "Marca a quienes pertenecen a este curso. Los cambios se guardan al instante.",
+    "search": "Buscar estudiante",
+    "noStudents": "Aún no hay estudiantes. Créalos en la página Estudiantes.",
+    "enrolledToast": "{{student}} inscrito en el curso.",
+    "removedToast": "{{student}} salió del curso."
   }
 }

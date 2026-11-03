@@ -3,6 +3,7 @@ import {
   DoorClosed,
   DoorOpen,
   Pencil,
+  ScanFace,
   Search,
   Trash2,
   UserMinus,
@@ -16,7 +17,6 @@ import { errorMessageKey } from '../../api/errors'
 import { queryKeys } from '../../api/queryKeys'
 import { deleteStudent, setStudentActive } from '../../api/students'
 import type { Student } from '../../api/types'
-import { useRole } from '../../auth/useRole'
 import { FilterBar } from '../../components/FilterBar'
 import { Avatar } from '../../components/ui/Avatar'
 import { Badge } from '../../components/ui/Badge'
@@ -31,8 +31,9 @@ import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { TypedConfirmDialog } from '../../components/ui/TypedConfirmDialog'
 import { useToast } from '../../components/ui/toastContext'
-import { useStudents } from '../../hooks/queries'
+import { useStudentPhotoUrls, useStudents } from '../../hooks/queries'
 import { formatDateTime, formatRelative } from '../../lib/format'
+import { EnrollmentDialog } from './EnrollmentDialog'
 import { StudentFormDialog } from './StudentFormDialog'
 
 type PresenceFilter = '' | 'IN' | 'OUT' | 'inactive'
@@ -44,13 +45,17 @@ function normalize(text: string): string {
     .toLowerCase()
 }
 
-/** Estudiantes: presence and last event; admins create, edit and deactivate. */
+/** Estudiantes: presence and last event; teachers and admins create, edit, enroll faces and delete. */
 export function StudentsPage() {
   const { t } = useTranslation()
   useLogView('students')
-  const { role } = useRole()
-  const isAdmin = role === 'admin'
   const students = useStudents()
+  const photoUrls = useStudentPhotoUrls(
+    (students.data ?? []).flatMap((s) => (s.photo_path ? [s.photo_path] : [])),
+  ).data
+  const photoOf = (s: Student) => (s.photo_path ? (photoUrls?.[s.photo_path] ?? null) : null)
+  const [enrollingId, setEnrollingId] = useState<string | null>(null)
+  const enrolling = students.data?.find((s) => s.id === enrollingId) ?? null
   const queryClient = useQueryClient()
   const [search, setSearch] = useState('')
   const [presence, setPresence] = useState<PresenceFilter>('')
@@ -76,7 +81,7 @@ export function StudentsPage() {
 
   const [deleting, setDeleting] = useState<Student | null>(null)
   const remove = useMutation({
-    mutationFn: (student: Student) => deleteStudent(student.id),
+    mutationFn: (student: Student) => deleteStudent(student),
     onSuccess: (_, student) => {
       toast.success(t('students.toast.deleted', { name: student.full_name }))
       setDeleting(null)
@@ -111,7 +116,7 @@ export function StudentsPage() {
       sortValue: (row) => row.full_name,
       render: (row) => (
         <span className="cell-primary">
-          <Avatar name={row.full_name} size="sm" />
+          <Avatar name={row.full_name} imageUrl={photoOf(row)} size="sm" />
           <span className="cell-primary__text">
             <span className="cell-primary__title">{row.full_name}</span>
             <span className="cell-primary__meta">{row.email ?? t('students.noEmail')}</span>
@@ -146,6 +151,28 @@ export function StudentsPage() {
         ),
     },
     {
+      key: 'face',
+      header: t('students.columns.biometrics'),
+      hideOnMobile: true,
+      sortValue: (row) => row.enrollment_status,
+      render: (row) => {
+        const status = row.enrollment_status
+        const tone =
+          status === 'enrolled'
+            ? 'success'
+            : status === 'pending'
+              ? 'accent'
+              : status === 'failed'
+                ? 'danger'
+                : 'neutral'
+        return (
+          <Badge tone={tone} icon={<ScanFace />}>
+            {t(`students.enrollment.${status}`, { defaultValue: t('students.enrollment.none') })}
+          </Badge>
+        )
+      },
+    },
+    {
       key: 'last',
       header: t('students.columns.lastEvent'),
       hideOnMobile: true,
@@ -159,7 +186,7 @@ export function StudentsPage() {
     },
   ]
 
-  if (isAdmin) {
+  {
     columns.push({
       key: 'actions',
       header: <span className="visually-hidden">{t('common.actions')}</span>,
@@ -175,9 +202,20 @@ export function StudentsPage() {
               setFormOpen(true)
             }}
             aria-label={t('students.editNamed', { name: row.full_name })}
-          >
-            {t('common.edit')}
-          </Button>
+            title={t('common.edit')}
+          />
+          {row.is_active && (
+            <Button
+              variant="ghost"
+              size="sm"
+              icon={<ScanFace size={14} aria-hidden="true" />}
+              onClick={() => setEnrollingId(row.id)}
+              aria-label={t('students.enrollNamed', { name: row.full_name })}
+              title={
+                row.enrollment_status === 'enrolled' ? t('students.reenroll') : t('students.enroll')
+              }
+            />
+          )}
           <Button
             variant="ghost"
             size="sm"
@@ -193,9 +231,8 @@ export function StudentsPage() {
             icon={<Trash2 size={14} aria-hidden="true" />}
             onClick={() => setDeleting(row)}
             aria-label={t('students.deleteNamed', { name: row.full_name })}
-          >
-            {t('students.delete')}
-          </Button>
+            title={t('students.delete')}
+          />
         </span>
       ),
     })
@@ -210,17 +247,15 @@ export function StudentsPage() {
           count: active.length,
         })}
         actions={
-          isAdmin ? (
-            <Button
-              icon={<UserPlus size={16} aria-hidden="true" />}
-              onClick={() => {
-                setEditing(null)
-                setFormOpen(true)
-              }}
-            >
-              {t('students.create')}
-            </Button>
-          ) : undefined
+          <Button
+            icon={<UserPlus size={16} aria-hidden="true" />}
+            onClick={() => {
+              setEditing(null)
+              setFormOpen(true)
+            }}
+          >
+            {t('students.create')}
+          </Button>
         }
       />
       <Card>
@@ -276,26 +311,30 @@ export function StudentsPage() {
               <EmptyState
                 icon={Users}
                 title={students.data.length === 0 ? t('students.empty') : t('students.noResults')}
-                description={
-                  students.data.length === 0 && isAdmin ? t('students.emptyHint') : undefined
-                }
+                description={students.data.length === 0 ? t('students.emptyHint') : undefined}
               />
             }
           />
         )}
       </Card>
 
-      {isAdmin && (
-        <StudentFormDialog
-          key={formOpen ? (editing?.id ?? 'new') : 'closed'}
-          open={formOpen}
-          student={editing}
-          onClose={() => setFormOpen(false)}
-          onSaved={(name) =>
-            toast.success(
-              t(editing ? 'students.toast.updated' : 'students.toast.created', { name }),
-            )
-          }
+      <StudentFormDialog
+        key={formOpen ? (editing?.id ?? 'new') : 'closed'}
+        open={formOpen}
+        student={editing}
+        photoUrl={editing ? photoOf(editing) : null}
+        onClose={() => setFormOpen(false)}
+        onSaved={(name, id, created) => {
+          toast.success(t(created ? 'students.toast.created' : 'students.toast.updated', { name }))
+          if (created) setEnrollingId(id)
+        }}
+      />
+      {enrolling && (
+        <EnrollmentDialog
+          key={enrolling.id}
+          student={enrolling}
+          onClose={() => setEnrollingId(null)}
+          onSent={(name) => toast.success(t('students.toast.enrollmentSent', { name }))}
         />
       )}
       <ConfirmDialog

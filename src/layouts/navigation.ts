@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
 import {
   Bell,
+  BookOpen,
   CalendarClock,
   Cctv,
   GraduationCap,
@@ -32,6 +33,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { to: '/', labelKey: 'nav.home', icon: LayoutDashboard, roles: [] },
       { to: '/eventos', labelKey: 'nav.events', icon: History, roles: STAFF_ROLES },
       { to: '/estudiantes', labelKey: 'nav.students', icon: GraduationCap, roles: STAFF_ROLES },
+      { to: '/cursos', labelKey: 'nav.courses', icon: BookOpen, roles: STAFF_ROLES },
       { to: '/sesiones', labelKey: 'nav.sessions', icon: CalendarClock, roles: STAFF_ROLES },
       { to: '/camaras', labelKey: 'nav.cameras', icon: Cctv, roles: [] },
       { to: '/alertas', labelKey: 'nav.alerts', icon: Bell, roles: [] },
