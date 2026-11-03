@@ -22,4 +22,9 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Test helpers export render functions next to components; fast refresh does not apply.
+    files: ['src/test/**/*.{ts,tsx}', '**/*.test.{ts,tsx}'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 ])
