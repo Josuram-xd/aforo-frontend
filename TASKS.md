@@ -188,3 +188,6 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **21.1** `feat(students): let teachers manage students with optional photo and face enrollment` — `teacher` crea, edita, desactiva y elimina estudiantes. Foto opcional en un bucket privado (URLs firmadas). Botón «Registrar rostro»: 3-5 fotos con la cámara del navegador, con casilla de autorización, enviadas con `submit_enrollment`; al crear un estudiante se ofrece de inmediato. Columna «Biometría» con su estado.
 - [x] **21.2** `feat(courses): add courses page with enrollment for teachers` — Ruta `/cursos` (`teacher` y `admin`): crear y editar cursos e inscribir estudiantes; solo `admin` elimina. Los cursos salen de Configuración, que queda con salones y cámaras.
 - [ ] **21.3** (sin commit) Probar en Amplify con un usuario `teacher`: crear curso, crear estudiante con y sin foto, registrar rostro y verificar que pasa a «Registrada».
+
+### Task 22 — Pulido visual **(Prioridad 2)**
+- [x] **22.1** `style(ui): refine cards, buttons and typography` — Fuente Plus Jakarta Sans (reemplaza a Inter), tarjetas con aro de luz y sombra difusa en capas, botones en píldora con presión suave, curva de animación tipo resorte y dos halos de fondo. Acciones de fila de Estudiantes en íconos para que no se desborden.

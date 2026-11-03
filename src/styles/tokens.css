@@ -42,17 +42,20 @@
   --skeleton-shine: #33445e;
 
   --shadow-card:
-    0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.3),
-    0 8px 24px -12px rgb(0 0 0 / 0.5);
+    0 0 0 1px rgb(255 255 255 / 0.06), 0 1px 0 rgb(255 255 255 / 0.07) inset,
+    0 24px 48px -28px rgb(2 6 23 / 0.7), 0 2px 6px -2px rgb(2 6 23 / 0.35);
   --shadow-pop: 0 18px 50px -12px rgb(0 0 0 / 0.65), 0 2px 6px rgb(0 0 0 / 0.35);
   --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
   --backdrop: rgb(2 6 23 / 0.66);
-  --glow-accent: radial-gradient(60rem 30rem at 85% -10%, rgb(56 189 248 / 0.1), transparent 60%);
+  --glow-accent:
+    radial-gradient(48rem 26rem at 88% -8%, rgb(56 189 248 / 0.11), transparent 62%),
+    radial-gradient(40rem 24rem at -6% 8%, rgb(167 139 250 / 0.08), transparent 60%);
 }
 
 :root {
   /* Typography (§3, §8.2) */
-  --font-family: 'Inter Variable', Inter, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-family:
+    'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-size-hero: 96px;
   --font-size-display: 40px;
   --font-size-heading: 24px;
@@ -78,7 +81,7 @@
 
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-lg: 20px;
   --radius-full: 999px;
 
   --sidebar-width: 248px;
@@ -86,7 +89,7 @@
   --topbar-height: 64px;
   --content-max-width: 1280px;
 
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1); /* heavy spring-like settle */
   --duration-fast: 120ms;
   --duration-base: 200ms;
 }

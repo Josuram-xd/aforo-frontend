@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import '@fontsource-variable/inter'
+import '@fontsource-variable/plus-jakarta-sans'
 import './i18n'
 import './styles/tokens.css'
 import './index.css'

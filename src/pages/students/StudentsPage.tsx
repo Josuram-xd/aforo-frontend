@@ -202,9 +202,8 @@ export function StudentsPage() {
               setFormOpen(true)
             }}
             aria-label={t('students.editNamed', { name: row.full_name })}
-          >
-            {t('common.edit')}
-          </Button>
+            title={t('common.edit')}
+          />
           {row.is_active && (
             <Button
               variant="ghost"
@@ -212,9 +211,10 @@ export function StudentsPage() {
               icon={<ScanFace size={14} aria-hidden="true" />}
               onClick={() => setEnrollingId(row.id)}
               aria-label={t('students.enrollNamed', { name: row.full_name })}
-            >
-              {row.enrollment_status === 'enrolled' ? t('students.reenroll') : t('students.enroll')}
-            </Button>
+              title={
+                row.enrollment_status === 'enrolled' ? t('students.reenroll') : t('students.enroll')
+              }
+            />
           )}
           <Button
             variant="ghost"
@@ -231,9 +231,8 @@ export function StudentsPage() {
             icon={<Trash2 size={14} aria-hidden="true" />}
             onClick={() => setDeleting(row)}
             aria-label={t('students.deleteNamed', { name: row.full_name })}
-          >
-            {t('students.delete')}
-          </Button>
+            title={t('students.delete')}
+          />
         </span>
       ),
     })

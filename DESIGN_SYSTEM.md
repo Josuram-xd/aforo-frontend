@@ -115,7 +115,7 @@ New tokens: `--color-surface-2` (hover/zebra rows), `--radius-sm/md/lg` (6/10/16
 
 ### 8.2 Typography
 
-**Inter** (Google Fonts, weights 400/500/600/700) with the system stack as fallback; tabular numbers (`font-variant-numeric: tabular-nums`) for counters, times and tables. The hero occupancy number stays 96px on the dashboard.
+**Plus Jakarta Sans** (variable, bundled with @fontsource; replaces Inter as of task 22) with the system stack as fallback; tabular numbers (`font-variant-numeric: tabular-nums`) for counters, times and tables. The hero occupancy number stays 96px on the dashboard.
 
 ### 8.3 App shell
 
