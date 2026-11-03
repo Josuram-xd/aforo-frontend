@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router'
 import { logAccess } from '../../api/accessLog'
 import { useSession } from '../../auth/authContext'
+import { mustSetPassword, SET_PASSWORD_PATH } from '../../auth/passwordSetup'
 import { FullPageLoader } from '../../components/FullPageLoader'
 import { Alert } from '../../components/ui/Alert'
 import { ButtonLink } from '../../components/ui/Button'
@@ -38,7 +39,7 @@ export function AuthCallbackPage() {
     return () => clearTimeout(timer)
   }, [user, failed])
 
-  if (user) return <Navigate to="/" replace />
+  if (user) return <Navigate to={mustSetPassword() ? SET_PASSWORD_PATH : '/'} replace />
 
   if (failed && !loading) {
     return (

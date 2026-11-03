@@ -1,0 +1,23 @@
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.filter-bar__fields {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+
+.filter-bar .field__label {
+  font-size: var(--font-size-tiny);
+  color: var(--color-text-secondary);
+}
+
+.filter-bar .input {
+  height: 38px;
+}

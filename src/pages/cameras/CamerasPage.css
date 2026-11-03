@@ -1,0 +1,121 @@
+.camera-group + .camera-group {
+  margin-top: var(--space-6);
+}
+
+.camera-group__title {
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-semibold);
+}
+
+.camera-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-5);
+}
+
+.camera-card {
+  overflow: hidden;
+  padding: 0;
+}
+
+.camera-card__preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 40%, rgb(56 189 248 / 0.18), transparent 60%),
+    linear-gradient(160deg, #0b1324, #111d33);
+  color: rgb(186 230 253 / 0.8);
+}
+
+.camera-card.is-offline .camera-card__preview {
+  background:
+    radial-gradient(circle at 50% 40%, rgb(248 113 113 / 0.14), transparent 60%),
+    linear-gradient(160deg, #150f16, #1e1520);
+  color: rgb(254 202 202 / 0.7);
+}
+
+.camera-card__scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.03) 0,
+    rgb(255 255 255 / 0.03) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.camera-card__rec {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: rgb(0 0 0 / 0.45);
+  color: #e2e8f0;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 11px;
+}
+
+.camera-card__rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: #94a3b8;
+}
+
+.camera-card.is-online .camera-card__rec-dot {
+  background: #4ade80;
+  box-shadow: 0 0 8px #4ade80;
+}
+
+.camera-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.camera-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.camera-card__name {
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.camera-card__facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.camera-card__facts dt {
+  font-size: var(--font-size-tiny);
+  color: var(--color-text-secondary);
+}
+
+.camera-card__facts dd {
+  margin: 0;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+}
+
+.camera-note {
+  margin-top: var(--space-6);
+  font-size: var(--font-size-tiny);
+  color: var(--color-text-secondary);
+}

@@ -147,3 +147,9 @@ input[type='datetime-local'].input,
 input[type='time'].input {
   color-scheme: inherit;
 }
+
+.input--compact {
+  width: auto;
+  min-width: 150px;
+  height: 34px;
+}

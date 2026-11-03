@@ -5,6 +5,7 @@ import { logAccess } from '../api/accessLog'
 import { MOCK_AUTH_USER } from '../api/mock/mockIdentity'
 import { isMockMode } from '../lib/env'
 import { supabase } from '../lib/supabase'
+import { clearMustSetPassword } from './passwordSetup'
 import { AuthContext, type AuthContextValue, type AuthUser } from './authContext'
 
 function readString(value: unknown): string | null {
@@ -55,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Logged before signing out: the RPC needs the still-valid session.
     await logAccess('LOGOUT')
     await supabase.auth.signOut()
+    clearMustSetPassword()
     queryClient.clear()
   }, [queryClient])
 

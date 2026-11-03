@@ -1,7 +1,9 @@
 import { CircleCheck, ShieldCheck } from 'lucide-react'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router'
 import { useSession } from '../../auth/authContext'
+import { clearMustSetPassword } from '../../auth/passwordSetup'
 import { authErrorKey } from '../../auth/authErrors'
 import { PASSWORD_MIN_LENGTH, passwordStrength } from '../../auth/passwordStrength'
 import { FullPageLoader } from '../../components/FullPageLoader'
@@ -22,6 +24,8 @@ const LINK_TIMEOUT_MS = 10_000
 export function UpdatePasswordPage() {
   const { t } = useTranslation()
   const { user, loading } = useSession()
+  const [params] = useSearchParams()
+  const isInvite = params.get('invitacion') === '1'
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [errors, setErrors] = useState<{ password?: string; confirm?: string }>({})
@@ -58,6 +62,7 @@ export function UpdatePasswordPage() {
       setErrorKey(authErrorKey(error, 'update'))
       return
     }
+    clearMustSetPassword()
     setDone(true)
   }
 
@@ -89,7 +94,10 @@ export function UpdatePasswordPage() {
   }
 
   return (
-    <AuthLayout title={t('auth.newPasswordTitle')} subtitle={t('auth.newPasswordSubtitle')}>
+    <AuthLayout
+      title={isInvite ? t('auth.inviteTitle') : t('auth.newPasswordTitle')}
+      subtitle={isInvite ? t('auth.inviteSubtitle') : t('auth.newPasswordSubtitle')}
+    >
       {errorKey && (
         <Alert tone="danger" live="assertive">
           {t(errorKey)}

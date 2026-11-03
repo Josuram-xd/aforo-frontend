@@ -1,0 +1,92 @@
+.stat-card {
+  --stat-color: var(--color-accent);
+  --stat-soft: var(--color-accent-soft);
+  --stat-fg: var(--color-accent-fg);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-5);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 80% at 100% 0%, var(--stat-soft), transparent 55%), var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.stat-card--success {
+  --stat-color: var(--color-success);
+  --stat-soft: var(--color-success-soft);
+  --stat-fg: var(--color-success-fg);
+}
+
+.stat-card--danger {
+  --stat-color: var(--color-danger);
+  --stat-soft: var(--color-danger-soft);
+  --stat-fg: var(--color-danger-fg);
+}
+
+.stat-card--warning {
+  --stat-color: var(--color-warning);
+  --stat-soft: var(--color-warning-soft);
+  --stat-fg: var(--color-warning-fg);
+}
+
+.stat-card--violet {
+  --stat-color: var(--color-violet);
+  --stat-soft: var(--color-violet-soft);
+  --stat-fg: var(--color-violet-fg);
+}
+
+.stat-card--neutral {
+  --stat-color: var(--color-text-secondary);
+  --stat-soft: var(--color-surface-2);
+  --stat-fg: var(--color-text-secondary);
+}
+
+.stat-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.stat-card__label {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.stat-card__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--stat-soft);
+  color: var(--stat-fg);
+}
+
+.stat-card__value {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.stat-card__suffix {
+  margin-left: var(--space-1);
+  font-size: 0.45em;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0;
+  color: var(--color-text-secondary);
+}
+
+.stat-card__footer {
+  margin-top: auto;
+  font-size: var(--font-size-tiny);
+  color: var(--color-text-secondary);
+}
