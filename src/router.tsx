@@ -64,6 +64,11 @@ export const router = createBrowserRouter([
             async () => (await import('./pages/students/StudentsPage')).StudentsPage,
           ),
           page(
+            'cursos',
+            'nav.courses',
+            async () => (await import('./pages/courses/CoursesPage')).CoursesPage,
+          ),
+          page(
             'sesiones',
             'nav.sessions',
             async () => (await import('./pages/sessions/SessionsPage')).SessionsPage,

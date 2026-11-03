@@ -1,12 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { BookOpen, Cctv, DoorOpen, Pencil, Plus, Trash2 } from 'lucide-react'
+import { Cctv, DoorOpen, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { errorMessageKey } from '../../api/errors'
-import { deleteClassroom, deleteCourse } from '../../api/facilities'
+import { deleteClassroom } from '../../api/facilities'
 import { queryKeys } from '../../api/queryKeys'
-import type { Camera, Classroom, Course } from '../../api/types'
-import { Badge } from '../../components/ui/Badge'
+import type { Camera, Classroom } from '../../api/types'
 import { Button } from '../../components/ui/Button'
 import { Card, CardHeader } from '../../components/ui/Card'
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog'
@@ -16,29 +15,23 @@ import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
-import { useCameras, useClassrooms, useCourses } from '../../hooks/queries'
-import { CameraDialog, ClassroomDialog, CourseDialog } from './SettingsDialogs'
+import { useCameras, useClassrooms } from '../../hooks/queries'
+import { CameraDialog, ClassroomDialog } from './SettingsDialogs'
 import './SettingsPage.css'
 
 type Editing =
-  | { kind: 'classroom'; item: Classroom | null }
-  | { kind: 'course'; item: Course | null }
-  | { kind: 'camera'; item: Camera }
-  | null
+  { kind: 'classroom'; item: Classroom | null } | { kind: 'camera'; item: Camera } | null
 
-/** Configuración: classrooms (max capacity), courses and camera names (admin). */
+/** Configuración: classrooms (max capacity) and camera names (admin). */
 export function SettingsPage() {
   const { t } = useTranslation()
   const classrooms = useClassrooms()
-  const courses = useCourses()
   const cameras = useCameras()
   const queryClient = useQueryClient()
   const [editing, setEditing] = useState<Editing>(null)
 
   const toast = useToast()
-  const [deleting, setDeleting] = useState<
-    { kind: 'classroom'; item: Classroom } | { kind: 'course'; item: Course } | null
-  >(null)
+  const [deleting, setDeleting] = useState<{ kind: 'classroom'; item: Classroom } | null>(null)
   const onDeleted = (name: string) => {
     toast.success(t('settings.toast.deleted', { name }))
     setDeleting(null)
@@ -53,12 +46,6 @@ export function SettingsPage() {
     onSuccess: (_, room) => onDeleted(room.name),
     onError: onDeleteError,
     onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.classrooms }),
-  })
-  const removeCourse = useMutation({
-    mutationFn: (course: Course) => deleteCourse(course.id),
-    onSuccess: (_, course) => onDeleted(course.name),
-    onError: onDeleteError,
-    onSettled: () => queryClient.invalidateQueries({ queryKey: queryKeys.courses }),
   })
   const saved = (name: string) => toast.success(t('settings.toast.saved', { name }))
 
@@ -103,57 +90,6 @@ export function SettingsPage() {
             aria-label={t('settings.deleteNamed', { name: row.name })}
             loading={removeClassroom.isPending && removeClassroom.variables?.id === row.id}
             onClick={() => setDeleting({ kind: 'classroom', item: row })}
-          />
-        </span>
-      ),
-    },
-  ]
-
-  const courseColumns: Column<Course>[] = [
-    {
-      key: 'name',
-      header: t('settings.courses.name'),
-      sortValue: (row) => row.name,
-      render: (row) => (
-        <span className="cell-primary__text">
-          <span className="cell-primary__title">{row.name}</span>
-          <span className="cell-primary__meta">
-            {row.code}
-            {row.academic_period ? ` · ${row.academic_period}` : ''}
-          </span>
-        </span>
-      ),
-    },
-    {
-      key: 'status',
-      header: t('settings.courses.status'),
-      render: (row) =>
-        row.is_active ? (
-          <Badge tone="success">{t('settings.courses.active')}</Badge>
-        ) : (
-          <Badge tone="neutral">{t('settings.courses.inactive')}</Badge>
-        ),
-    },
-    {
-      key: 'actions',
-      header: <span className="visually-hidden">{t('common.actions')}</span>,
-      align: 'right',
-      render: (row) => (
-        <span className="cell-actions">
-          <Button
-            variant="ghost"
-            size="sm"
-            icon={<Pencil size={14} aria-hidden="true" />}
-            aria-label={t('settings.editNamed', { name: row.name })}
-            onClick={() => setEditing({ kind: 'course', item: row })}
-          />
-          <Button
-            variant="ghost"
-            size="sm"
-            icon={<Trash2 size={14} aria-hidden="true" />}
-            aria-label={t('settings.deleteNamed', { name: row.name })}
-            loading={removeCourse.isPending && removeCourse.variables?.id === row.id}
-            onClick={() => setDeleting({ kind: 'course', item: row })}
           />
         </span>
       ),
@@ -256,31 +192,6 @@ export function SettingsPage() {
           )}
         </Card>
 
-        <Card>
-          <CardHeader
-            icon={<BookOpen size={18} />}
-            title={t('settings.courses.title')}
-            description={t('settings.courses.hint')}
-            actions={
-              <Button
-                size="sm"
-                variant="secondary"
-                icon={<Plus size={14} aria-hidden="true" />}
-                onClick={() => setEditing({ kind: 'course', item: null })}
-              >
-                {t('settings.add')}
-              </Button>
-            }
-          />
-          {section(
-            courses,
-            courseColumns,
-            (row) => row.id,
-            t('settings.courses.title'),
-            t('settings.courses.empty'),
-          )}
-        </Card>
-
         <Card className="settings-grid__wide">
           <CardHeader
             icon={<Cctv size={18} />}
@@ -304,25 +215,17 @@ export function SettingsPage() {
           onSaved={saved}
         />
       )}
-      {editing?.kind === 'course' && (
-        <CourseDialog course={editing.item} onClose={() => setEditing(null)} onSaved={saved} />
-      )}
       {editing?.kind === 'camera' && (
         <CameraDialog camera={editing.item} onClose={() => setEditing(null)} onSaved={saved} />
       )}
       <ConfirmDialog
         open={deleting !== null}
-        title={t(
-          deleting?.kind === 'course'
-            ? 'settings.confirmDeleteCourse'
-            : 'settings.confirmDeleteClassroom',
-        )}
+        title={t('settings.confirmDeleteClassroom')}
         description={t('settings.confirmDeleteText', { name: deleting?.item.name ?? '' })}
         confirmLabel={t('settings.delete')}
-        loading={removeClassroom.isPending || removeCourse.isPending}
+        loading={removeClassroom.isPending}
         onConfirm={() => {
           if (deleting?.kind === 'classroom') removeClassroom.mutate(deleting.item)
-          if (deleting?.kind === 'course') removeCourse.mutate(deleting.item)
         }}
         onCancel={() => setDeleting(null)}
       />

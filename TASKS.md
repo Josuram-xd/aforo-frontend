@@ -181,3 +181,10 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 ### Task 20 — Higiene de seguridad **(Prioridad 2)**
 - [x] **20.1** `chore: ignore local env files` — Agregar `.env` y `.env.*` (excepto `.env.example`) al `.gitignore`; hoy solo se ignora `*.local`.
+
+### Task 21 — El docente gestiona estudiantes y cursos desde la app **(Prioridad 1)**
+> Depende de: `aforo-db` task 12 (permisos de `teacher`, foto opcional y `submit_enrollment`) y `aforo-vision` task 18 (consume las fotos).
+
+- [x] **21.1** `feat(students): let teachers manage students with optional photo and face enrollment` — `teacher` crea, edita, desactiva y elimina estudiantes. Foto opcional en un bucket privado (URLs firmadas). Botón «Registrar rostro»: 3-5 fotos con la cámara del navegador, con casilla de autorización, enviadas con `submit_enrollment`; al crear un estudiante se ofrece de inmediato. Columna «Biometría» con su estado.
+- [x] **21.2** `feat(courses): add courses page with enrollment for teachers` — Ruta `/cursos` (`teacher` y `admin`): crear y editar cursos e inscribir estudiantes; solo `admin` elimina. Los cursos salen de Configuración, que queda con salones y cámaras.
+- [ ] **21.3** (sin commit) Probar en Amplify con un usuario `teacher`: crear curso, crear estudiante con y sin foto, registrar rostro y verificar que pasa a «Registrada».
