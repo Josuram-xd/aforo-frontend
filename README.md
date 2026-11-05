@@ -81,6 +81,45 @@ npm run format:check   # Prettier
 npm run build          # build de producción en dist/
 ```
 
+## Estructuras de datos, GRASP y SOLID
+
+Mapa de dónde se aplican algunas estructuras de datos y principios de diseño en el código. Es referencia, no requisito: cada punto indica el archivo donde se ve.
+
+### Estructuras de datos
+
+**Aplicadas**
+
+- **Set (pertenencia en O(1)):** `src/pages/courses/CourseStudentsDialog.tsx` crea `new Set(enrolledIds.data ?? [])` para saber si un estudiante ya está inscrito en el curso (`enrolled.has(s.id)`), en lugar de buscar en un arreglo.
+- **Set (unión de llaves):** `src/pages/admin/AuditDetailDialog.tsx` une las llaves de `before` y `after` con `new Set([...])` para listar cada campo una sola vez, y luego las ordena.
+- **Set (contraseñas comunes):** `src/auth/passwordStrength.ts` guarda `COMMON_PASSWORDS` como Set y consulta `COMMON_PASSWORDS.has(password.toLowerCase())`.
+- **Cola acotada FIFO:** `src/components/ui/Toast.tsx` guarda los avisos en un arreglo y lo recorta con `.slice(-MAX_VISIBLE)` (`MAX_VISIBLE = 4`): al llegar un aviso nuevo se descartan primero los más viejos. El límite cuenta errores y demás avisos juntos; después se separan en dos regiones (`role="alert"` para errores y `role="status"` para el resto). Cada aviso tiene su propio temporizador (`DURATION_MS`: 4 s, o 6 s para errores) que se pausa con el mouse o el foco.
+- **Tabla hash (caché de TanStack Query):** las llaves de `src/api/queryKeys.ts` identifican cada consulta. TanStack Query es una librería: por dentro convierte cada llave en una cadena y la usa como índice de su caché. El código propio solo define las llaves y el mapa `REALTIME_INVALIDATIONS`, que indica qué familias de consultas invalidar por tabla.
+
+**No aplicadas**
+
+- **Pila, lista enlazada, árbol y cola de prioridad:** no se usan. Los datos son relacionales y vienen de Supabase; ordenar y filtrar usa los métodos nativos de los arreglos (`sort`, `filter`). No se forzaron a propósito.
+
+### GRASP
+
+- **Indirección y bajo acoplamiento:** `src/api/` tiene una función por consulta (por ejemplo, `fetchCourseStudentIds` en `src/api/courseStudents.ts`). Cada una delega en `src/api/mock/mockApi.ts` cuando `isMockMode` es verdadero. `isMockMode` está definido en `src/lib/env.ts` como `import.meta.env.DEV && import.meta.env.VITE_USE_MOCK === 'true'`, así que el mock solo se activa en desarrollo. Excepción: las pantallas de autenticación (`src/pages/auth/`) y `src/auth/AuthProvider.tsx` llaman a `supabase` directamente.
+- **Alta cohesión:** cada carpeta agrupa un tema: `src/pages/` (una carpeta por página), `src/components/ui/` (sistema de diseño), `src/hooks/` (hooks de TanStack Query en `queries.ts`), `src/auth/` (sesión, roles y contraseñas) y `src/realtime/` (suscripción y el indicador "En vivo").
+- **Experto:** `RequireRole` (`src/auth/RequireRole.tsx`) obtiene el rol con `useMe()` y delega en `canAccess` (`src/auth/roles.ts`) la decisión de si ese rol puede entrar a la ruta.
+- **Controlador:** `AuthProvider` y `ToastProvider` se montan en `src/main.tsx`; `RealtimeProvider` se monta en `src/layouts/ShellRoute.tsx`. Coordinan la sesión, los avisos y las actualizaciones en tiempo real.
+
+Ocultar una ruta o un botón no es control de acceso: la seguridad real es RLS en `aforo-db` (ver `AGENTS.md`).
+
+### SOLID
+
+- **S (responsabilidad única):** cada componente o hook hace una tarea. Por ejemplo, `ConfirmDialog` (`src/components/ui/ConfirmDialog.tsx`) solo pide confirmar, y `TypedConfirmDialog` (`src/components/ui/TypedConfirmDialog.tsx`) solo añade la validación de escribir el texto exacto.
+- **O (abierto/cerrado):** `Dialog` (`src/components/ui/Dialog.tsx`) no se modifica para cada caso. `ConfirmDialog` y `TypedConfirmDialog` lo componen y lo configuran por props (`size`, `tone`, `icon`, `footer`).
+- **D (inversión de dependencias):** parcial. Las pantallas usan las funciones de `src/api/` y no el backend concreto, y el mock es otra implementación que se elige con `isMockMode` (import dinámico). No hay inyección de dependencias; las pantallas de autenticación siguen dependiendo de `supabase` directamente.
+- **I (segregación de interfaces):** se ve de forma limitada: los tipos de entrada usan `Pick<>` para pedir solo los campos necesarios, por ejemplo `StudentInput` en `src/api/students.ts` y `deleteStudent(student: Pick<Student, 'id' | 'photo_path'>)`.
+- **L (sustitución de Liskov):** no se identifica en el código; no se documenta.
+
+### Curso
+
+El curso de estructuras de datos está en `C:\Users\amand\Documents\Estructura de datos`.
+
 ## Despliegue
 
 AWS Amplify (`us-east-2`) construye y publica cada push a `main` con `amplify.yml`. Si las pruebas fallan, no se publica. La URL del frontend debe estar en Supabase → Authentication → URL Configuration para que funcionen el login con Google y los enlaces de correo (`/auth/callback`).
