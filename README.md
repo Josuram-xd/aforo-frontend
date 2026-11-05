@@ -101,10 +101,10 @@ Mapa de dónde se aplican algunas estructuras de datos y principios de diseño e
 
 ### GRASP
 
-- **Indirección y bajo acoplamiento:** `src/api/` tiene una función por consulta (por ejemplo, `fetchCourseStudentIds` en `src/api/courseStudents.ts`). Cada una delega en `src/api/mock/mockApi.ts` cuando `isMockMode` es verdadero. `isMockMode` está definido en `src/lib/env.ts` como `import.meta.env.DEV && import.meta.env.VITE_USE_MOCK === 'true'`, así que el mock solo se activa en desarrollo. Excepción: las pantallas de autenticación (`src/pages/auth/`) y `src/auth/AuthProvider.tsx` llaman a `supabase` directamente.
+- **Indirección y bajo acoplamiento:** `src/api/` tiene una función por consulta (por ejemplo, `fetchCourseStudentIds` en `src/api/courseStudents.ts`). Cada una delega en `src/api/mock/mockApi.ts` cuando `isMockMode` es verdadero. `isMockMode` está definido en `src/lib/env.ts` como `import.meta.env.DEV && import.meta.env.VITE_USE_MOCK === 'true'`, así que el mock solo se activa en desarrollo. Excepción: las pantallas de autenticación (`src/pages/auth/`), `src/auth/AuthProvider.tsx` y `src/realtime/RealtimeProvider.tsx` usan `supabase` directamente.
 - **Alta cohesión:** cada carpeta agrupa un tema: `src/pages/` (una carpeta por página), `src/components/ui/` (sistema de diseño), `src/hooks/` (hooks de TanStack Query en `queries.ts`), `src/auth/` (sesión, roles y contraseñas) y `src/realtime/` (suscripción y el indicador "En vivo").
 - **Experto:** `RequireRole` (`src/auth/RequireRole.tsx`) obtiene el rol con `useMe()` y delega en `canAccess` (`src/auth/roles.ts`) la decisión de si ese rol puede entrar a la ruta.
-- **Controlador:** `AuthProvider` y `ToastProvider` se montan en `src/main.tsx`; `RealtimeProvider` se monta en `src/layouts/ShellRoute.tsx`. Coordinan la sesión, los avisos y las actualizaciones en tiempo real.
+- **Controlador (aproximado):** los proveedores de contexto coordinan sesión, avisos y tiempo real (no son controladores GRASP estrictos): `AuthProvider` y `ToastProvider` se montan en `src/main.tsx`; `RealtimeProvider` se monta en `src/layouts/ShellRoute.tsx`.
 
 Ocultar una ruta o un botón no es control de acceso: la seguridad real es RLS en `aforo-db` (ver `AGENTS.md`).
 
@@ -118,7 +118,7 @@ Ocultar una ruta o un botón no es control de acceso: la seguridad real es RLS e
 
 ### Curso
 
-El curso de estructuras de datos está en `C:\Users\amand\Documents\Estructura de datos`.
+El material del curso de estructuras de datos está en la carpeta «Estructura de datos» del curso.
 
 ## Despliegue
 
