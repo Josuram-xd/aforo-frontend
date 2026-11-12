@@ -1,5 +1,5 @@
 import type { RoleCode } from '../auth/roles'
-import type { Json, Tables } from '../types/database'
+import type { Database, Json, Tables } from '../types/database'
 
 // UI-facing shapes built from the generated Supabase types (contract = aforo-db).
 
@@ -11,6 +11,9 @@ export type AlertType = 'capacity_exceeded' | 'camera_offline'
 export type Classroom = Tables<'classrooms'>
 export type Camera = Tables<'cameras'>
 export type Course = Tables<'courses'>
+/** Where a Tapo camera lives on the LAN. The password is write-only: it never comes back to the browser. */
+export type CameraConnection =
+  Database['public']['Functions']['camera_connections']['Returns'][number]
 export type Student = Tables<'students'>
 export type DailySummary = Tables<'daily_occupancy_summary'>
 

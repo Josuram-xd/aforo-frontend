@@ -2,6 +2,7 @@
 export const queryKeys = {
   classrooms: ['classrooms'] as const,
   cameras: ['cameras'] as const,
+  cameraConnections: ['camera-connections'] as const,
   alerts: ['alerts'] as const,
   events: ['events'] as const,
   dailySummary: ['daily-summary'] as const,

@@ -14,6 +14,7 @@ import type {
   AuditFilters,
   AuditItem,
   Camera,
+  CameraConnection,
   Classroom,
   Course,
   DailySummary,
@@ -85,6 +86,45 @@ export async function renameCamera(id: string, name: string): Promise<void> {
   const camera = db.cameras.find((c) => c.id === id)
   if (camera) camera.name = name
   notifyMock('cameras')
+  await delay(null)
+}
+
+export async function createCamera(
+  input: Pick<TablesInsert<'cameras'>, 'classroom_id' | 'position' | 'name'>,
+): Promise<Camera> {
+  const camera: Camera = {
+    id: newId('a'),
+    classroom_id: input.classroom_id,
+    code: `camera-${input.position}`,
+    name: input.name,
+    position: input.position,
+    status: 'offline',
+    last_seen_at: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+  db.cameras.push(camera)
+  notifyMock('cameras')
+  return delay(camera)
+}
+
+const mockConnections: CameraConnection[] = []
+
+export const fetchCameraConnections = (): Promise<CameraConnection[]> => delay(mockConnections)
+
+export async function saveCameraConnection(
+  cameraId: string,
+  input: { host: string; username: string },
+): Promise<void> {
+  const row = {
+    camera_id: cameraId,
+    host: input.host,
+    username: input.username,
+    updated_at: new Date().toISOString(),
+  }
+  const index = mockConnections.findIndex((c) => c.camera_id === cameraId)
+  if (index >= 0) mockConnections[index] = row
+  else mockConnections.push(row)
   await delay(null)
 }
 

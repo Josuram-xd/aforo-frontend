@@ -612,6 +612,21 @@ export type Database = {
         Args: { p_classroom_name: string }
         Returns: number
       }
+      camera_connections: {
+        Args: never
+        Returns: {
+          camera_id: string
+          host: string
+          username: string
+          updated_at: string
+        }[]
+      }
+      camera_sources: { Args: never; Returns: Json }
+      clear_camera_connection: { Args: { p_camera_id: string }; Returns: undefined }
+      set_camera_connection: {
+        Args: { p_camera_id: string; p_host: string; p_password?: string; p_username: string }
+        Returns: undefined
+      }
       camera_heartbeat: {
         Args: { p_camera_code: string; p_online: boolean }
         Returns: Json

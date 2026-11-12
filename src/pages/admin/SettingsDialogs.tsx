@@ -2,13 +2,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { errorMessageKey } from '../../api/errors'
-import { renameCamera, saveClassroom, saveCourse } from '../../api/facilities'
+import {
+  createCamera,
+  renameCamera,
+  saveCameraConnection,
+  saveClassroom,
+  saveCourse,
+} from '../../api/facilities'
 import { queryKeys } from '../../api/queryKeys'
-import type { Camera, Classroom, Course } from '../../api/types'
+import type { Camera, CameraConnection, Classroom, Course } from '../../api/types'
 import { Alert } from '../../components/ui/Alert'
 import { Button } from '../../components/ui/Button'
 import { Dialog } from '../../components/ui/Dialog'
-import { Field, SelectInput, TextInput } from '../../components/ui/Field'
+import { Field, PasswordInput, SelectInput, TextInput } from '../../components/ui/Field'
 
 interface FormDialogProps {
   formId: string
@@ -264,56 +270,182 @@ export function CourseDialog({
   )
 }
 
+/**
+ * Add or edit a camera and its Tapo connection. The IP and the "camera account" (created in the Tapo app)
+ * are stored by aforo-db; the vision node picks them up on its own, so no file or command is needed.
+ */
 export function CameraDialog({
   camera,
+  classrooms,
+  connection,
   onClose,
   onSaved,
 }: {
-  camera: Camera
+  camera: Camera | null
+  classrooms: Classroom[]
+  connection: CameraConnection | undefined
   onClose: () => void
   onSaved: (name: string) => void
 }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
-  const [error, setError] = useState<string | null>(null)
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const save = useMutation({
-    mutationFn: (name: string) => renameCamera(camera.id, name),
-    onSuccess: async (_, name) => {
-      await queryClient.invalidateQueries({ queryKey: queryKeys.cameras })
-      onSaved(name)
+    mutationFn: async (v: {
+      name: string
+      classroomId: string
+      position: 'outside' | 'inside'
+      host: string
+      username: string
+      password: string
+    }) => {
+      let id = camera?.id
+      if (camera) {
+        if (v.name !== camera.name) await renameCamera(camera.id, v.name)
+      } else {
+        id = (
+          await createCamera({ classroom_id: v.classroomId, position: v.position, name: v.name })
+        ).id
+      }
+      await saveCameraConnection(id!, v)
+    },
+    onSettled: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.cameras }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.cameraConnections }),
+      ]),
+    onSuccess: (_, v) => {
+      onSaved(v.name)
       onClose()
     },
   })
 
+  const fieldError = (key: string) => errors[key] ?? null
+  const input = (key: string) => ({ name: key, 'aria-invalid': errors[key] ? true : undefined })
+
   return (
     <FormDialog
       formId="camera-form"
-      title={t('settings.cameras.renameTitle')}
-      description={t('settings.cameras.renameHint', { code: camera.code })}
+      title={camera ? t('settings.cameras.editTitle') : t('settings.cameras.addTitle')}
+      description={t('settings.cameras.connectHint')}
       submitLabel={t('common.save')}
       pending={save.isPending}
       error={save.error}
       onClose={onClose}
       onSubmit={(data) => {
-        const name = text(data, 'name')
-        if (!name) {
-          setError(t('settings.validation.name'))
-          return
+        const v = {
+          name: text(data, 'name'),
+          classroomId: camera?.classroom_id ?? text(data, 'classroom'),
+          position: (camera?.position ?? text(data, 'position')) as 'outside' | 'inside',
+          host: text(data, 'host'),
+          username: text(data, 'username'),
+          password: String(data.get('password') ?? ''),
         }
-        setError(null)
-        save.mutate(name)
+        const next: Record<string, string> = {}
+        if (!v.name) next.name = t('settings.validation.name')
+        if (!v.classroomId) next.classroom = t('settings.cameras.validation.classroom')
+        if (!/^[A-Za-z0-9.-]{1,253}$/.test(v.host))
+          next.host = t('settings.cameras.validation.host')
+        if (!v.username) next.username = t('settings.cameras.validation.username')
+        if (!v.password && !connection) next.password = t('settings.cameras.validation.password')
+        setErrors(next)
+        if (Object.keys(next).length === 0) save.mutate(v)
       }}
     >
-      <Field label={t('settings.cameras.name')} error={error} className="form-grid__full">
-        {({ id, describedBy, invalid }) => (
+      <div className="form-grid__full">
+        <Alert tone="info" title={t('settings.cameras.tapoTitle')}>
+          {t('settings.cameras.tapoSteps')}
+        </Alert>
+      </div>
+      <Field
+        label={t('settings.cameras.name')}
+        error={fieldError('name')}
+        className="form-grid__full"
+      >
+        {({ id, describedBy }) => (
           <TextInput
             id={id}
-            name="name"
             autoFocus
             maxLength={80}
-            defaultValue={camera.name}
+            defaultValue={camera?.name ?? ''}
             aria-describedby={describedBy}
-            aria-invalid={invalid || undefined}
+            {...input('name')}
+          />
+        )}
+      </Field>
+      {!camera && (
+        <>
+          <Field label={t('settings.cameras.classroom')} error={fieldError('classroom')}>
+            {({ id, describedBy }) => (
+              <SelectInput
+                id={id}
+                defaultValue=""
+                aria-describedby={describedBy}
+                {...input('classroom')}
+              >
+                <option value="" disabled>
+                  {t('settings.cameras.choose')}
+                </option>
+                {classrooms.map((room) => (
+                  <option key={room.id} value={room.id}>
+                    {room.name}
+                  </option>
+                ))}
+              </SelectInput>
+            )}
+          </Field>
+          <Field label={t('cameras.fields.position')}>
+            {({ id }) => (
+              <SelectInput id={id} defaultValue="outside" name="position">
+                <option value="outside">{t('cameras.position.outside')}</option>
+                <option value="inside">{t('cameras.position.inside')}</option>
+              </SelectInput>
+            )}
+          </Field>
+        </>
+      )}
+      <Field
+        label={t('settings.cameras.host')}
+        hint={t('settings.cameras.hostHint')}
+        error={fieldError('host')}
+        className="form-grid__full"
+      >
+        {({ id, describedBy }) => (
+          <TextInput
+            id={id}
+            inputMode="decimal"
+            placeholder="192.168.1.50"
+            maxLength={253}
+            defaultValue={connection?.host ?? ''}
+            aria-describedby={describedBy}
+            {...input('host')}
+          />
+        )}
+      </Field>
+      <Field label={t('settings.cameras.username')} error={fieldError('username')}>
+        {({ id, describedBy }) => (
+          <TextInput
+            id={id}
+            autoComplete="off"
+            maxLength={64}
+            defaultValue={connection?.username ?? ''}
+            aria-describedby={describedBy}
+            {...input('username')}
+          />
+        )}
+      </Field>
+      <Field
+        label={t('settings.cameras.password')}
+        hint={connection ? t('settings.cameras.passwordKeep') : undefined}
+        error={fieldError('password')}
+      >
+        {({ id, describedBy }) => (
+          <PasswordInput
+            id={id}
+            autoComplete="new-password"
+            maxLength={128}
+            aria-describedby={describedBy}
+            {...input('password')}
           />
         )}
       </Field>

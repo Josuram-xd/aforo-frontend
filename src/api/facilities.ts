@@ -2,7 +2,7 @@ import { isMockMode } from '../lib/env'
 import { supabase } from '../lib/supabase'
 import type { TablesInsert, TablesUpdate } from '../types/database'
 import { fromPostgrest } from './errors'
-import type { Camera, Classroom, Course } from './types'
+import type { Camera, CameraConnection, Classroom, Course } from './types'
 
 // Classrooms, cameras and courses: readable by every active role, writable by admin (RLS).
 
@@ -52,6 +52,42 @@ export async function fetchCameras(): Promise<Camera[]> {
 export async function renameCamera(id: string, name: string): Promise<void> {
   if (isMockMode) return (await mock()).renameCamera(id, name)
   const { error } = await supabase.from('cameras').update({ name }).eq('id', id)
+  if (error) throw fromPostgrest(error)
+}
+
+export async function createCamera(
+  input: Pick<TablesInsert<'cameras'>, 'classroom_id' | 'position' | 'name'>,
+): Promise<Camera> {
+  if (isMockMode) return (await mock()).createCamera(input)
+  // `code` is the CameraId of the event contract: one camera per position in each classroom.
+  const { data, error } = await supabase
+    .from('cameras')
+    .insert({ ...input, code: `camera-${input.position}` })
+    .select()
+    .single()
+  if (error) throw fromPostgrest(error)
+  return data
+}
+
+export async function fetchCameraConnections(): Promise<CameraConnection[]> {
+  if (isMockMode) return (await mock()).fetchCameraConnections()
+  const { data, error } = await supabase.rpc('camera_connections')
+  if (error) throw fromPostgrest(error)
+  return data
+}
+
+/** Empty `password` keeps the stored one (editing the IP does not require retyping it). */
+export async function saveCameraConnection(
+  cameraId: string,
+  input: { host: string; username: string; password: string },
+): Promise<void> {
+  if (isMockMode) return (await mock()).saveCameraConnection(cameraId, input)
+  const { error } = await supabase.rpc('set_camera_connection', {
+    p_camera_id: cameraId,
+    p_host: input.host,
+    p_username: input.username,
+    p_password: input.password || undefined,
+  })
   if (error) throw fromPostgrest(error)
 }
 

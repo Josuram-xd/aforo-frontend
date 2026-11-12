@@ -7,7 +7,12 @@ import {
   fetchEventsPage,
   fetchLatestEvents,
 } from '../api/events'
-import { fetchCameras, fetchClassrooms, fetchCourses } from '../api/facilities'
+import {
+  fetchCameraConnections,
+  fetchCameras,
+  fetchClassrooms,
+  fetchCourses,
+} from '../api/facilities'
 import { queryKeys } from '../api/queryKeys'
 import { fetchAttendance, fetchSessions } from '../api/sessions'
 import { fetchCourseStudentIds, fetchEnrollmentCounts } from '../api/courseStudents'
@@ -27,6 +32,11 @@ export function useClassrooms() {
 export function useCameras() {
   const refetchInterval = useFallbackRefetchInterval()
   return useQuery({ queryKey: queryKeys.cameras, queryFn: fetchCameras, refetchInterval })
+}
+
+/** Admin only (the RPC rejects other roles): host and camera account of each connected camera. */
+export function useCameraConnections() {
+  return useQuery({ queryKey: queryKeys.cameraConnections, queryFn: fetchCameraConnections })
 }
 
 export function useCourses() {
