@@ -15,18 +15,19 @@ import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
-import { useCameras, useClassrooms } from '../../hooks/queries'
+import { useCameraConnections, useCameras, useClassrooms } from '../../hooks/queries'
 import { CameraDialog, ClassroomDialog } from './SettingsDialogs'
 import './SettingsPage.css'
 
 type Editing =
-  { kind: 'classroom'; item: Classroom | null } | { kind: 'camera'; item: Camera } | null
+  { kind: 'classroom'; item: Classroom | null } | { kind: 'camera'; item: Camera | null } | null
 
 /** Configuración: classrooms (max capacity) and camera names (admin). */
 export function SettingsPage() {
   const { t } = useTranslation()
   const classrooms = useClassrooms()
   const cameras = useCameras()
+  const connections = useCameraConnections()
   const queryClient = useQueryClient()
   const [editing, setEditing] = useState<Editing>(null)
 
@@ -119,6 +120,17 @@ export function SettingsPage() {
       ),
     },
     {
+      key: 'connection',
+      header: t('settings.cameras.connection'),
+      hideOnMobile: true,
+      render: (row) => (
+        <span className="cell-primary__meta">
+          {connections.data?.find((c) => c.camera_id === row.id)?.host ??
+            t('settings.cameras.notConnected')}
+        </span>
+      ),
+    },
+    {
       key: 'actions',
       header: <span className="visually-hidden">{t('common.actions')}</span>,
       align: 'right',
@@ -128,9 +140,9 @@ export function SettingsPage() {
           size="sm"
           icon={<Pencil size={14} aria-hidden="true" />}
           onClick={() => setEditing({ kind: 'camera', item: row })}
-          aria-label={t('settings.cameras.renameNamed', { name: row.name })}
+          aria-label={t('settings.cameras.connectNamed', { name: row.name })}
         >
-          {t('settings.cameras.rename')}
+          {t('settings.cameras.connect')}
         </Button>
       ),
     },
@@ -197,6 +209,16 @@ export function SettingsPage() {
             icon={<Cctv size={18} />}
             title={t('settings.cameras.title')}
             description={t('settings.cameras.hint')}
+            actions={
+              <Button
+                size="sm"
+                variant="secondary"
+                icon={<Plus size={14} aria-hidden="true" />}
+                onClick={() => setEditing({ kind: 'camera', item: null })}
+              >
+                {t('settings.cameras.add')}
+              </Button>
+            }
           />
           {section(
             cameras,
@@ -216,7 +238,13 @@ export function SettingsPage() {
         />
       )}
       {editing?.kind === 'camera' && (
-        <CameraDialog camera={editing.item} onClose={() => setEditing(null)} onSaved={saved} />
+        <CameraDialog
+          camera={editing.item}
+          classrooms={classrooms.data ?? []}
+          connection={connections.data?.find((c) => c.camera_id === editing.item?.id)}
+          onClose={() => setEditing(null)}
+          onSaved={saved}
+        />
       )}
       <ConfirmDialog
         open={deleting !== null}

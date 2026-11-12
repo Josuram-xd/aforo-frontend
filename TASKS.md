@@ -195,3 +195,8 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 ### Task 23 — Revisión de seguridad y conexión **(Prioridad 1)**
 - [x] **23.1** `fix(security): allow student photos and camera in headers` — La CSP no permitía las fotos firmadas de Supabase Storage (`img-src`) y `Permissions-Policy: camera=()` bloqueaba la cámara del registro de rostro. Ahora `img-src` incluye el proyecto de Supabase y `camera=(self)`; igual en `vite.config.ts` (preview).
 - [x] **23.2** `fix(ui): widen classrooms card in settings` — Con los cursos fuera de Configuración, la tarjeta de salones queda a todo el ancho.
+
+### Task 24 — Conectar cámaras desde la web **(Prioridad 1)**
+> Depende de: `aforo-db` task 14 (RPCs de conexión) y `aforo-vision` task 19.
+
+- [x] **24.1** `feat(settings): add and connect tapo cameras from the web` — En Configuración → Cámaras el admin agrega una cámara (salón y ubicación) y guarda su IP y cuenta de cámara Tapo con una guía paso a paso; la contraseña es de solo escritura. Muestra la IP de cada cámara conectada.

@@ -164,7 +164,7 @@
     "neverSeen": "sin latidos todavía",
     "description": "Estado de cada cámara según su último latido. Se actualiza en vivo.",
     "summary": "{{online}} de {{total}} en línea",
-    "emptyHint": "Las cámaras se registran desde aforo-vision al enviar su primer latido.",
+    "emptyHint": "Un administrador puede agregarlas en Configuración → Cámaras.",
     "fields": {
       "position": "Ubicación",
       "heartbeat": "Último latido"
@@ -609,13 +609,31 @@
     },
     "cameras": {
       "title": "Cámaras",
-      "hint": "El código y la ubicación los define aforo-vision; aquí solo se cambia el nombre visible.",
+      "hint": "Registra y conecta aquí tus cámaras Tapo. El equipo de visión las encuentra solo, sin tocar archivos.",
       "name": "Nombre visible",
       "classroom": "Salón",
-      "rename": "Renombrar",
-      "renameTitle": "Renombrar cámara",
-      "renameHint": "Código técnico: {{code}}",
-      "renameNamed": "Renombrar {{name}}"
+      "add": "Agregar cámara",
+      "addTitle": "Agregar cámara",
+      "editTitle": "Editar cámara",
+      "connect": "Conectar",
+      "connectNamed": "Conectar o editar {{name}}",
+      "connection": "Dirección IP",
+      "notConnected": "Sin conectar",
+      "choose": "Elige un salón",
+      "connectHint": "Los datos viajan cifrados. La contraseña no se vuelve a mostrar.",
+      "tapoTitle": "Antes de empezar, en la app Tapo",
+      "tapoSteps": "1) Abre la cámara → Configuración → Avanzado → Cuenta de cámara y crea un usuario y contraseña. 2) En Configuración → Acerca de, copia la dirección IP. El computador de visión debe estar en el mismo WiFi.",
+      "host": "Dirección IP de la cámara",
+      "hostHint": "Ejemplo: 192.168.1.50",
+      "username": "Usuario de la cámara",
+      "password": "Contraseña de la cámara",
+      "passwordKeep": "Déjala vacía para conservar la actual.",
+      "validation": {
+        "classroom": "Elige un salón.",
+        "host": "Escribe una IP válida, por ejemplo 192.168.1.50.",
+        "username": "Escribe el usuario de la cámara.",
+        "password": "Escribe la contraseña de la cámara."
+      }
     },
     "delete": "Eliminar",
     "confirmDeleteClassroom": "¿Eliminar salón?",
