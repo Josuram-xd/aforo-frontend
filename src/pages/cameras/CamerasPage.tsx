@@ -1,21 +1,37 @@
-import { Cctv, Clock, VideoOff, Wifi, WifiOff } from 'lucide-react'
+import { Cctv, Clock, Pencil, Plus, VideoOff, Wifi, WifiOff } from 'lucide-react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Camera, Classroom } from '../../api/types'
+import { useRole } from '../../auth/useRole'
 import { Badge } from '../../components/ui/Badge'
+import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { SkeletonCard } from '../../components/ui/Skeleton'
-import { useCameras, useClassrooms } from '../../hooks/queries'
+import { useToast } from '../../components/ui/toastContext'
+import { useCameraConnections, useCameras, useClassrooms } from '../../hooks/queries'
 import { useNow } from '../../hooks/useNow'
 import { formatDateTime, formatRelative } from '../../lib/format'
+import { CameraDialog } from '../admin/SettingsDialogs'
 import './CamerasPage.css'
 
 /** A heartbeat older than this is shown as "late" even if the row still says online. */
 const STALE_AFTER_MS = 2 * 60_000
 
-function CameraCard({ camera, now }: { camera: Camera; now: number }) {
+/** `onConnect` is only passed to admins; `host` is the stored IP, if the camera is connected. */
+function CameraCard({
+  camera,
+  now,
+  host,
+  onConnect,
+}: {
+  camera: Camera
+  now: number
+  host?: string
+  onConnect?: () => void
+}) {
   const { t } = useTranslation()
   const online = camera.status === 'online'
   const lastSeen = camera.last_seen_at ? Date.parse(camera.last_seen_at) : null
@@ -58,7 +74,24 @@ function CameraCard({ camera, now }: { camera: Camera; now: number }) {
                 : t('cameras.neverSeen')}
             </dd>
           </div>
+          {onConnect && (
+            <div>
+              <dt>{t('settings.cameras.connection')}</dt>
+              <dd>{host ?? t('settings.cameras.notConnected')}</dd>
+            </div>
+          )}
         </dl>
+        {onConnect && (
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<Pencil size={14} aria-hidden="true" />}
+            onClick={onConnect}
+            aria-label={t('settings.cameras.connectNamed', { name: camera.name })}
+          >
+            {host ? t('cameras.editConnection') : t('settings.cameras.connect')}
+          </Button>
+        )}
       </div>
     </Card>
   )
@@ -70,6 +103,12 @@ export function CamerasPage() {
   const cameras = useCameras()
   const classrooms = useClassrooms()
   const now = useNow(10_000)
+  const isAdmin = useRole().role === 'admin'
+  // The RPC only answers to admins, so other roles never call it.
+  const connections = useCameraConnections(isAdmin)
+  const toast = useToast()
+  // `null` = adding a new camera; `undefined` = dialog closed.
+  const [editing, setEditing] = useState<Camera | null | undefined>(undefined)
 
   if (cameras.isPending) {
     return (
@@ -92,18 +131,37 @@ export function CamerasPage() {
     cameras: cameras.data.filter((camera) => camera.classroom_id === room.id),
   }))
 
+  const addButton = isAdmin && (
+    <Button
+      size="sm"
+      variant="secondary"
+      icon={<Plus size={14} aria-hidden="true" />}
+      onClick={() => setEditing(null)}
+    >
+      {t('settings.cameras.add')}
+    </Button>
+  )
+
   return (
     <>
       <PageIntro
         description={t('cameras.description')}
         actions={
-          <Badge tone={online === cameras.data.length ? 'success' : 'warning'}>
-            {t('cameras.summary', { online, total: cameras.data.length })}
-          </Badge>
+          <>
+            <Badge tone={online === cameras.data.length ? 'success' : 'warning'}>
+              {t('cameras.summary', { online, total: cameras.data.length })}
+            </Badge>
+            {cameras.data.length > 0 && addButton}
+          </>
         }
       />
       {cameras.data.length === 0 ? (
-        <EmptyState icon={Cctv} title={t('cameras.empty')} description={t('cameras.emptyHint')} />
+        <EmptyState
+          icon={Cctv}
+          title={t('cameras.empty')}
+          description={t('cameras.emptyHint')}
+          action={addButton || undefined}
+        />
       ) : (
         groups
           .filter((group) => group.cameras.length > 0)
@@ -112,13 +170,28 @@ export function CamerasPage() {
               {groups.length > 1 && <h2 className="camera-group__title">{group.room.name}</h2>}
               <div className="camera-grid">
                 {group.cameras.map((camera) => (
-                  <CameraCard key={camera.id} camera={camera} now={now} />
+                  <CameraCard
+                    key={camera.id}
+                    camera={camera}
+                    now={now}
+                    host={connections.data?.find((c) => c.camera_id === camera.id)?.host}
+                    onConnect={isAdmin ? () => setEditing(camera) : undefined}
+                  />
                 ))}
               </div>
             </section>
           ))
       )}
       <p className="camera-note">{t('cameras.lanOnly')}</p>
+      {isAdmin && editing !== undefined && (
+        <CameraDialog
+          camera={editing}
+          classrooms={classrooms.data ?? []}
+          connection={connections.data?.find((c) => c.camera_id === editing?.id)}
+          onClose={() => setEditing(undefined)}
+          onSaved={(name) => toast.success(t('settings.toast.saved', { name }))}
+        />
+      )}
     </>
   )
 }

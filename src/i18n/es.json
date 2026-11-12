@@ -165,6 +165,7 @@
     "description": "Estado de cada cámara según su último latido. Se actualiza en vivo.",
     "summary": "{{online}} de {{total}} en línea",
     "emptyHint": "Un administrador puede agregarlas en Configuración → Cámaras.",
+    "editConnection": "Editar conexión",
     "fields": {
       "position": "Ubicación",
       "heartbeat": "Último latido"

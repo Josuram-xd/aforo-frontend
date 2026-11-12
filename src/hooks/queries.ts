@@ -35,8 +35,12 @@ export function useCameras() {
 }
 
 /** Admin only (the RPC rejects other roles): host and camera account of each connected camera. */
-export function useCameraConnections() {
-  return useQuery({ queryKey: queryKeys.cameraConnections, queryFn: fetchCameraConnections })
+export function useCameraConnections(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.cameraConnections,
+    queryFn: fetchCameraConnections,
+    enabled,
+  })
 }
 
 export function useCourses() {
