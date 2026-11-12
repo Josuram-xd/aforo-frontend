@@ -200,3 +200,8 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 > Depende de: `aforo-db` task 14 (RPCs de conexión) y `aforo-vision` task 19.
 
 - [x] **24.1** `feat(settings): add and connect tapo cameras from the web` — En Configuración → Cámaras el admin agrega una cámara (salón y ubicación) y guarda su IP y cuenta de cámara Tapo con una guía paso a paso; la contraseña es de solo escritura. Muestra la IP de cada cámara conectada.
+
+### Task 25 — Conectar cámaras desde la pestaña Cámaras **(Prioridad 2)**
+> Depende de: task 24.
+
+- [x] **25.1** `feat(cameras): connect cameras from the cameras tab` — El admin ve en Cámaras el botón «Agregar cámara» (también en el estado vacío) y, en cada tarjeta, «Conectar» o «Editar conexión» con la IP de la cámara; reutiliza el diálogo de Configuración. Los demás roles ven la página igual que antes y no llaman a la RPC de conexiones.
