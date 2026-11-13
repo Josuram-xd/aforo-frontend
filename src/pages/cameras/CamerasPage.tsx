@@ -10,6 +10,7 @@ import { Card } from '../../components/ui/Card'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonCard } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { useCameraConnections, useCameras, useClassrooms } from '../../hooks/queries'
@@ -166,6 +167,7 @@ export function CamerasPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.cameras}
         description={t('cameras.description')}
         actions={
           <>

@@ -8,14 +8,16 @@ interface FilterBarProps {
   children: ReactNode
   onClear?: () => void
   canClear?: boolean
+  /** `data-tour` id for the page tutorial. */
+  tour?: string
   label: string
 }
 
 /** One row of filter controls above a table (wraps on small screens). */
-export function FilterBar({ children, onClear, canClear, label }: FilterBarProps) {
+export function FilterBar({ children, onClear, canClear, label, tour }: FilterBarProps) {
   const { t } = useTranslation()
   return (
-    <div className="filter-bar" role="search" aria-label={label}>
+    <div className="filter-bar" role="search" aria-label={label} data-tour={tour}>
       <div className="filter-bar__fields">{children}</div>
       {onClear && (
         <Button

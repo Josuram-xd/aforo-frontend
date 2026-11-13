@@ -13,6 +13,7 @@ import { Button, ButtonLink } from '../../components/ui/Button'
 import { Card, CardHeader } from '../../components/ui/Card'
 import { Field, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonCard } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { formatDate } from '../../lib/format'
@@ -64,7 +65,7 @@ export function ProfilePage() {
 
   return (
     <>
-      <PageIntro description={t('profile.description')} />
+      <PageIntro tour={TOURS.profile} description={t('profile.description')} />
       <div className="profile-grid">
         <Card className="profile-hero">
           <div className="profile-hero__banner" aria-hidden="true" />
