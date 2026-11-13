@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { errorMessageKey } from '../../api/errors'
 import {
@@ -274,6 +274,14 @@ export function CourseDialog({
  * Add or edit a camera and its Tapo connection. The IP and the "camera account" (created in the Tapo app)
  * are stored by aforo-db; the vision node picks them up on its own, so no file or command is needed.
  */
+/** A new camera whose connection save failed: its classroom and position can no longer change. */
+interface CreatedCamera {
+  id: string
+  name: string
+  classroomId: string
+  position: 'outside' | 'inside'
+}
+
 export function CameraDialog({
   camera,
   classrooms,
@@ -290,6 +298,8 @@ export function CameraDialog({
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [errors, setErrors] = useState<Record<string, string>>({})
+  // Camera created by a previous attempt whose connection save failed.
+  const created = useRef<CreatedCamera | null>(null)
   const save = useMutation({
     mutationFn: async (v: {
       name: string
@@ -303,9 +313,21 @@ export function CameraDialog({
       if (camera) {
         if (v.name !== camera.name) await renameCamera(camera.id, v.name)
       } else {
-        id = (
-          await createCamera({ classroom_id: v.classroomId, position: v.position, name: v.name })
-        ).id
+        // If saving the connection fails, a retry reuses the camera already created:
+        // createCamera again would collide with unique(classroom_id, position).
+        created.current ??= {
+          id: (
+            await createCamera({ classroom_id: v.classroomId, position: v.position, name: v.name })
+          ).id,
+          name: v.name,
+          classroomId: v.classroomId,
+          position: v.position,
+        }
+        id = created.current.id
+        if (v.name !== created.current.name) {
+          await renameCamera(id, v.name)
+          created.current.name = v.name
+        }
       }
       await saveCameraConnection(id!, v)
     },
@@ -335,8 +357,10 @@ export function CameraDialog({
       onSubmit={(data) => {
         const v = {
           name: text(data, 'name'),
-          classroomId: camera?.classroom_id ?? text(data, 'classroom'),
-          position: (camera?.position ?? text(data, 'position')) as 'outside' | 'inside',
+          classroomId:
+            camera?.classroom_id ?? created.current?.classroomId ?? text(data, 'classroom'),
+          position: (camera?.position ?? created.current?.position ?? text(data, 'position')) as
+            'outside' | 'inside',
           host: text(data, 'host'),
           username: text(data, 'username'),
           password: String(data.get('password') ?? ''),
@@ -380,6 +404,7 @@ export function CameraDialog({
               <SelectInput
                 id={id}
                 defaultValue=""
+                disabled={created.current !== null}
                 aria-describedby={describedBy}
                 {...input('classroom')}
               >
@@ -396,7 +421,12 @@ export function CameraDialog({
           </Field>
           <Field label={t('cameras.fields.position')}>
             {({ id }) => (
-              <SelectInput id={id} defaultValue="outside" name="position">
+              <SelectInput
+                id={id}
+                defaultValue="outside"
+                name="position"
+                disabled={created.current !== null}
+              >
                 <option value="outside">{t('cameras.position.outside')}</option>
                 <option value="inside">{t('cameras.position.inside')}</option>
               </SelectInput>
