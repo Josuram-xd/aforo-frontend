@@ -211,3 +211,9 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 - [x] **26.1** `feat(cameras): add admin snapshot view` — Solo `admin`: botón «Ver imagen» en cada cámara que pide una foto fija (`request_camera_snapshot`) y la consulta cada 2 s hasta 20 s (`get_camera_snapshot`). Muestra la imagen con su hora o el error con «Reintentar»; la nota avisa que se borra de la nube a los 10 minutos.
 - [x] **26.2** `fix(settings): do not recreate camera when saving its connection is retried` — Si al crear una cámara `saveCameraConnection` falla, el reintento reutiliza la cámara ya creada en vez de volver a llamar `createCamera` (choque con unique(classroom_id, position)).
+
+### Task 29 — Tutoriales guiados por pantalla **(Prioridad 2)**
+- [x] **29.1** `feat(tutorial): add page tutorial component with spotlight` — Componente `PageTutorial`: botón «!» que abre un recorrido paso a paso con spotlight sobre elementos `data-tour`, tarjeta «Paso x de n» con Anterior / Siguiente / Cerrar, foco atrapado, Esc y flechas. Salta los pasos cuyo elemento no está en pantalla y se oculta si no queda ninguno.
+- [ ] **29.2** `feat(tutorial): show tutorial button in every page header` — `PageIntro` recibe `tour` y muestra el botón «!» en todas las pantallas de la app.
+- [ ] **29.3** `feat(tutorial): add tutorial texts and data-tour targets for each page` — Textos en `src/i18n/tutorial.es.json` (3-6 pasos por pantalla) y atributos `data-tour` sobre los elementos reales.
+- [ ] **29.4** `test(tutorial): cover tutorial steps and i18n keys` — Pruebas del componente y de que cada paso tiene sus textos y su `data-tour`.

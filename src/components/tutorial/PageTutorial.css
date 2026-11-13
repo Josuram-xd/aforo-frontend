@@ -1,0 +1,120 @@
+.tour-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-accent-fg);
+  font-family: inherit;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) ease;
+}
+
+.tour-trigger:hover {
+  background: var(--color-surface-2);
+}
+
+.tour-trigger:active {
+  transform: scale(0.94);
+}
+
+.tour-trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Above the sticky shell (topbar 20, menus 40), below toasts (60). */
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+/* Swallows clicks so the page behind cannot be used during the tour. */
+.tour__shield {
+  position: absolute;
+  inset: 0;
+}
+
+.tour__dim {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+  pointer-events: none;
+}
+
+/* The giant shadow darkens everything except the highlighted element. */
+.tour__spot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 0 0 100vmax var(--backdrop);
+  pointer-events: none;
+}
+
+.tour__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: min(360px, calc(100vw - 24px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card), var(--shadow-pop);
+  outline: none;
+  transition: opacity var(--duration-base) ease;
+}
+
+.tour__count {
+  font-size: var(--font-size-tiny);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-fg);
+}
+
+.tour__title {
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.tour__body {
+  font-size: var(--font-size-small);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.tour__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.tour__nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour__card,
+  .tour-trigger {
+    transition: none;
+  }
+}
