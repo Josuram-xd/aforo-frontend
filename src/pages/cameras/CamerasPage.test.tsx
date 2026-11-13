@@ -65,6 +65,15 @@ describe('CamerasPage connect action', () => {
   })
 })
 
+describe('CamerasPage local node notice', () => {
+  it.each<RoleCode>(['admin', 'viewer'])('shows the notice to %s', (r) => {
+    role.value = r
+    renderWithProviders(<CamerasPage />)
+    expect(screen.getByText('Requiere un computador en la red de las cámaras')).toBeInTheDocument()
+    expect(screen.getByText(/computador con aforo-vision encendido/)).toBeInTheDocument()
+  })
+})
+
 describe('CamerasPage snapshot view', () => {
   beforeEach(() => {
     role.value = 'admin'
