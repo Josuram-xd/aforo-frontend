@@ -631,6 +631,14 @@ export type Database = {
         Args: { p_camera_code: string; p_online: boolean }
         Returns: Json
       }
+      request_camera_snapshot: {
+        Args: { p_camera_id: string }
+        Returns: string
+      }
+      get_camera_snapshot: {
+        Args: { p_request_id: string }
+        Returns: Json
+      }
       delete_student: { Args: { p_student_id: string }; Returns: undefined }
       delete_user: { Args: { p_user_id: string }; Returns: undefined }
       submit_enrollment: {

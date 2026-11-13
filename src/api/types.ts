@@ -14,6 +14,12 @@ export type Course = Tables<'courses'>
 /** Where a Tapo camera lives on the LAN. The password is write-only: it never comes back to the browser. */
 export type CameraConnection =
   Database['public']['Functions']['camera_connections']['Returns'][number]
+/** Snapshot requested from a camera (admin only). `image` is base64 JPEG without the data-URL prefix. */
+export interface CameraSnapshot {
+  status: 'pending' | 'done' | 'failed' | 'expired'
+  image: string | null
+  takenAt: string | null
+}
 export type Student = Tables<'students'>
 export type DailySummary = Tables<'daily_occupancy_summary'>
 

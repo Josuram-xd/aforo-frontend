@@ -1,4 +1,4 @@
-import { Cctv, Clock, Pencil, Plus, VideoOff, Wifi, WifiOff } from 'lucide-react'
+import { Cctv, Clock, Eye, Pencil, Plus, VideoOff, Wifi, WifiOff } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Camera, Classroom } from '../../api/types'
@@ -15,22 +15,25 @@ import { useCameraConnections, useCameras, useClassrooms } from '../../hooks/que
 import { useNow } from '../../hooks/useNow'
 import { formatDateTime, formatRelative } from '../../lib/format'
 import { CameraDialog } from '../admin/SettingsDialogs'
+import { CameraSnapshotDialog } from './CameraSnapshotDialog'
 import './CamerasPage.css'
 
 /** A heartbeat older than this is shown as "late" even if the row still says online. */
 const STALE_AFTER_MS = 2 * 60_000
 
-/** `onConnect` is only passed to admins; `host` is the stored IP, if the camera is connected. */
+/** `onConnect` and `onSnapshot` are only passed to admins; `host` is the stored IP, if connected. */
 function CameraCard({
   camera,
   now,
   host,
   onConnect,
+  onSnapshot,
 }: {
   camera: Camera
   now: number
   host?: string
   onConnect?: () => void
+  onSnapshot?: () => void
 }) {
   const { t } = useTranslation()
   const online = camera.status === 'online'
@@ -81,16 +84,31 @@ function CameraCard({
             </div>
           )}
         </dl>
-        {onConnect && (
-          <Button
-            variant="secondary"
-            size="sm"
-            icon={<Pencil size={14} aria-hidden="true" />}
-            onClick={onConnect}
-            aria-label={t('settings.cameras.connectNamed', { name: camera.name })}
-          >
-            {host ? t('cameras.editConnection') : t('settings.cameras.connect')}
-          </Button>
+        {(onConnect || onSnapshot) && (
+          <div className="camera-card__actions">
+            {onConnect && (
+              <Button
+                variant="secondary"
+                size="sm"
+                icon={<Pencil size={14} aria-hidden="true" />}
+                onClick={onConnect}
+                aria-label={t('settings.cameras.connectNamed', { name: camera.name })}
+              >
+                {host ? t('cameras.editConnection') : t('settings.cameras.connect')}
+              </Button>
+            )}
+            {onSnapshot && (
+              <Button
+                variant="secondary"
+                size="sm"
+                icon={<Eye size={14} aria-hidden="true" />}
+                onClick={onSnapshot}
+                aria-label={t('cameras.snapshot.buttonNamed', { name: camera.name })}
+              >
+                {t('cameras.snapshot.button')}
+              </Button>
+            )}
+          </div>
         )}
       </div>
     </Card>
@@ -109,6 +127,8 @@ export function CamerasPage() {
   const toast = useToast()
   // `null` = adding a new camera; `undefined` = dialog closed.
   const [editing, setEditing] = useState<Camera | null | undefined>(undefined)
+  // Camera whose still image is being requested (admin only); unmounting the dialog stops polling.
+  const [snapshotOf, setSnapshotOf] = useState<Camera | null>(null)
 
   if (cameras.isPending) {
     return (
@@ -176,6 +196,7 @@ export function CamerasPage() {
                     now={now}
                     host={connections.data?.find((c) => c.camera_id === camera.id)?.host}
                     onConnect={isAdmin ? () => setEditing(camera) : undefined}
+                    onSnapshot={isAdmin ? () => setSnapshotOf(camera) : undefined}
                   />
                 ))}
               </div>
@@ -183,6 +204,9 @@ export function CamerasPage() {
           ))
       )}
       <p className="camera-note">{t('cameras.lanOnly')}</p>
+      {isAdmin && snapshotOf && (
+        <CameraSnapshotDialog camera={snapshotOf} onClose={() => setSnapshotOf(null)} />
+      )}
       {isAdmin && editing !== undefined && (
         <CameraDialog
           camera={editing}

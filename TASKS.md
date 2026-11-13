@@ -205,3 +205,9 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 > Depende de: task 24.
 
 - [x] **25.1** `feat(cameras): connect cameras from the cameras tab` — El admin ve en Cámaras el botón «Agregar cámara» (también en el estado vacío) y, en cada tarjeta, «Conectar» o «Editar conexión» con la IP de la cámara; reutiliza el diálogo de Configuración. Los demás roles ven la página igual que antes y no llaman a la RPC de conexiones.
+
+### Task 26 — Foto fija de cámaras y ajuste de conexión **(Prioridad 2)**
+> Depende de: `aforo-db` (RPCs `request_camera_snapshot` y `get_camera_snapshot`) y `aforo-vision` (servidor que toma la foto).
+
+- [x] **26.1** `feat(cameras): add admin snapshot view` — Solo `admin`: botón «Ver imagen» en cada cámara que pide una foto fija (`request_camera_snapshot`) y la consulta cada 2 s hasta 20 s (`get_camera_snapshot`). Muestra la imagen con su hora o el error con «Reintentar»; la nota avisa que se borra de la nube a los 10 minutos.
+- [x] **26.2** `fix(settings): do not recreate camera when saving its connection is retried` — Si al crear una cámara `saveCameraConnection` falla, el reintento reutiliza la cámara ya creada en vez de volver a llamar `createCamera` (choque con unique(classroom_id, position)).
