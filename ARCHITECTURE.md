@@ -190,6 +190,8 @@ Every data region renders a **skeleton** (same shape as the final content, shimm
 
 **ADR-007: Routing with React Router, charts with Recharts, icons with lucide-react.** Verify current major versions before pinning (AGENTS rule 7).
 
+**Demo mode (Task 30).** The public `/demo` route stores a role in `sessionStorage` (`aforo.demo`; if storage is blocked, the role travels as `?demo=` for that page load) and reloads at `/`. `lib/demo.ts` reads the flag once at module load, and `isMockMode = (DEV && VITE_USE_MOCK) || demoActive()`, so the whole app runs on the in-memory mock API with a fake session. In mock mode `lib/supabase.ts` exports a blocking proxy instead of a client: no stored session is restored and any unguarded use throws. Login routes redirect to `/` while the demo is on, and a non-dismissible banner (in `RootLayout`) publishes its height as `--demo-offset` for the sticky shell. The flag grants no real access (no token, RLS still applies to any real request, and none is made).
+
 ### 8.6 Repository structure (target)
 
 ```
