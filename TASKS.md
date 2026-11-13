@@ -211,3 +211,8 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 - [x] **26.1** `feat(cameras): add admin snapshot view` — Solo `admin`: botón «Ver imagen» en cada cámara que pide una foto fija (`request_camera_snapshot`) y la consulta cada 2 s hasta 20 s (`get_camera_snapshot`). Muestra la imagen con su hora o el error con «Reintentar»; la nota avisa que se borra de la nube a los 10 minutos.
 - [x] **26.2** `fix(settings): do not recreate camera when saving its connection is retried` — Si al crear una cámara `saveCameraConnection` falla, el reintento reutiliza la cámara ya creada en vez de volver a llamar `createCamera` (choque con unique(classroom_id, position)).
+
+### Task 27 — Guía de conexión de cámaras en 3 pasos **(Prioridad 2)**
+> Depende de: Task 26 (mismo diálogo `CameraDialog`).
+
+- [x] **27.1** `feat(cameras): redesign camera connection guide as a 3-step flow` — El diálogo de cámara muestra una lista numerada de 3 pasos (crear la cuenta de cámara en Tapo, copiar la IP, pegar los datos) con línea de tiempo, ayuda plegable «¿No encuentras la IP?» y los campos IP, usuario y contraseña agrupados en el paso 3 con ayudas; el comportamiento del formulario no cambia. Los nombres de menú de Tapo siguen sin verificarse.
