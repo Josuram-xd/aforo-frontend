@@ -227,3 +227,13 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **29.2** `feat(tutorial): show tutorial button in every page header` — `PageIntro` recibe `tour` y muestra el botón «!» en todas las pantallas de la app.
 - [x] **29.3** `feat(tutorial): add tutorial texts and data-tour targets for each page` — Textos en `src/i18n/tutorial.es.json` (3-6 pasos por pantalla) y atributos `data-tour` sobre los elementos reales.
 - [x] **29.4** `test(tutorial): cover tutorial steps and i18n keys` — Pruebas del componente y de que cada paso tiene sus textos y su `data-tour`.
+
+### Task 30 — Modo demostración **(Prioridad 2)**
+> Permite mostrar la web desplegada con datos simulados (los del modo mock), sin cuenta ni datos reales. No crea usuarios ni toca Supabase.
+
+- [x] **30.1** `feat(demo): add runtime demo mode from /demo with a fixed banner` — La ruta pública `/demo` (`?rol=admin|teacher|viewer`, inválido = admin) guarda una bandera en `sessionStorage` (con respaldo en la URL si el storage falla) y recarga en Inicio con `isMockMode` activo. El cliente `supabase` queda bloqueado (lanza error si se usa), las pantallas de login redirigen a Inicio y una franja fija «MODO DEMOSTRACIÓN» con «Salir de la demo» se ve en todas las pantallas.
+- [x] **30.2** `feat(demo): make sample data tell a coherent story` — Ambas cámaras en línea, aforo entre 3 y 80 % del máximo (también en vivo), una alerta abierta y otra resuelta.
+- [x] **30.3** `test(demo): cover the demo flag, banner and no supabase access` — Bandera sin storage, `?rol=` inválido, sin bandera no hay mock, franja solo en demo, y ninguna llamada a `supabase` al renderizar las rutas principales.
+- [x] **30.4** `docs(demo): document demo mode` — Sección «Modo demostración» en README y nota en ARCHITECTURE.
+- [x] **30.5** `test(demo): make the no-supabase demo test fast and non-flaky` — La prueba de «cero accesos a supabase» resuelve la latencia simulada de `delay()` (350-750 ms por consulta, con timers reales) y deja de tardar 8-12 s; la aserción sobre `supabase` no cambia.
+- [x] **30.6** `test: raise vitest timeout to keep the suite stable under CPU load` — `testTimeout` de 15 s: las pruebas con `userEvent` tardan ~1 s solas pero rozaban los 5 s con todos los workers compitiendo por CPU en Windows.

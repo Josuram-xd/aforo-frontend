@@ -1,5 +1,8 @@
-import type { ComponentType } from 'react'
-import { createBrowserRouter, type RouteObject } from 'react-router'
+import type { ComponentType, ReactElement } from 'react'
+import { createBrowserRouter, Navigate, type RouteObject } from 'react-router'
+import { RootLayout } from './layouts/RootLayout'
+import { demoActive } from './lib/demo'
+import { DemoPage } from './pages/DemoPage'
 import { RequireRole } from './auth/RequireRole'
 import { ADMIN_ROLES, STAFF_ROLES } from './auth/roles'
 import type { RouteHandle } from './layouts/AppShell'
@@ -20,12 +23,16 @@ function page(path: string, titleKey: string, load: () => Promise<ComponentType>
 }
 
 // Pages other than Inicio are code-split: each route downloads its module on first visit.
-export const router = createBrowserRouter([
-  { path: '/login', element: <LoginPage /> },
-  { path: '/registro', element: <SignupPage /> },
-  { path: '/auth/callback', element: <AuthCallbackPage /> },
-  { path: '/recuperar', element: <RequestResetPage /> },
-  { path: '/recuperar/nueva', element: <UpdatePasswordPage /> },
+// In the demo there is no real login: auth screens would call Supabase, so they go back to Inicio.
+const authScreen = (element: ReactElement) => (demoActive() ? <Navigate to="/" replace /> : element)
+
+const appRoutes: RouteObject[] = [
+  { path: '/demo', element: <DemoPage /> },
+  { path: '/login', element: authScreen(<LoginPage />) },
+  { path: '/registro', element: authScreen(<SignupPage />) },
+  { path: '/auth/callback', element: authScreen(<AuthCallbackPage />) },
+  { path: '/recuperar', element: authScreen(<RequestResetPage />) },
+  { path: '/recuperar/nueva', element: authScreen(<UpdatePasswordPage />) },
   {
     element: (
       <RequireRole roles={[]}>
@@ -98,4 +105,8 @@ export const router = createBrowserRouter([
       { path: '*', element: <NotFoundPage />, handle: handle('notFound.title') },
     ],
   },
-])
+]
+
+export const routes: RouteObject[] = [{ element: <RootLayout />, children: appRoutes }]
+
+export const router = createBrowserRouter(routes)

@@ -91,8 +91,8 @@ function build() {
       code: 'camera-inside',
       name: 'Cámara del salón',
       position: 'inside',
-      status: 'offline',
-      last_seen_at: iso(t0 - 9 * MINUTE),
+      status: 'online',
+      last_seen_at: iso(t0 - 15_000),
       created_at: '2026-09-20T15:00:00Z',
       updated_at: iso(t0),
     },
@@ -186,12 +186,13 @@ function build() {
   db.alerts = [
     {
       id: uuid('f', 1),
-      type: 'camera_offline',
+      // Open alert for the demo: consistent with the occupancy rule in addEvent (peaks at 80 %).
+      type: 'capacity_exceeded',
       severity: 'warning',
-      message: 'La cámara del salón no envía latidos desde hace 9 minutos.',
+      message: 'El salón llegó al 80 % del aforo (24 de 30).',
       classroom_id: CLASSROOM_ID,
-      camera_id: CAMERA_IN,
-      created_at: iso(t0 - 9 * MINUTE),
+      camera_id: null,
+      created_at: iso(t0 - 12 * MINUTE),
       resolved_at: null,
       resolved_by: null,
     },
@@ -270,7 +271,13 @@ function addEvent(at: number): Row<'events'> {
   const classroom = db.classrooms[0]!
   const inside = db.students.filter((s) => s.presence === 'IN' && s.is_active)
   const outside = db.students.filter((s) => s.presence === 'OUT' && s.is_active)
-  const wantsExit = classroom.current_occupancy > 0 && (random() < 0.38 || outside.length === 0)
+  // Keeps the room between 3 and ~80% of its capacity so the live demo never overflows or empties.
+  const occupancy = classroom.current_occupancy
+  const wantsExit =
+    occupancy > 0 &&
+    (occupancy >= classroom.max_capacity * 0.8 ||
+      (occupancy > 3 && random() < 0.38) ||
+      outside.length === 0)
   const direction = wantsExit ? 'EXIT' : 'ENTRY'
   const pool = direction === 'ENTRY' ? outside : inside
   const identified = random() < 0.74 && pool.length > 0
@@ -342,7 +349,7 @@ export function notifyMock(table: MockTable): void {
 const LIVE_EVENT_EVERY_MS = 9_000
 setInterval(() => {
   addEvent(now())
-  db.cameras[0]!.last_seen_at = iso(now())
+  db.cameras.forEach((camera) => (camera.last_seen_at = iso(now())))
   notifyMock('events')
   notifyMock('classrooms')
 }, LIVE_EVENT_EVERY_MS)

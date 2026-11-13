@@ -1,6 +1,6 @@
 .top-progress {
   position: sticky;
-  top: var(--topbar-height);
+  top: calc(var(--topbar-height) + var(--demo-offset, 0px));
   z-index: 19;
   height: 2px;
   margin-bottom: -2px;

@@ -23,6 +23,8 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     css: false,
     restoreMocks: true,
+    // userEvent tests take ~1 s alone but brush the 5 s default when every worker competes for CPU on Windows.
+    testTimeout: 15_000,
   },
   preview: {
     headers: {

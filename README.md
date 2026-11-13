@@ -125,6 +125,15 @@ El material del curso de estructuras de datos está en la carpeta «Estructura d
 - **Requiere un computador local.** El sistema necesita siempre un computador encendido, con `aforo-vision` corriendo, en la misma red local que las cámaras Tapo. La red de la institución no permite configurar el router, así que no hay acceso remoto a las cámaras ni procesamiento en la nube.
 - La web, la base de datos, los usuarios y las alertas funcionan sin ese computador, pero sin él no hay conteo ni estado de cámaras: las cámaras figuran sin conexión. La página Cámaras muestra un aviso con esto.
 
+## Modo demostración
+
+Para mostrar la web sin datos reales, abre `/demo` en la versión desplegada (por ejemplo `https://<dominio>/demo`). Entra directo a Inicio con datos de ejemplo (aforo, cámaras en línea, eventos `FACE` y `BODY_ONLY`, una alerta abierta) y una franja fija arriba: «MODO DEMOSTRACIÓN · datos de ejemplo, no son resultados del piloto».
+
+- **Rol simulado:** `/demo?rol=admin` (por defecto), `/demo?rol=teacher` o `/demo?rol=viewer`. Cualquier otro valor se ignora y se usa `admin`. Solo cambia lo que ve esa pestaña.
+- **Qué es:** los mismos datos del modo mock de desarrollo, en memoria del navegador. Los cambios (crear estudiantes, resolver alertas…) se pierden al recargar.
+- **No toca la base de datos:** no hay sesión de Supabase, no se crea ningún usuario y ninguna petición sale a la red; el cliente de Supabase queda bloqueado mientras la demo está activa.
+- **Cómo salir:** botón «Salir de la demo» de la franja (o «Cerrar sesión»); borra la bandera y vuelve al login. La bandera vive en `sessionStorage`, así que cerrar la pestaña también la termina.
+
 ## Despliegue
 
 AWS Amplify (`us-east-2`) construye y publica cada push a `main` con `amplify.yml`. Si las pruebas fallan, no se publica. La URL del frontend debe estar en Supabase → Authentication → URL Configuration para que funcionen el login con Google y los enlaces de correo (`/auth/callback`).
