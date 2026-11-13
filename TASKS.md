@@ -217,3 +217,7 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 - [x] **28.1** `feat(cameras): show the local node requirement on the cameras page` — Aviso informativo visible para todos los roles en Cámaras («Requiere un computador en la red de las cámaras»); reemplaza la nota `cameras.lanOnly`.
 - [x] **28.2** `docs: document the local-node limitation` — README (Limitaciones), PRD (Limitaciones conocidas) y ARCHITECTURE (ADR-007 con la alternativa descartada).
+### Task 27 — Guía de conexión de cámaras en 3 pasos **(Prioridad 2)**
+> Depende de: Task 26 (mismo diálogo `CameraDialog`).
+
+- [x] **27.1** `feat(cameras): redesign camera connection guide as a 3-step flow` — El diálogo de cámara muestra una lista numerada de 3 pasos (crear la cuenta de cámara en Tapo, copiar la IP, pegar los datos) con línea de tiempo, ayuda plegable «¿No encuentras la IP?» y los campos IP, usuario y contraseña agrupados en el paso 3 con ayudas; el comportamiento del formulario no cambia. Los nombres de menú de Tapo siguen sin verificarse.
