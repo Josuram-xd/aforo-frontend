@@ -167,7 +167,7 @@ export function UsersPage() {
       align: 'right',
       render: (row) =>
         row.id === me?.id ? null : (
-          <span className="cell-actions">
+          <span className="cell-actions" data-tour="users-actions">
             <Button
               variant="ghost"
               size="sm"
@@ -199,14 +199,16 @@ export function UsersPage() {
         actions={
           <Button
             icon={<UserPlus size={16} aria-hidden="true" />}
+            data-tour="users-invite"
             onClick={() => setInviteOpen(true)}
           >
             {t('admin.users.invite')}
           </Button>
         }
       />
-      <Card>
+      <Card data-tour="users-table">
         <FilterBar
+          tour="users-filters"
           label={t('admin.users.filters')}
           onClear={() => {
             setSearch('')

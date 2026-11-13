@@ -134,6 +134,7 @@ export function EventsPage() {
         actions={
           <Button
             variant="secondary"
+            data-tour="events-export"
             onClick={() => exportCsv.mutate()}
             loading={exportCsv.isPending}
             disabled={!classrooms.data?.length}
@@ -143,7 +144,7 @@ export function EventsPage() {
           </Button>
         }
       />
-      <Card>
+      <Card data-tour="events-table">
         <EventsFilterBar
           value={filters}
           onChange={updateFilters}

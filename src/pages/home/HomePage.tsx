@@ -54,7 +54,7 @@ export function HomePage() {
         }
         actions={
           classrooms.data && classrooms.data.length > 1 ? (
-            <label className="dashboard__room-picker">
+            <label className="dashboard__room-picker" data-tour="home-room">
               <span className="visually-hidden">{t('dashboard.pickClassroom')}</span>
               <SelectInput
                 value={classroom?.id ?? ''}

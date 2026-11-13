@@ -32,7 +32,7 @@ interface DashboardStatsProps {
 /** Top row of the home page: occupancy hero + three KPIs that depend on the role. */
 export function DashboardStats({ classroom, day, isStaff }: DashboardStatsProps) {
   return (
-    <div className="dashboard__stats">
+    <div className="dashboard__stats" data-tour="home-stats">
       <OccupancyCard classroom={classroom} />
       {isStaff ? (
         <StaffStats classroomId={classroom?.id} day={day} />

@@ -84,7 +84,7 @@ export function CoursesPage() {
       header: <span className="visually-hidden">{t('common.actions')}</span>,
       align: 'right',
       render: (row) => (
-        <span className="cell-actions">
+        <span className="cell-actions" data-tour="courses-actions">
           <Button
             variant="ghost"
             size="sm"
@@ -121,12 +121,16 @@ export function CoursesPage() {
         tour={TOURS.courses}
         description={t('courses.description')}
         actions={
-          <Button icon={<Plus size={16} aria-hidden="true" />} onClick={() => setEditing(null)}>
+          <Button
+            icon={<Plus size={16} aria-hidden="true" />}
+            onClick={() => setEditing(null)}
+            data-tour="courses-create"
+          >
             {t('courses.create')}
           </Button>
         }
       />
-      <Card>
+      <Card data-tour="courses-table">
         {courses.isPending ? (
           <SkeletonTable rows={4} columns={4} />
         ) : courses.isError ? (

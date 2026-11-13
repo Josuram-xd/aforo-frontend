@@ -6,6 +6,232 @@
       "prev": "Anterior",
       "next": "Siguiente",
       "close": "Cerrar"
+    },
+    "home": {
+      "intro": {
+        "title": "Inicio",
+        "body": "Aquí ves cuántas personas hay en el salón ahora mismo y lo último que pasó. Todo se actualiza solo, sin recargar la página."
+      },
+      "room": {
+        "title": "Elegir salón",
+        "body": "Cuando hay más de un salón, este selector cambia el salón que muestran todas las tarjetas de la pantalla."
+      },
+      "stats": {
+        "title": "Aforo y totales",
+        "body": "La primera tarjeta muestra las personas dentro del salón frente al aforo máximo, con una barra que cambia de color al acercarse al límite. Las otras tarjetas resumen el día: entradas, salidas y cuántas personas se identificaron por rostro. Un observador ve el estado de cámaras y alertas en lugar de estos totales."
+      },
+      "chart": {
+        "title": "Entradas y salidas por hora",
+        "body": "Barras con las entradas y salidas de hoy hora por hora. Sirve para ver en qué momentos se llena o se vacía el salón. El botón de la tarjeta la cambia a tabla. Solo la ven administradores y docentes."
+      },
+      "events": {
+        "title": "Últimos eventos",
+        "body": "Los 10 movimientos más recientes, con el método de identificación: rostro o solo cuerpo. «Ver historial» abre la lista completa con filtros."
+      },
+      "cameras": {
+        "title": "Estado de las cámaras",
+        "body": "Cada cámara del salón con su último latido, para saber si está enviando datos. Esta tarjeta la ve el observador; administradores y docentes ven los últimos eventos."
+      },
+      "alerts": {
+        "title": "Alertas abiertas",
+        "body": "Avisos que siguen pendientes, como el aforo superado o una cámara sin conexión. «Ver todas» abre la pantalla de Alertas."
+      }
+    },
+    "events": {
+      "intro": {
+        "title": "Historial de eventos",
+        "body": "Lista de cada entrada y salida que registraron las cámaras. Sirve para revisar qué pasó en un día y con qué método se identificó a cada persona."
+      },
+      "export": {
+        "title": "Exportar CSV",
+        "body": "Descarga los eventos del rango de fechas elegido en un archivo que se abre en Excel. El rango máximo es de 31 días."
+      },
+      "filters": {
+        "title": "Filtros",
+        "body": "Acota la lista por fecha, dirección (entrada o salida), método (rostro o cuerpo) y estudiante. Si hay más de un salón, también puedes filtrar por salón. «Limpiar filtros» vuelve a mostrar todo."
+      },
+      "table": {
+        "title": "Tabla de eventos",
+        "body": "Cada fila muestra la hora, si fue entrada o salida, la persona, el método y la confianza del reconocimiento. Rostro significa que se identificó a la persona; cuerpo, que solo se contó la silueta. Abajo se cambia de página."
+      }
+    },
+    "students": {
+      "intro": {
+        "title": "Estudiantes",
+        "body": "Aquí administras a las personas que el sistema puede reconocer y ves quiénes están dentro del salón ahora."
+      },
+      "create": {
+        "title": "Nuevo estudiante",
+        "body": "Agrega un estudiante con su nombre, código y correo, y una foto opcional. Al crearlo se ofrece registrar su rostro de inmediato."
+      },
+      "filters": {
+        "title": "Buscar y filtrar",
+        "body": "Busca por nombre, código o correo y filtra por presencia: dentro, fuera o inactivos."
+      },
+      "table": {
+        "title": "Lista de estudiantes",
+        "body": "Muestra la presencia actual, el estado de la biometría (si su rostro ya está registrado) y la hora del último evento. Haz clic en el título de una columna para ordenarla."
+      },
+      "actions": {
+        "title": "Acciones por fila",
+        "body": "Editar los datos, registrar o actualizar el rostro con la cámara del navegador, desactivar o reactivar al estudiante y eliminarlo. Eliminar pide escribir su nombre para confirmar."
+      }
+    },
+    "sessions": {
+      "intro": {
+        "title": "Sesiones",
+        "body": "Programa las clases y revisa quién asistió a cada una. La asistencia se completa sola con los eventos de las cámaras."
+      },
+      "create": {
+        "title": "Nueva sesión",
+        "body": "Crea una clase eligiendo curso, salón y horario en hora de Bogotá. El botón se activa cuando ya existe al menos un curso y un salón."
+      },
+      "list": {
+        "title": "Lista de sesiones",
+        "body": "Cada fila muestra el título, el horario y su estado: en curso, próxima, finalizada o cancelada. Haz clic en una fila para ver su asistencia; «Editar» cambia sus datos."
+      },
+      "attendance": {
+        "title": "Asistencia",
+        "body": "Para la sesión elegida, quién está presente, quién ya salió y a qué hora entró y salió. Solo cuenta a quienes se identificaron por rostro durante la sesión."
+      }
+    },
+    "courses": {
+      "intro": {
+        "title": "Cursos",
+        "body": "Los cursos agrupan a los estudiantes y las sesiones de clase. Primero se crea el curso y luego se programan sus sesiones."
+      },
+      "create": {
+        "title": "Nuevo curso",
+        "body": "Crea un curso con su código, nombre y periodo académico."
+      },
+      "table": {
+        "title": "Lista de cursos",
+        "body": "Cada curso con su periodo, cuántos estudiantes tiene inscritos y si está activo."
+      },
+      "actions": {
+        "title": "Acciones por curso",
+        "body": "«Estudiantes» abre la lista para inscribir o quitar estudiantes; los cambios se guardan al instante. El lápiz edita el curso. Solo el administrador ve el botón para eliminarlo."
+      }
+    },
+    "cameras": {
+      "intro": {
+        "title": "Cámaras",
+        "body": "Estado de cada cámara según su último latido, la señal que envía cada pocos segundos. Se actualiza en vivo."
+      },
+      "summary": {
+        "title": "Resumen",
+        "body": "Cuántas cámaras están en línea del total. Se pone en amarillo si alguna dejó de responder."
+      },
+      "add": {
+        "title": "Agregar cámara",
+        "body": "Registra una cámara nueva con su salón y ubicación. Solo el administrador ve este botón."
+      },
+      "grid": {
+        "title": "Tarjetas de cámaras",
+        "body": "Cada tarjeta indica si la cámara está en línea, atrasada o sin conexión, su ubicación (afuera o adentro del salón) y la hora del último latido. El administrador también ve la dirección IP, el botón para conectarla o editarla y «Ver imagen», que pide una foto fija."
+      },
+      "note": {
+        "title": "Requiere un computador local",
+        "body": "Para que las cámaras aparezcan en línea debe haber un computador con aforo-vision encendido y conectado a la misma red que ellas. Aquí solo se muestra el estado de cada cámara."
+      }
+    },
+    "alerts": {
+      "intro": {
+        "title": "Alertas",
+        "body": "Avisos del sistema, por ejemplo cuando se supera el aforo o una cámara pierde la conexión."
+      },
+      "filter": {
+        "title": "Filtrar alertas",
+        "body": "Cambia entre alertas abiertas, resueltas o todas. El número indica cuántas hay en cada grupo."
+      },
+      "list": {
+        "title": "Lista de alertas",
+        "body": "Cada alerta muestra su tipo, su gravedad, si sigue abierta, cuándo ocurrió y en qué salón o cámara."
+      },
+      "resolve": {
+        "title": "Marcar como resuelta",
+        "body": "Cuando ya atendiste una alerta, este botón la pasa a resueltas y queda registrado quién lo hizo. Solo administradores y docentes lo ven."
+      }
+    },
+    "profile": {
+      "intro": {
+        "title": "Perfil",
+        "body": "Tu información personal y lo que puedes hacer en Aforo."
+      },
+      "card": {
+        "title": "Tu cuenta",
+        "body": "Tu foto, nombre, rol, correo y desde cuándo eres miembro. «Cerrar sesión» sale de la cuenta en este equipo."
+      },
+      "name": {
+        "title": "Datos personales",
+        "body": "Cambia tu nombre completo y pulsa Guardar. Ese nombre aparece en el menú y en la auditoría."
+      },
+      "permissions": {
+        "title": "Tus permisos",
+        "body": "Explica qué puedes ver y hacer según tu rol. Los roles los asigna un administrador."
+      },
+      "password": {
+        "title": "Cambiar contraseña",
+        "body": "Abre el formulario para elegir una contraseña nueva de acceso con correo."
+      }
+    },
+    "users": {
+      "intro": {
+        "title": "Usuarios",
+        "body": "Quién puede entrar a Aforo y qué puede ver. Esta pantalla es solo para administradores y los cambios quedan en la auditoría."
+      },
+      "invite": {
+        "title": "Invitar usuario",
+        "body": "Envía un correo con un enlace para que la persona cree su contraseña."
+      },
+      "filters": {
+        "title": "Buscar y filtrar",
+        "body": "Busca por nombre o correo y filtra por rol."
+      },
+      "table": {
+        "title": "Lista de usuarios",
+        "body": "Cada fila muestra el rol, si la cuenta está activa y desde cuándo existe. El selector de rol cambia los permisos al instante; no puedes cambiar el tuyo."
+      },
+      "actions": {
+        "title": "Desactivar o eliminar",
+        "body": "Desactivar bloquea el acceso y se puede revertir. Eliminar borra la cuenta para siempre y pide escribir su correo para confirmar. No aparecen en tu propia fila."
+      }
+    },
+    "audit": {
+      "intro": {
+        "title": "Auditoría",
+        "body": "Registro de accesos y cambios en el sistema. Lo escribe la base de datos y no se puede editar desde la aplicación."
+      },
+      "filters": {
+        "title": "Filtros",
+        "body": "Acota el registro por usuario, acción, recurso y rango de fechas."
+      },
+      "table": {
+        "title": "Registro",
+        "body": "Cada fila indica quién hizo qué y cuándo. Haz clic en una fila para ver el detalle y los valores antes y después del cambio. Abajo se cambia de página."
+      }
+    },
+    "settings": {
+      "intro": {
+        "title": "Configuración",
+        "body": "Salones y cámaras del piloto. Esta pantalla es solo para administradores y los cambios quedan en la auditoría."
+      },
+      "classrooms": {
+        "title": "Salones",
+        "body": "Lista de salones con su ubicación y aforo máximo. Ese aforo define la barra de capacidad y la alerta de aforo superado. Cada fila se puede editar o eliminar."
+      },
+      "classroomAdd": {
+        "title": "Agregar salón",
+        "body": "Crea un salón con su nombre, ubicación y aforo máximo."
+      },
+      "cameras": {
+        "title": "Cámaras",
+        "body": "Cámaras registradas con su salón y la dirección IP si ya están conectadas. Desde aquí se editan y se conectan."
+      },
+      "cameraAdd": {
+        "title": "Agregar cámara",
+        "body": "Registra una cámara Tapo con su salón, ubicación, dirección IP y cuenta de cámara. La contraseña solo se escribe; nunca se vuelve a mostrar."
+      }
     }
   }
 }

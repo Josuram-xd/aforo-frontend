@@ -131,8 +131,9 @@ export function AuditPage() {
   return (
     <>
       <PageIntro tour={TOURS.audit} description={t('audit.description')} />
-      <Card>
+      <Card data-tour="audit-table">
         <FilterBar
+          tour="audit-filters"
           label={t('audit.filters')}
           onClear={() => {
             setFilters({})

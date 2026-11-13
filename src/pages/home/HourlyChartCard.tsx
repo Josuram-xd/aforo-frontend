@@ -42,7 +42,7 @@ export function HourlyChartCard({
     )
 
   return (
-    <Card aria-labelledby="hourly-chart-title">
+    <Card aria-labelledby="hourly-chart-title" data-tour="home-chart">
       <CardHeader
         titleId="hourly-chart-title"
         icon={<ChartColumnBig size={18} />}
