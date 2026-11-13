@@ -120,6 +120,11 @@ Ocultar una ruta o un botón no es control de acceso: la seguridad real es RLS e
 
 El material del curso de estructuras de datos está en la carpeta «Estructura de datos» del curso.
 
+## Limitaciones
+
+- **Requiere un computador local.** El sistema necesita siempre un computador encendido, con `aforo-vision` corriendo, en la misma red local que las cámaras Tapo. La red de la institución no permite configurar el router, así que no hay acceso remoto a las cámaras ni procesamiento en la nube.
+- La web, la base de datos, los usuarios y las alertas funcionan sin ese computador, pero sin él no hay conteo ni estado de cámaras: las cámaras figuran sin conexión. La página Cámaras muestra un aviso con esto.
+
 ## Despliegue
 
 AWS Amplify (`us-east-2`) construye y publica cada push a `main` con `amplify.yml`. Si las pruebas fallan, no se publica. La URL del frontend debe estar en Supabase → Authentication → URL Configuration para que funcionen el login con Google y los enlaces de correo (`/auth/callback`).

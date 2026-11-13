@@ -216,4 +216,4 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 > Decisión del dueño (2026-11-12): el sistema necesita siempre un computador con `aforo-vision` en la misma red que las cámaras Tapo.
 
 - [x] **28.1** `feat(cameras): show the local node requirement on the cameras page` — Aviso informativo visible para todos los roles en Cámaras («Requiere un computador en la red de las cámaras»); reemplaza la nota `cameras.lanOnly`.
-- [ ] **28.2** `docs: document the local-node limitation` — README (Limitaciones), PRD (Limitaciones conocidas) y ARCHITECTURE (ADR-007 con la alternativa descartada).
+- [x] **28.2** `docs: document the local-node limitation` — README (Limitaciones), PRD (Limitaciones conocidas) y ARCHITECTURE (ADR-007 con la alternativa descartada).
