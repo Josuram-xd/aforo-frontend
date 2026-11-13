@@ -233,5 +233,5 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 
 - [x] **30.1** `feat(demo): add runtime demo mode from /demo with a fixed banner` — La ruta pública `/demo` (`?rol=admin|teacher|viewer`, inválido = admin) guarda una bandera en `sessionStorage` (con respaldo en la URL si el storage falla) y recarga en Inicio con `isMockMode` activo. El cliente `supabase` queda bloqueado (lanza error si se usa), las pantallas de login redirigen a Inicio y una franja fija «MODO DEMOSTRACIÓN» con «Salir de la demo» se ve en todas las pantallas.
 - [x] **30.2** `feat(demo): make sample data tell a coherent story` — Ambas cámaras en línea, aforo entre 3 y 80 % del máximo (también en vivo), una alerta abierta y otra resuelta.
-- [ ] **30.3** `test(demo): cover the demo flag, banner and no supabase access` — Bandera sin storage, `?rol=` inválido, sin bandera no hay mock, franja solo en demo, y ninguna llamada a `supabase` al renderizar las rutas principales.
+- [x] **30.3** `test(demo): cover the demo flag, banner and no supabase access` — Bandera sin storage, `?rol=` inválido, sin bandera no hay mock, franja solo en demo, y ninguna llamada a `supabase` al renderizar las rutas principales.
 - [ ] **30.4** `docs(demo): document demo mode` — Sección «Modo demostración» en README y nota en ARCHITECTURE.
