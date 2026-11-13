@@ -1,0 +1,32 @@
+.demo-banner {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-warning);
+  color: #1c1400;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.demo-banner__exit {
+  padding: 2px var(--space-3);
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.demo-banner__exit:hover,
+.demo-banner__exit:focus-visible {
+  background: #1c1400;
+  color: var(--color-warning);
+}
