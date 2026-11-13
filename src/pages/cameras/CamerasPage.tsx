@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Camera, Classroom } from '../../api/types'
 import { useRole } from '../../auth/useRole'
+import { Alert } from '../../components/ui/Alert'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
@@ -203,7 +204,11 @@ export function CamerasPage() {
             </section>
           ))
       )}
-      <p className="camera-note">{t('cameras.lanOnly')}</p>
+      <div className="camera-note">
+        <Alert tone="info" title={t('cameras.localNode.title')}>
+          {t('cameras.localNode.body')}
+        </Alert>
+      </div>
       {isAdmin && snapshotOf && (
         <CameraSnapshotDialog camera={snapshotOf} onClose={() => setSnapshotOf(null)} />
       )}

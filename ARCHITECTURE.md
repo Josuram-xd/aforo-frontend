@@ -46,6 +46,11 @@
 **Why**: no password handling in our code, free within Cognito's tier for a few users, and the same token works for both the API and the local video.
 **Constraint**: the camera pages only work when the app is opened from the laptop's network over plain HTTP (e.g. `npm run dev` / `vite preview` on the laptop); from the HTTPS Amplify deployment the browser blocks `http://` LAN streams. The dashboard itself works from anywhere.
 
+### ADR-007: A local computer running aforo-vision is required (no cloud or phone-camera alternative)
+**Decision**: The system always needs a powered-on computer running `aforo-vision` on the same local network as the Tapo cameras. The web app, database, users and alerts work without it, but without it there is no counting and cameras show as offline. The cameras page states this to every role.
+**Why**: the institution's network does not allow router configuration, so the cameras cannot be reached remotely and processing cannot move to the cloud (owner decision, 2026-11-12).
+**Rejected alternative: phone browser as camera.** It would force us to abandon the Tapo cameras, switch counting to a virtual line, and it could not identify people by face without moving biometrics into the browser.
+
 ## 4. Data contract (consumed, not owned)
 
 `aforo-frontend` consumes the REST API and shared enums defined in `aforo-backend/ARCHITECTURE.md`. It must not diverge from that contract; if the UI needs a new field, that's a change proposed to `aforo-backend`, not invented locally.

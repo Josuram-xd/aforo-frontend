@@ -148,7 +148,10 @@
   },
   "cameras": {
     "title": "Cámaras",
-    "lanOnly": "El video solo está disponible en la red local del piloto; aquí se muestra el estado de cada cámara.",
+    "localNode": {
+      "title": "Requiere un computador en la red de las cámaras",
+      "body": "Para ver las cámaras en línea debe haber un computador con aforo-vision encendido y conectado a la misma red que las cámaras. Si aparecen sin conexión, revisa primero eso."
+    },
     "cardHint": "Estado de las cámaras del salón",
     "empty": "No hay cámaras registradas",
     "status": {

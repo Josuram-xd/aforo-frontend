@@ -212,6 +212,11 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **26.1** `feat(cameras): add admin snapshot view` — Solo `admin`: botón «Ver imagen» en cada cámara que pide una foto fija (`request_camera_snapshot`) y la consulta cada 2 s hasta 20 s (`get_camera_snapshot`). Muestra la imagen con su hora o el error con «Reintentar»; la nota avisa que se borra de la nube a los 10 minutos.
 - [x] **26.2** `fix(settings): do not recreate camera when saving its connection is retried` — Si al crear una cámara `saveCameraConnection` falla, el reintento reutiliza la cámara ya creada en vez de volver a llamar `createCamera` (choque con unique(classroom_id, position)).
 
+### Task 28 — Aviso del computador local **(Prioridad 2)**
+> Decisión del dueño (2026-11-12): el sistema necesita siempre un computador con `aforo-vision` en la misma red que las cámaras Tapo.
+
+- [x] **28.1** `feat(cameras): show the local node requirement on the cameras page` — Aviso informativo visible para todos los roles en Cámaras («Requiere un computador en la red de las cámaras»); reemplaza la nota `cameras.lanOnly`.
+- [x] **28.2** `docs: document the local-node limitation` — README (Limitaciones), PRD (Limitaciones conocidas) y ARCHITECTURE (ADR-007 con la alternativa descartada).
 ### Task 27 — Guía de conexión de cámaras en 3 pasos **(Prioridad 2)**
 > Depende de: Task 26 (mismo diálogo `CameraDialog`).
 

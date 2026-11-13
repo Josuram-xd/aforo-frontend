@@ -51,6 +51,11 @@ Un dashboard web simple que muestre:
 - Debe consumir exclusivamente la API de `aforo-backend` — no accede a DynamoDB ni a `aforo-vision` directamente.
 - Presupuesto: 0 COP adicionales — el hosting debe mantenerse dentro del nivel gratuito de AWS Amplify.
 
+## Limitaciones conocidas
+
+- **Computador local obligatorio (decisión del dueño, 2026-11-12).** El sistema requiere siempre un computador encendido, con `aforo-vision` corriendo, en la misma red local que las cámaras Tapo. La red de la institución no permite configurar el router: no hay acceso remoto a las cámaras ni procesamiento en la nube.
+- Sin ese computador, la web, la base de datos, los usuarios y las alertas siguen funcionando, pero no hay conteo ni estado de cámaras (figuran sin conexión). La página Cámaras lo explica con un aviso visible para todos los roles.
+
 ## 8. Métricas de éxito del piloto
 
 - El aforo mostrado en pantalla siempre coincide con lo que se ve realmente entrando/saliendo del salón.

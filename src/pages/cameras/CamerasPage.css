@@ -116,8 +116,6 @@
 
 .camera-note {
   margin-top: var(--space-6);
-  font-size: var(--font-size-tiny);
-  color: var(--color-text-secondary);
 }
 
 .camera-card__actions {
