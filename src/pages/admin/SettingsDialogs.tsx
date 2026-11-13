@@ -15,6 +15,7 @@ import { Alert } from '../../components/ui/Alert'
 import { Button } from '../../components/ui/Button'
 import { Dialog } from '../../components/ui/Dialog'
 import { Field, PasswordInput, SelectInput, TextInput } from '../../components/ui/Field'
+import { CameraConnectGuide } from './CameraConnectGuide'
 
 interface FormDialogProps {
   formId: string
@@ -376,11 +377,6 @@ export function CameraDialog({
         if (Object.keys(next).length === 0) save.mutate(v)
       }}
     >
-      <div className="form-grid__full">
-        <Alert tone="info" title={t('settings.cameras.tapoTitle')}>
-          {t('settings.cameras.tapoSteps')}
-        </Alert>
-      </div>
       <Field
         label={t('settings.cameras.name')}
         error={fieldError('name')}
@@ -434,51 +430,59 @@ export function CameraDialog({
           </Field>
         </>
       )}
-      <Field
-        label={t('settings.cameras.host')}
-        hint={t('settings.cameras.hostHint')}
-        error={fieldError('host')}
-        className="form-grid__full"
-      >
-        {({ id, describedBy }) => (
-          <TextInput
-            id={id}
-            inputMode="decimal"
-            placeholder="192.168.1.50"
-            maxLength={253}
-            defaultValue={connection?.host ?? ''}
-            aria-describedby={describedBy}
-            {...input('host')}
-          />
-        )}
-      </Field>
-      <Field label={t('settings.cameras.username')} error={fieldError('username')}>
-        {({ id, describedBy }) => (
-          <TextInput
-            id={id}
-            autoComplete="off"
-            maxLength={64}
-            defaultValue={connection?.username ?? ''}
-            aria-describedby={describedBy}
-            {...input('username')}
-          />
-        )}
-      </Field>
-      <Field
-        label={t('settings.cameras.password')}
-        hint={connection ? t('settings.cameras.passwordKeep') : undefined}
-        error={fieldError('password')}
-      >
-        {({ id, describedBy }) => (
-          <PasswordInput
-            id={id}
-            autoComplete="new-password"
-            maxLength={128}
-            aria-describedby={describedBy}
-            {...input('password')}
-          />
-        )}
-      </Field>
+      <CameraConnectGuide>
+        <Field
+          label={t('settings.cameras.host')}
+          hint={t('settings.cameras.hostHint')}
+          error={fieldError('host')}
+          className="form-grid__full"
+        >
+          {({ id, describedBy }) => (
+            <TextInput
+              id={id}
+              inputMode="decimal"
+              placeholder="192.168.1.50"
+              maxLength={253}
+              defaultValue={connection?.host ?? ''}
+              aria-describedby={describedBy}
+              {...input('host')}
+            />
+          )}
+        </Field>
+        <Field
+          label={t('settings.cameras.username')}
+          hint={t('settings.cameras.usernameHint')}
+          error={fieldError('username')}
+        >
+          {({ id, describedBy }) => (
+            <TextInput
+              id={id}
+              autoComplete="off"
+              maxLength={64}
+              defaultValue={connection?.username ?? ''}
+              aria-describedby={describedBy}
+              {...input('username')}
+            />
+          )}
+        </Field>
+        <Field
+          label={t('settings.cameras.password')}
+          hint={
+            connection ? t('settings.cameras.passwordKeep') : t('settings.cameras.passwordHint')
+          }
+          error={fieldError('password')}
+        >
+          {({ id, describedBy }) => (
+            <PasswordInput
+              id={id}
+              autoComplete="new-password"
+              maxLength={128}
+              aria-describedby={describedBy}
+              {...input('password')}
+            />
+          )}
+        </Field>
+      </CameraConnectGuide>
     </FormDialog>
   )
 }
