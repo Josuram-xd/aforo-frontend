@@ -166,6 +166,17 @@
     "summary": "{{online}} de {{total}} en línea",
     "emptyHint": "Un administrador puede agregarlas en Configuración → Cámaras.",
     "editConnection": "Editar conexión",
+    "snapshot": {
+      "button": "Ver imagen",
+      "buttonNamed": "Ver imagen de {{name}}",
+      "title": "Foto fija de {{name}}",
+      "requesting": "Pidiendo imagen a la cámara…",
+      "alt": "Foto fija de la cámara {{name}}",
+      "takenAt": "Tomada a las {{time}}",
+      "failed": "La cámara no respondió. Verifica que aforo-vision esté encendido y la cámara conectada.",
+      "retry": "Reintentar",
+      "note": "Esta imagen se borra de la nube a los 10 minutos y queda registro de quién la pidió."
+    },
     "fields": {
       "position": "Ubicación",
       "heartbeat": "Último latido"

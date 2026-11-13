@@ -2,7 +2,7 @@ import { isMockMode } from '../lib/env'
 import { supabase } from '../lib/supabase'
 import type { TablesInsert, TablesUpdate } from '../types/database'
 import { fromPostgrest } from './errors'
-import type { Camera, CameraConnection, Classroom, Course } from './types'
+import type { Camera, CameraConnection, CameraSnapshot, Classroom, Course } from './types'
 
 // Classrooms, cameras and courses: readable by every active role, writable by admin (RLS).
 
@@ -89,6 +89,21 @@ export async function saveCameraConnection(
     p_password: input.password || undefined,
   })
   if (error) throw fromPostgrest(error)
+}
+
+/** Admin only: asks the vision server for a still image. Returns the request id to poll. */
+export async function requestCameraSnapshot(cameraId: string): Promise<string> {
+  if (isMockMode) return (await mock()).requestCameraSnapshot(cameraId)
+  const { data, error } = await supabase.rpc('request_camera_snapshot', { p_camera_id: cameraId })
+  if (error) throw fromPostgrest(error)
+  return data
+}
+
+export async function fetchCameraSnapshot(requestId: string): Promise<CameraSnapshot> {
+  if (isMockMode) return (await mock()).fetchCameraSnapshot(requestId)
+  const { data, error } = await supabase.rpc('get_camera_snapshot', { p_request_id: requestId })
+  if (error) throw fromPostgrest(error)
+  return data as unknown as CameraSnapshot
 }
 
 export async function fetchCourses(): Promise<Course[]> {

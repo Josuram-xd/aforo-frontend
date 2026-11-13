@@ -15,6 +15,7 @@ import type {
   AuditItem,
   Camera,
   CameraConnection,
+  CameraSnapshot,
   Classroom,
   Course,
   DailySummary,
@@ -111,6 +112,42 @@ export async function createCamera(
 const mockConnections: CameraConnection[] = []
 
 export const fetchCameraConnections = (): Promise<CameraConnection[]> => delay(mockConnections)
+
+const snapshots = new Map<string, { takenAt: string; image: string }>()
+let mockSnapshotImage: string | undefined
+
+/** Filler JPEG (base64) drawn on a canvas, so the mock looks like a real frame. */
+function fillerSnapshot(): string {
+  if (mockSnapshotImage) return mockSnapshotImage
+  const canvas = document.createElement('canvas')
+  canvas.width = 640
+  canvas.height = 360
+  const ctx = canvas.getContext('2d')
+  if (ctx) {
+    ctx.fillStyle = '#111d33'
+    ctx.fillRect(0, 0, 640, 360)
+    ctx.fillStyle = '#38bdf8'
+    ctx.font = '32px sans-serif'
+    ctx.fillText('Imagen de prueba (mock)', 40, 180)
+  }
+  mockSnapshotImage = canvas.toDataURL('image/jpeg', 0.8).split(',')[1] ?? ''
+  return mockSnapshotImage
+}
+
+export async function requestCameraSnapshot(cameraId: string): Promise<string> {
+  if (!db.cameras.some((c) => c.id === cameraId)) throw new Error('Cámara no encontrada')
+  const id = newId()
+  snapshots.set(id, { takenAt: new Date().toISOString(), image: fillerSnapshot() })
+  return delay(id)
+}
+
+export async function fetchCameraSnapshot(requestId: string): Promise<CameraSnapshot> {
+  const snap = snapshots.get(requestId)
+  const result: CameraSnapshot = snap
+    ? { status: 'done', image: snap.image, takenAt: snap.takenAt }
+    : { status: 'failed', image: null, takenAt: null }
+  return delay(result)
+}
 
 export async function saveCameraConnection(
   cameraId: string,
