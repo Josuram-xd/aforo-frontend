@@ -24,6 +24,13 @@ vi.mock('./lib/demo', () => ({
   parseDemoRole: () => 'admin',
 }))
 
+// Mock API latency (350-750 ms per query) is irrelevant to the supabase check and made each route
+// take seconds; resolve immediately (still cloned, like the real delay).
+vi.mock('./api/mock/mockDb', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./api/mock/mockDb')>()
+  return { ...actual, delay: <T,>(value: T) => Promise.resolve(structuredClone(value)) }
+})
+
 // The mock DB adds a live event on a timer; keep it still.
 vi.useFakeTimers({ toFake: ['setInterval'] })
 const { AuthProvider } = await import('./auth/AuthProvider')
@@ -49,28 +56,22 @@ const PATHS = [
 ]
 
 describe('demo mode never touches supabase', () => {
-  it.each(PATHS)(
-    'renders %s with sample data and no supabase access',
-    async (path) => {
-      const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-      const router = createMemoryRouter(routes, { initialEntries: [path] })
-      render(
-        <QueryClientProvider client={queryClient}>
-          <ToastProvider>
-            <AuthProvider>
-              <RouterProvider router={router} />
-            </AuthProvider>
-          </ToastProvider>
-        </QueryClientProvider>,
-      )
-      // Banner + page title prove the shell rendered behind the fake admin session.
-      expect(
-        await screen.findByText(/MODO DEMOSTRACIÓN/, {}, { timeout: 5000 }),
-      ).toBeInTheDocument()
-      await screen.findByRole('heading', { level: 1 }, { timeout: 5000 })
-      await waitFor(() => expect(queryClient.isFetching()).toBe(0), { timeout: 8000 })
-      expect(accessed).toEqual([])
-    },
-    15000,
-  )
+  it.each(PATHS)('renders %s with sample data and no supabase access', async (path) => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const router = createMemoryRouter(routes, { initialEntries: [path] })
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>
+          <AuthProvider>
+            <RouterProvider router={router} />
+          </AuthProvider>
+        </ToastProvider>
+      </QueryClientProvider>,
+    )
+    // Banner + page title prove the shell rendered behind the fake admin session.
+    expect(await screen.findByText(/MODO DEMOSTRACIÓN/, {}, { timeout: 5000 })).toBeInTheDocument()
+    await screen.findByRole('heading', { level: 1 }, { timeout: 5000 })
+    await waitFor(() => expect(queryClient.isFetching()).toBe(0), { timeout: 8000 })
+    expect(accessed).toEqual([])
+  })
 })

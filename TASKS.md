@@ -235,3 +235,4 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 - [x] **30.2** `feat(demo): make sample data tell a coherent story` — Ambas cámaras en línea, aforo entre 3 y 80 % del máximo (también en vivo), una alerta abierta y otra resuelta.
 - [x] **30.3** `test(demo): cover the demo flag, banner and no supabase access` — Bandera sin storage, `?rol=` inválido, sin bandera no hay mock, franja solo en demo, y ninguna llamada a `supabase` al renderizar las rutas principales.
 - [x] **30.4** `docs(demo): document demo mode` — Sección «Modo demostración» en README y nota en ARCHITECTURE.
+- [x] **30.5** `test(demo): make the no-supabase demo test fast and non-flaky` — La prueba de «cero accesos a supabase» resuelve la latencia simulada de `delay()` (350-750 ms por consulta, con timers reales) y deja de tardar 8-12 s; la aserción sobre `supabase` no cambia.
