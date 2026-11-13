@@ -14,6 +14,7 @@ import { DataTable, Pagination, type Column } from '../../components/ui/DataTabl
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { useClassrooms, useEventsPage, useStudents } from '../../hooks/queries'
@@ -128,6 +129,7 @@ export function EventsPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.events}
         description={t('events.description')}
         actions={
           <Button

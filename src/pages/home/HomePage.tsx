@@ -7,6 +7,7 @@ import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { SelectInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { useClassrooms } from '../../hooks/queries'
 import { bogotaDay, formatLongDate } from '../../lib/format'
 import { DashboardStats } from './DashboardStats'
@@ -41,6 +42,7 @@ export function HomePage() {
   return (
     <div className="dashboard">
       <PageIntro
+        tour={TOURS.home}
         eyebrow={formatLongDate(new Date())}
         description={
           classroom

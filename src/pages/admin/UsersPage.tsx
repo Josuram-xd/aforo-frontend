@@ -20,6 +20,7 @@ import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { TypedConfirmDialog } from '../../components/ui/TypedConfirmDialog'
 import { useToast } from '../../components/ui/toastContext'
@@ -193,6 +194,7 @@ export function UsersPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.users}
         description={t('admin.users.description')}
         actions={
           <Button

@@ -11,6 +11,7 @@ import { DataTable, type Column } from '../../components/ui/DataTable'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useAttendance, useClassrooms, useCourses, useSessions } from '../../hooks/queries'
 import { formatDate, formatTime } from '../../lib/format'
@@ -178,6 +179,7 @@ export function SessionsPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.sessions}
         description={t('sessions.description')}
         actions={
           <Button

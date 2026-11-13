@@ -15,6 +15,7 @@ import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SegmentedControl } from '../../components/ui/SegmentedControl'
 import { SkeletonList } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
@@ -52,6 +53,7 @@ export function AlertsPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.alerts}
         description={canResolve ? t('alerts.descriptionStaff') : t('alerts.descriptionViewer')}
         actions={
           <SegmentedControl<Tab>

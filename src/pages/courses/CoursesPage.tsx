@@ -15,6 +15,7 @@ import { DataTable, type Column } from '../../components/ui/DataTable'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { useCourses, useEnrollmentCounts } from '../../hooks/queries'
@@ -117,6 +118,7 @@ export function CoursesPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.courses}
         description={t('courses.description')}
         actions={
           <Button icon={<Plus size={16} aria-hidden="true" />} onClick={() => setEditing(null)}>

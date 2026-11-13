@@ -13,6 +13,7 @@ import { DataTable, type Column } from '../../components/ui/DataTable'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { useCameraConnections, useCameras, useClassrooms } from '../../hooks/queries'
@@ -177,7 +178,7 @@ export function SettingsPage() {
 
   return (
     <>
-      <PageIntro description={t('settings.description')} />
+      <PageIntro tour={TOURS.settings} description={t('settings.description')} />
       <div className="settings-grid">
         <Card className="settings-grid__wide">
           <CardHeader
