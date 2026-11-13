@@ -67,7 +67,7 @@ export function ProfilePage() {
     <>
       <PageIntro tour={TOURS.profile} description={t('profile.description')} />
       <div className="profile-grid">
-        <Card className="profile-hero">
+        <Card className="profile-hero" data-tour="profile-card">
           <div className="profile-hero__banner" aria-hidden="true" />
           <div className="profile-hero__body">
             <Avatar name={profile.fullName} imageUrl={profile.avatarUrl} size="xl" />
@@ -101,7 +101,7 @@ export function ProfilePage() {
         </Card>
 
         <div className="profile-stack">
-          <Card>
+          <Card data-tour="profile-name">
             <CardHeader
               icon={<UserRound size={18} />}
               title={t('profile.personalTitle')}
@@ -146,7 +146,7 @@ export function ProfilePage() {
             </form>
           </Card>
 
-          <Card>
+          <Card data-tour="profile-permissions">
             <CardHeader
               icon={<ShieldCheck size={18} />}
               title={t('profile.permissionsTitle')}
@@ -155,7 +155,7 @@ export function ProfilePage() {
             <p className="profile-note">{t('profile.permissionsNote')}</p>
           </Card>
 
-          <Card>
+          <Card data-tour="profile-password">
             <CardHeader
               icon={<KeyRound size={18} />}
               title={t('profile.securityTitle')}

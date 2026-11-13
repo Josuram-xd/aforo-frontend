@@ -193,7 +193,7 @@ export function StudentsPage() {
       header: <span className="visually-hidden">{t('common.actions')}</span>,
       align: 'right',
       render: (row) => (
-        <span className="cell-actions">
+        <span className="cell-actions" data-tour="students-actions">
           <Button
             variant="ghost"
             size="sm"
@@ -251,6 +251,7 @@ export function StudentsPage() {
         actions={
           <Button
             icon={<UserPlus size={16} aria-hidden="true" />}
+            data-tour="students-create"
             onClick={() => {
               setEditing(null)
               setFormOpen(true)
@@ -260,8 +261,9 @@ export function StudentsPage() {
           </Button>
         }
       />
-      <Card>
+      <Card data-tour="students-table">
         <FilterBar
+          tour="students-filters"
           label={t('students.filters')}
           onClear={() => {
             setSearch('')

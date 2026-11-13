@@ -180,7 +180,7 @@ export function SettingsPage() {
     <>
       <PageIntro tour={TOURS.settings} description={t('settings.description')} />
       <div className="settings-grid">
-        <Card className="settings-grid__wide">
+        <Card className="settings-grid__wide" data-tour="settings-classrooms">
           <CardHeader
             icon={<DoorOpen size={18} />}
             title={t('settings.classrooms.title')}
@@ -191,6 +191,7 @@ export function SettingsPage() {
                 variant="secondary"
                 icon={<Plus size={14} aria-hidden="true" />}
                 onClick={() => setEditing({ kind: 'classroom', item: null })}
+                data-tour="settings-classroomAdd"
               >
                 {t('settings.add')}
               </Button>
@@ -205,7 +206,7 @@ export function SettingsPage() {
           )}
         </Card>
 
-        <Card className="settings-grid__wide">
+        <Card className="settings-grid__wide" data-tour="settings-cameras">
           <CardHeader
             icon={<Cctv size={18} />}
             title={t('settings.cameras.title')}
@@ -216,6 +217,7 @@ export function SettingsPage() {
                 variant="secondary"
                 icon={<Plus size={14} aria-hidden="true" />}
                 onClick={() => setEditing({ kind: 'camera', item: null })}
+                data-tour="settings-cameraAdd"
               >
                 {t('settings.cameras.add')}
               </Button>

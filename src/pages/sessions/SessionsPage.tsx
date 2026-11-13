@@ -184,6 +184,7 @@ export function SessionsPage() {
         actions={
           <Button
             icon={<CalendarPlus size={16} aria-hidden="true" />}
+            data-tour="sessions-create"
             onClick={() => openForm(null)}
             disabled={!courses.data?.length || !classrooms.data?.length}
           >
@@ -192,7 +193,7 @@ export function SessionsPage() {
         }
       />
       <div className="sessions-layout">
-        <Card>
+        <Card data-tour="sessions-list">
           <CardHeader title={t('sessions.listTitle')} description={t('sessions.listHint')} />
           {sessions.isPending ? (
             <SkeletonTable rows={4} columns={4} />
@@ -217,7 +218,7 @@ export function SessionsPage() {
           )}
         </Card>
 
-        <Card aria-live="polite">
+        <Card aria-live="polite" data-tour="sessions-attendance">
           <CardHeader
             title={
               selected
