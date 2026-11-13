@@ -1,0 +1,11 @@
+{
+  "tutorial": {
+    "ui": {
+      "open": "Ver tutorial de esta pantalla",
+      "step": "Paso {{current}} de {{total}}",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "close": "Cerrar"
+    }
+  }
+}
