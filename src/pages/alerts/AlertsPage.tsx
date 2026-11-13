@@ -15,6 +15,7 @@ import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SegmentedControl } from '../../components/ui/SegmentedControl'
 import { SkeletonList } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
@@ -52,18 +53,21 @@ export function AlertsPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.alerts}
         description={canResolve ? t('alerts.descriptionStaff') : t('alerts.descriptionViewer')}
         actions={
-          <SegmentedControl<Tab>
-            label={t('alerts.filter')}
-            value={tab}
-            onChange={setTab}
-            options={[
-              { value: 'open', label: t('alerts.tabs.open'), count: open.length },
-              { value: 'resolved', label: t('alerts.tabs.resolved'), count: resolved.length },
-              { value: 'all', label: t('alerts.tabs.all'), count: all.length },
-            ]}
-          />
+          <div data-tour="alerts-filter">
+            <SegmentedControl<Tab>
+              label={t('alerts.filter')}
+              value={tab}
+              onChange={setTab}
+              options={[
+                { value: 'open', label: t('alerts.tabs.open'), count: open.length },
+                { value: 'resolved', label: t('alerts.tabs.resolved'), count: resolved.length },
+                { value: 'all', label: t('alerts.tabs.all'), count: all.length },
+              ]}
+            />
+          </div>
         }
       />
 
@@ -78,7 +82,7 @@ export function AlertsPage() {
           description={tab === 'open' ? t('alerts.allClear') : undefined}
         />
       ) : (
-        <ul className="alert-feed">
+        <ul className="alert-feed" data-tour="alerts-list">
           {visible.map((alert) => (
             <li
               key={alert.id}
@@ -118,6 +122,7 @@ export function AlertsPage() {
               {canResolve && !alert.resolvedAt && (
                 <Button
                   variant="secondary"
+                  data-tour="alerts-resolve"
                   size="sm"
                   icon={<CircleCheck size={15} aria-hidden="true" />}
                   loading={resolve.isPending && resolve.variables?.id === alert.id}

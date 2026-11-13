@@ -12,6 +12,7 @@ import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useAuditPage, useUsers } from '../../hooks/queries'
 import { formatDate, formatTimeWithSeconds } from '../../lib/format'
@@ -129,9 +130,10 @@ export function AuditPage() {
 
   return (
     <>
-      <PageIntro description={t('audit.description')} />
-      <Card>
+      <PageIntro tour={TOURS.audit} description={t('audit.description')} />
+      <Card data-tour="audit-table">
         <FilterBar
+          tour="audit-filters"
           label={t('audit.filters')}
           onClear={() => {
             setFilters({})

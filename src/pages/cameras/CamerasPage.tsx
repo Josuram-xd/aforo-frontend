@@ -10,6 +10,7 @@ import { Card } from '../../components/ui/Card'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonCard } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { useCameraConnections, useCameras, useClassrooms } from '../../hooks/queries'
@@ -156,6 +157,7 @@ export function CamerasPage() {
     <Button
       size="sm"
       variant="secondary"
+      data-tour="cameras-add"
       icon={<Plus size={14} aria-hidden="true" />}
       onClick={() => setEditing(null)}
     >
@@ -166,12 +168,15 @@ export function CamerasPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.cameras}
         description={t('cameras.description')}
         actions={
           <>
-            <Badge tone={online === cameras.data.length ? 'success' : 'warning'}>
-              {t('cameras.summary', { online, total: cameras.data.length })}
-            </Badge>
+            <span data-tour="cameras-summary">
+              <Badge tone={online === cameras.data.length ? 'success' : 'warning'}>
+                {t('cameras.summary', { online, total: cameras.data.length })}
+              </Badge>
+            </span>
             {cameras.data.length > 0 && addButton}
           </>
         }
@@ -186,8 +191,13 @@ export function CamerasPage() {
       ) : (
         groups
           .filter((group) => group.cameras.length > 0)
-          .map((group) => (
-            <section key={group.room.id} className="camera-group" aria-label={group.room.name}>
+          .map((group, index) => (
+            <section
+              key={group.room.id}
+              className="camera-group"
+              aria-label={group.room.name}
+              data-tour={index === 0 ? 'cameras-grid' : undefined}
+            >
               {groups.length > 1 && <h2 className="camera-group__title">{group.room.name}</h2>}
               <div className="camera-grid">
                 {group.cameras.map((camera) => (
@@ -204,7 +214,7 @@ export function CamerasPage() {
             </section>
           ))
       )}
-      <div className="camera-note">
+      <div className="camera-note" data-tour="cameras-note">
         <Alert tone="info" title={t('cameras.localNode.title')}>
           {t('cameras.localNode.body')}
         </Alert>

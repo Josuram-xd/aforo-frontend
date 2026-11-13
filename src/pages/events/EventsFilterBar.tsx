@@ -25,7 +25,12 @@ export function EventsFilterBar({
   const set = (patch: Partial<EventFilters>) => onChange({ ...value, ...patch })
 
   return (
-    <FilterBar label={t('filters.events')} onClear={onClear} canClear={canClear}>
+    <FilterBar
+      tour="events-filters"
+      label={t('filters.events')}
+      onClear={onClear}
+      canClear={canClear}
+    >
       <Field label={t('filters.from')}>
         {({ id }) => (
           <TextInput

@@ -28,6 +28,7 @@ import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { Field, SelectInput, TextInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { TypedConfirmDialog } from '../../components/ui/TypedConfirmDialog'
 import { useToast } from '../../components/ui/toastContext'
@@ -192,7 +193,7 @@ export function StudentsPage() {
       header: <span className="visually-hidden">{t('common.actions')}</span>,
       align: 'right',
       render: (row) => (
-        <span className="cell-actions">
+        <span className="cell-actions" data-tour="students-actions">
           <Button
             variant="ghost"
             size="sm"
@@ -241,6 +242,7 @@ export function StudentsPage() {
   return (
     <>
       <PageIntro
+        tour={TOURS.students}
         description={t('students.description', {
           inside,
           total: active.length,
@@ -249,6 +251,7 @@ export function StudentsPage() {
         actions={
           <Button
             icon={<UserPlus size={16} aria-hidden="true" />}
+            data-tour="students-create"
             onClick={() => {
               setEditing(null)
               setFormOpen(true)
@@ -258,8 +261,9 @@ export function StudentsPage() {
           </Button>
         }
       />
-      <Card>
+      <Card data-tour="students-table">
         <FilterBar
+          tour="students-filters"
           label={t('students.filters')}
           onClear={() => {
             setSearch('')

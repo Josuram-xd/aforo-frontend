@@ -26,7 +26,7 @@ export function LatestEventsCard({ classroomId }: { classroomId: string | undefi
   const events = useLatestEvents(classroomId, 10)
 
   return (
-    <Card aria-labelledby="latest-events-title">
+    <Card aria-labelledby="latest-events-title" data-tour="home-events">
       <CardHeader
         titleId="latest-events-title"
         icon={<Activity size={18} />}
@@ -57,7 +57,7 @@ export function OpenAlertsCard() {
   const alerts = useAlerts('open')
 
   return (
-    <Card aria-labelledby="open-alerts-title">
+    <Card aria-labelledby="open-alerts-title" data-tour="home-alerts">
       <CardHeader
         titleId="open-alerts-title"
         icon={<BellRing size={18} />}
@@ -102,7 +102,7 @@ export function CamerasCard({ classroomId }: { classroomId: string | undefined }
   const list = (cameras.data ?? []).filter((c) => !classroomId || c.classroom_id === classroomId)
 
   return (
-    <Card aria-labelledby="cameras-card-title">
+    <Card aria-labelledby="cameras-card-title" data-tour="home-cameras">
       <CardHeader
         titleId="cameras-card-title"
         icon={<Cctv size={18} />}

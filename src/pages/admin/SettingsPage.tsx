@@ -13,6 +13,7 @@ import { DataTable, type Column } from '../../components/ui/DataTable'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ErrorState } from '../../components/ui/ErrorState'
 import { PageIntro } from '../../components/ui/PageIntro'
+import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useToast } from '../../components/ui/toastContext'
 import { useCameraConnections, useCameras, useClassrooms } from '../../hooks/queries'
@@ -177,9 +178,9 @@ export function SettingsPage() {
 
   return (
     <>
-      <PageIntro description={t('settings.description')} />
+      <PageIntro tour={TOURS.settings} description={t('settings.description')} />
       <div className="settings-grid">
-        <Card className="settings-grid__wide">
+        <Card className="settings-grid__wide" data-tour="settings-classrooms">
           <CardHeader
             icon={<DoorOpen size={18} />}
             title={t('settings.classrooms.title')}
@@ -190,6 +191,7 @@ export function SettingsPage() {
                 variant="secondary"
                 icon={<Plus size={14} aria-hidden="true" />}
                 onClick={() => setEditing({ kind: 'classroom', item: null })}
+                data-tour="settings-classroomAdd"
               >
                 {t('settings.add')}
               </Button>
@@ -204,7 +206,7 @@ export function SettingsPage() {
           )}
         </Card>
 
-        <Card className="settings-grid__wide">
+        <Card className="settings-grid__wide" data-tour="settings-cameras">
           <CardHeader
             icon={<Cctv size={18} />}
             title={t('settings.cameras.title')}
@@ -215,6 +217,7 @@ export function SettingsPage() {
                 variant="secondary"
                 icon={<Plus size={14} aria-hidden="true" />}
                 onClick={() => setEditing({ kind: 'camera', item: null })}
+                data-tour="settings-cameraAdd"
               >
                 {t('settings.cameras.add')}
               </Button>

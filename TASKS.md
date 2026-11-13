@@ -221,3 +221,9 @@ Las tareas v1 que la v2 reemplaza quedan marcadas con ~~tachado~~ y una nota; no
 > Depende de: Task 26 (mismo diálogo `CameraDialog`).
 
 - [x] **27.1** `feat(cameras): redesign camera connection guide as a 3-step flow` — El diálogo de cámara muestra una lista numerada de 3 pasos (crear la cuenta de cámara en Tapo, copiar la IP, pegar los datos) con línea de tiempo, ayuda plegable «¿No encuentras la IP?» y los campos IP, usuario y contraseña agrupados en el paso 3 con ayudas; el comportamiento del formulario no cambia. Los nombres de menú de Tapo siguen sin verificarse.
+
+### Task 29 — Tutoriales guiados por pantalla **(Prioridad 2)**
+- [x] **29.1** `feat(tutorial): add page tutorial component with spotlight` — Componente `PageTutorial`: botón «!» que abre un recorrido paso a paso con spotlight sobre elementos `data-tour`, tarjeta «Paso x de n» con Anterior / Siguiente / Cerrar, foco atrapado, Esc y flechas. Salta los pasos cuyo elemento no está en pantalla y se oculta si no queda ninguno.
+- [x] **29.2** `feat(tutorial): show tutorial button in every page header` — `PageIntro` recibe `tour` y muestra el botón «!» en todas las pantallas de la app.
+- [x] **29.3** `feat(tutorial): add tutorial texts and data-tour targets for each page` — Textos en `src/i18n/tutorial.es.json` (3-6 pasos por pantalla) y atributos `data-tour` sobre los elementos reales.
+- [x] **29.4** `test(tutorial): cover tutorial steps and i18n keys` — Pruebas del componente y de que cada paso tiene sus textos y su `data-tour`.
