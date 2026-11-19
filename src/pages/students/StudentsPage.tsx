@@ -33,9 +33,13 @@ import { SkeletonTable } from '../../components/ui/Skeleton'
 import { TypedConfirmDialog } from '../../components/ui/TypedConfirmDialog'
 import { useToast } from '../../components/ui/toastContext'
 import { useCourseStudentIds, useCourses, useStudentPhotoUrls, useStudents } from '../../hooks/queries'
+import { useNow } from '../../hooks/useNow'
 import { formatDateTime, formatRelative } from '../../lib/format'
 import { EnrollmentDialog } from './EnrollmentDialog'
 import { StudentFormDialog } from './StudentFormDialog'
+
+// Matches the 10-minute purge in aforo-db: after this the photos are deleted and the status becomes failed.
+const ENROLLMENT_TIMEOUT_S = 600
 
 type PresenceFilter = '' | 'IN' | 'OUT' | 'inactive'
 
@@ -51,6 +55,7 @@ export function StudentsPage() {
   const { t } = useTranslation()
   useLogView('students')
   const students = useStudents()
+  const now = useNow(1000)
   const photoUrls = useStudentPhotoUrls(
     (students.data ?? []).flatMap((s) => (s.photo_path ? [s.photo_path] : [])),
   ).data
@@ -178,10 +183,30 @@ export function StudentsPage() {
               : status === 'failed'
                 ? 'danger'
                 : 'neutral'
+        const elapsed = Math.max(
+          0,
+          Math.floor((now - new Date(row.enrollment_updated_at ?? now).getTime()) / 1000),
+        )
         return (
-          <Badge tone={tone} icon={<ScanFace />}>
-            {t(`students.enrollment.${status}`, { defaultValue: t('students.enrollment.none') })}
-          </Badge>
+          <span>
+            <Badge tone={tone} icon={<ScanFace />}>
+              {t(`students.enrollment.${status}`, { defaultValue: t('students.enrollment.none') })}
+            </Badge>
+            {status === 'pending' && (
+              <span className="muted" style={{ display: 'block', marginTop: 4, fontSize: 12 }}>
+                <progress
+                  max={ENROLLMENT_TIMEOUT_S}
+                  value={Math.min(elapsed, ENROLLMENT_TIMEOUT_S)}
+                  aria-label={t('students.enrollmentProgress')}
+                  style={{ width: 120 }}
+                />
+                <br />
+                {t('students.enrollmentElapsed', {
+                  time: `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`,
+                })}
+              </span>
+            )}
+          </span>
         )
       },
     },
