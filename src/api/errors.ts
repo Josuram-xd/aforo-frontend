@@ -40,6 +40,16 @@ export function fromPostgrest(error: PostgrestLikeError): AppError {
   }
 }
 
+/** Maps an HTTP status of the Python backend to an AppError with a translated message. */
+export function fromHttpStatus(status: number): AppError {
+  if (status === 401 || status === 403) return new AppError('errors.forbidden', status)
+  if (status === 404 || status === 503) return new AppError('errors.functionUnavailable', status)
+  if (status === 409) return new AppError('errors.duplicate', status)
+  if (status === 400) return new AppError('errors.invalid', status)
+  if (status === 429) return new AppError('errors.rateLimited', status)
+  return new AppError('errors.generic', status)
+}
+
 /** Converts a supabase.functions.invoke error (not deployed, 4xx, network…). */
 export async function fromFunctionError(error: unknown): Promise<AppError> {
   if (error instanceof FunctionsHttpError) {

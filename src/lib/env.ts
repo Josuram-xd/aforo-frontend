@@ -2,6 +2,7 @@
 import { demoActive } from './demo'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim() ?? ''
+const backendUrl = (import.meta.env.VITE_BACKEND_URL?.trim() ?? '').replace(/\/+$/, '')
 const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim() ?? ''
 
 /**
@@ -17,4 +18,5 @@ export const isSupabaseConfigured = supabaseUrl !== '' && supabasePublishableKey
 export const env = {
   supabaseUrl,
   supabasePublishableKey,
+  backendUrl,
 } as const
