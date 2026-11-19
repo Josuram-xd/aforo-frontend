@@ -1,4 +1,4 @@
-import { CalendarPlus, ClipboardList, LogOut, Pencil, UserCheck } from 'lucide-react'
+import { CalendarPlus, ClipboardList, FileBarChart, LogOut, Pencil, UserCheck } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
@@ -16,6 +16,7 @@ import { SkeletonTable } from '../../components/ui/Skeleton'
 import { useAttendance, useClassrooms, useCourses, useSessions } from '../../hooks/queries'
 import { formatDate, formatTime } from '../../lib/format'
 import { SessionFormDialog } from './SessionFormDialog'
+import { SessionReportDialog } from './SessionReportDialog'
 import './SessionsPage.css'
 
 type SessionPhase = 'cancelled' | 'live' | 'upcoming' | 'finished'
@@ -45,6 +46,7 @@ export function SessionsPage() {
   const [params, setParams] = useSearchParams()
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<SessionItem | null>(null)
+  const [reporting, setReporting] = useState<SessionItem | null>(null)
   const [now] = useState(() => Date.now())
 
   const list = sessions.data ?? []
@@ -110,18 +112,32 @@ export function SessionsPage() {
       header: <span className="visually-hidden">{t('common.actions')}</span>,
       align: 'right',
       render: (row) => (
-        <Button
-          variant="ghost"
-          size="sm"
-          icon={<Pencil size={14} aria-hidden="true" />}
-          aria-label={t('sessions.editNamed', { title: row.title })}
-          onClick={(event) => {
-            event.stopPropagation()
-            openForm(row)
-          }}
-        >
-          {t('common.edit')}
-        </Button>
+        <>
+          <Button
+            variant="ghost"
+            size="sm"
+            icon={<FileBarChart size={14} aria-hidden="true" />}
+            aria-label={t('sessions.report.openNamed', { title: row.title })}
+            onClick={(event) => {
+              event.stopPropagation()
+              setReporting(row)
+            }}
+          >
+            {t('sessions.report.open')}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            icon={<Pencil size={14} aria-hidden="true" />}
+            aria-label={t('sessions.editNamed', { title: row.title })}
+            onClick={(event) => {
+              event.stopPropagation()
+              openForm(row)
+            }}
+          >
+            {t('common.edit')}
+          </Button>
+        </>
       ),
     },
   ]
@@ -261,6 +277,13 @@ export function SessionsPage() {
         </Card>
       </div>
 
+      {reporting && (
+        <SessionReportDialog
+          key={reporting.id}
+          session={reporting}
+          onClose={() => setReporting(null)}
+        />
+      )}
       <SessionFormDialog
         key={formOpen ? (editing?.id ?? 'new') : 'closed'}
         open={formOpen}
