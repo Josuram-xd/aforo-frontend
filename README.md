@@ -66,6 +66,7 @@ npm run dev                     # http://localhost:5173
 |---|---|
 | `VITE_SUPABASE_URL` | URL del proyecto de Supabase (`https://<ref>.supabase.co`) |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | La *publishable key* (`sb_publishable_...`). **Nunca** la `service_role`. |
+| `VITE_BACKEND_URL` | URL base del backend en Python (AWS Lambda + API Gateway), sin `/` final. Lo usan la exportación CSV, las invitaciones y los reportes de sesión/curso. |
 | `VITE_USE_MOCK` | `true` usa datos de ejemplo y una sesión falsa, sin Supabase. Solo funciona con `npm run dev`; un build de producción nunca se salta el login. |
 | `VITE_MOCK_ROLE` | Rol simulado en modo mock: `admin`, `teacher` o `viewer`. |
 
@@ -143,5 +144,5 @@ AWS Amplify (`us-east-2`) construye y publica cada push a `main` con `amplify.ym
 | Repo | Qué usa |
 |---|---|
 | `aforo-db` | Tablas y vistas (filtradas por RLS según el rol), Realtime de `events`, `classrooms`, `cameras` y `alerts`, y las RPCs `set_user_role`, `set_user_active` y `log_access` |
-| `aforo-backend` | Edge Functions `export-events` (CSV) e `invite-user` (invitar usuarios) |
+| `aforo-backend` | API en Python (sin Edge Functions): `GET /export-events` (CSV), `POST /invite-user`, `GET /sessions/{id}/report` y `GET /courses/{id}/roster`. Recibe el token de Supabase del usuario en `Authorization: Bearer` |
 | `aforo-vision` | Produce los eventos; el video en vivo de las cámaras está pendiente (task 17) |

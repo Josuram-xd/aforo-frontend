@@ -12,6 +12,7 @@ import { Dialog } from '../../components/ui/Dialog'
 import { TextInput } from '../../components/ui/Field'
 import { useToast } from '../../components/ui/toastContext'
 import { useCourseStudentIds, useStudents } from '../../hooks/queries'
+import { CourseRosterSearch } from './CourseRosterSearch'
 import './CourseStudentsDialog.css'
 
 function normalize(text: string): string {
@@ -56,6 +57,7 @@ export function CourseStudentsDialog({ course, onClose }: { course: Course; onCl
       footer={<Button onClick={onClose}>{t('common.close')}</Button>}
     >
       <div className="course-students">
+        <CourseRosterSearch courseId={course.id} />
         <TextInput
           type="search"
           value={search}

@@ -508,6 +508,41 @@
     "toast": {
       "created": "Creamos la sesión «{{title}}».",
       "updated": "Guardamos la sesión «{{title}}»."
+    },
+    "report": {
+      "open": "Reporte",
+      "openNamed": "Ver el reporte de la sesión {{title}}",
+      "title": "Reporte de la sesión",
+      "description": "{{title}} · calculado por el servidor con estructuras de datos propias.",
+      "arrival": "Orden de llegada",
+      "arrivalCaption": "Cola (FIFO) sobre lista enlazada simple",
+      "inside": "Dentro ahora",
+      "insideCaption": "Pila por estudiante: entrada apila, salida desapila",
+      "anomalies": "Anomalías",
+      "anomaliesCaption": "Pila vacía al salir o con sobrante al final",
+      "lastEntries": "Últimas 5 entradas",
+      "lastEntriesCaption": "Pila global de entradas (LIFO)",
+      "peak": "Pico de aforo",
+      "peakValue": "{{count}} personas",
+      "peakAt": "a las {{time}}",
+      "peakNone": "Sin entradas en esta sesión",
+      "timeline": "Línea de tiempo",
+      "timelineCaption": "Lista doblemente enlazada: navega hacia atrás y adelante",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "unknown": "Persona sin identificar",
+      "none": "Sin datos",
+      "since": "desde {{time}}",
+      "kind": {
+        "EXIT_WITHOUT_ENTRY": "Salida sin entrada",
+        "ENTRY_WITHOUT_EXIT": "Entrada sin salida"
+      },
+      "columns": {
+        "time": "Hora",
+        "person": "Persona",
+        "direction": "Movimiento",
+        "method": "Método"
+      }
     }
   },
   "admin": {
@@ -710,6 +745,11 @@
     "search": "Buscar estudiante",
     "noStudents": "Aún no hay estudiantes. Créalos en la página Estudiantes.",
     "enrolledToast": "{{student}} inscrito en el curso.",
-    "removedToast": "{{student}} salió del curso."
+    "removedToast": "{{student}} salió del curso.",
+    "rosterCaption": "Árbol binario de búsqueda",
+    "rosterSearch": "Buscar por inicio del nombre",
+    "rosterTitle": "Estudiantes ordenados",
+    "rosterStats": "{{size}} estudiantes · altura del árbol {{height}}",
+    "rosterEmpty": "Ningún estudiante coincide con la búsqueda."
   }
 }

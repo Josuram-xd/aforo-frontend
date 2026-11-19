@@ -19,7 +19,15 @@ const uuid = (prefix: string, n: number) =>
   `${prefix}0000000-0000-4000-8000-${String(n).padStart(12, '0')}`
 
 export const CLASSROOM_ID = uuid('c', 1)
+const CAPACITY = 30
+
+/** Alert text computed from the real numbers, like the ingest pipeline does. */
+function capacityMessage(count: number, max: number): string {
+  if (count > max) return `El salón superó el aforo máximo (${count} de ${max}).`
+  return `El salón llegó al ${Math.round((count / max) * 100)} % del aforo (${count} de ${max}).`
+}
 const COURSE_ID = uuid('d', 1)
+const TEST_COURSE_ID = uuid('d', 2)
 const CAMERA_OUT = uuid('a', 1)
 const CAMERA_IN = uuid('a', 2)
 
@@ -38,7 +46,11 @@ const STUDENT_NAMES = [
   'Nicolás Vargas',
   'Camila Ortiz',
   'Daniel Jiménez',
+  'Joseph Herrera',
+  'Juan Cuaran',
 ]
+// The two TEST course students are always active and enrolled in face recognition.
+const TEST_STUDENT_FROM = 12
 
 export const db = {
   classrooms: [] as Row<'classrooms'>[],
@@ -66,7 +78,7 @@ function build() {
       id: CLASSROOM_ID,
       name: 'Salón del piloto',
       location: 'Bloque B · piso 2',
-      max_capacity: 30,
+      max_capacity: CAPACITY,
       current_occupancy: 0,
       occupancy_updated_at: iso(t0),
       created_at: '2026-09-20T15:00:00Z',
@@ -107,6 +119,15 @@ function build() {
       created_at: '2026-08-01T15:00:00Z',
       updated_at: '2026-08-01T15:00:00Z',
     },
+    {
+      id: TEST_COURSE_ID,
+      code: 'TEST',
+      name: 'TEST – Control de entrada y salida',
+      academic_period: '2026-2',
+      is_active: true,
+      created_at: '2026-08-01T15:00:00Z',
+      updated_at: '2026-08-01T15:00:00Z',
+    },
   ]
   db.students = STUDENT_NAMES.map((name, index) => ({
     id: uuid('b', index + 1),
@@ -119,21 +140,47 @@ function build() {
     student_code: `2026${String(1000 + index * 37)}`,
     is_active: index !== 11,
     photo_path: null,
-    enrollment_status: index % 3 === 0 ? 'none' : 'enrolled',
+    enrollment_status: index >= TEST_STUDENT_FROM || index % 3 !== 0 ? 'enrolled' : 'none',
     enrollment_updated_at: null,
     presence: 'OUT',
     last_event_at: null,
     created_at: '2026-08-10T15:00:00Z',
     updated_at: '2026-08-10T15:00:00Z',
   }))
-  db.course_students = db.students.map((student) => ({
-    course_id: db.courses[0]!.id,
-    student_id: student.id,
-    enrolled_at: '2026-08-10T15:00:00Z',
-  }))
+  // IS-401 keeps the original students; TEST has everyone, including the two TEST students.
+  db.course_students = db.students.flatMap((student, index) => [
+    ...(index < TEST_STUDENT_FROM
+      ? [{ course_id: COURSE_ID, student_id: student.id, enrolled_at: '2026-08-10T15:00:00Z' }]
+      : []),
+    { course_id: TEST_COURSE_ID, student_id: student.id, enrolled_at: '2026-08-10T15:00:00Z' },
+  ])
 
   const sessionStart = dayStart + 7 * 60 * MINUTE
+  const testSession = (n: number, startsAt: number, endsAt: number) => ({
+    id: uuid('e', 10 + n),
+    title:
+      n === 0
+        ? 'TEST · Control de entrada y salida'
+        : `TEST · Control de entrada y salida (día -${n})`,
+    course_id: TEST_COURSE_ID,
+    classroom_id: CLASSROOM_ID,
+    starts_at: iso(startsAt),
+    ends_at: iso(endsAt),
+    status: 'scheduled',
+    created_by: MOCK_AUTH_USER.id,
+    created_at: iso(dayStart - 7 * 86400_000),
+    updated_at: iso(dayStart - 7 * 86400_000),
+  })
+  // TEST sessions come first: addEvent attaches an event to the first session whose window holds it.
   db.class_sessions = [
+    testSession(0, dayStart, dayStart + 86400_000 - 1),
+    ...[1, 2, 3, 4, 5].map((n) =>
+      testSession(
+        n,
+        dayStart - n * 86400_000 + 8 * 60 * MINUTE,
+        dayStart - n * 86400_000 + 12 * 60 * MINUTE,
+      ),
+    ),
     {
       id: uuid('e', 1),
       title: 'Clase 9 · Seguimiento de personas',
@@ -175,6 +222,17 @@ function build() {
   // Events from 07:00 Bogotá until now (or a synthetic morning if it's still early).
   db.events = []
   db.attendance = []
+  // Last 5 days: a morning of traffic (07:30-12:30, a bit outside the 08:00-12:00 session window),
+  // then everybody leaves so each day starts empty.
+  for (let n = 5; n >= 1; n--) {
+    const day = dayStart - n * 86400_000
+    let at = day + 7.5 * 60 * MINUTE
+    while (at < day + 12.5 * 60 * MINUTE) {
+      at += (2 + random() * 6) * MINUTE
+      addEvent(at)
+    }
+    while (db.classrooms[0]!.current_occupancy > 0) addEvent((at += MINUTE), 'EXIT')
+  }
   const start = Math.min(sessionStart, t0 - 3 * 60 * MINUTE)
   let cursor = start
   while (cursor < t0 - MINUTE) {
@@ -189,7 +247,7 @@ function build() {
       // Open alert for the demo: consistent with the occupancy rule in addEvent (peaks at 80 %).
       type: 'capacity_exceeded',
       severity: 'warning',
-      message: 'El salón llegó al 80 % del aforo (24 de 30).',
+      message: capacityMessage(Math.round(CAPACITY * 0.8), CAPACITY),
       classroom_id: CLASSROOM_ID,
       camera_id: null,
       created_at: iso(t0 - 12 * MINUTE),
@@ -200,7 +258,7 @@ function build() {
       id: uuid('f', 2),
       type: 'capacity_exceeded',
       severity: 'critical',
-      message: 'El salón superó el aforo máximo (31 de 30).',
+      message: capacityMessage(CAPACITY + 1, CAPACITY),
       classroom_id: CLASSROOM_ID,
       camera_id: null,
       created_at: iso(t0 - 26 * 60 * MINUTE),
@@ -267,7 +325,7 @@ function build() {
 let eventCounter = 0
 
 /** Adds one event keeping occupancy, presence and attendance consistent (like the DB triggers). */
-function addEvent(at: number): Row<'events'> {
+function addEvent(at: number, forced?: 'ENTRY' | 'EXIT'): Row<'events'> {
   const classroom = db.classrooms[0]!
   const inside = db.students.filter((s) => s.presence === 'IN' && s.is_active)
   const outside = db.students.filter((s) => s.presence === 'OUT' && s.is_active)
@@ -278,9 +336,9 @@ function addEvent(at: number): Row<'events'> {
     (occupancy >= classroom.max_capacity * 0.8 ||
       (occupancy > 3 && random() < 0.38) ||
       outside.length === 0)
-  const direction = wantsExit ? 'EXIT' : 'ENTRY'
+  const direction = forced ?? (wantsExit ? 'EXIT' : 'ENTRY')
   const pool = direction === 'ENTRY' ? outside : inside
-  const identified = random() < 0.74 && pool.length > 0
+  const identified = pool.length > 0 && (forced === 'EXIT' || random() < 0.74)
   const student = identified ? pool[Math.floor(random() * pool.length)]! : null
 
   const event: Row<'events'> = {
@@ -292,7 +350,15 @@ function addEvent(at: number): Row<'events'> {
     occurred_at: iso(at),
     received_at: iso(at + 400),
     student_id: student?.id ?? null,
-    session_id: db.class_sessions[0]?.id ?? null,
+    // Like ingest_event: only an event inside a scheduled session window belongs to the session.
+    session_id:
+      db.class_sessions.find(
+        (s) =>
+          s.status === 'scheduled' &&
+          s.classroom_id === CLASSROOM_ID &&
+          Date.parse(s.starts_at) <= at &&
+          at < Date.parse(s.ends_at),
+      )?.id ?? null,
     camera_outside_id: CAMERA_OUT,
     camera_inside_id: CAMERA_IN,
   }
@@ -306,25 +372,27 @@ function addEvent(at: number): Row<'events'> {
   if (student) {
     student.presence = direction === 'ENTRY' ? 'IN' : 'OUT'
     student.last_event_at = event.occurred_at
-    const sessionId = event.session_id!
-    const existing = db.attendance.find(
-      (row) => row.student_id === student.id && row.session_id === sessionId,
-    )
-    if (existing) {
-      existing.status = direction === 'ENTRY' ? 'present' : 'left'
-      existing.last_event_at = event.occurred_at
-      if (direction === 'EXIT') existing.last_exit_at = event.occurred_at
-      existing.updated_at = event.occurred_at
-    } else {
-      db.attendance.push({
-        session_id: sessionId,
-        student_id: student.id,
-        status: direction === 'ENTRY' ? 'present' : 'left',
-        first_entry_at: direction === 'ENTRY' ? event.occurred_at : null,
-        last_exit_at: direction === 'EXIT' ? event.occurred_at : null,
-        last_event_at: event.occurred_at,
-        updated_at: event.occurred_at,
-      })
+    const sessionId = event.session_id
+    if (sessionId) {
+      const existing = db.attendance.find(
+        (row) => row.student_id === student.id && row.session_id === sessionId,
+      )
+      if (existing) {
+        existing.status = direction === 'ENTRY' ? 'present' : 'left'
+        existing.last_event_at = event.occurred_at
+        if (direction === 'EXIT') existing.last_exit_at = event.occurred_at
+        existing.updated_at = event.occurred_at
+      } else {
+        db.attendance.push({
+          session_id: sessionId,
+          student_id: student.id,
+          status: direction === 'ENTRY' ? 'present' : 'left',
+          first_entry_at: direction === 'ENTRY' ? event.occurred_at : null,
+          last_exit_at: direction === 'EXIT' ? event.occurred_at : null,
+          last_event_at: event.occurred_at,
+          updated_at: event.occurred_at,
+        })
+      }
     }
   }
   return event

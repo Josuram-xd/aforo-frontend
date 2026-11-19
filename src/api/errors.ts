@@ -1,5 +1,3 @@
-import { FunctionsFetchError, FunctionsHttpError, FunctionsRelayError } from '@supabase/supabase-js'
-
 /**
  * Error with an i18n key safe to show to the user. Raw PostgREST/Edge messages are never
  * displayed: they can leak table names or policies.
@@ -40,22 +38,14 @@ export function fromPostgrest(error: PostgrestLikeError): AppError {
   }
 }
 
-/** Converts a supabase.functions.invoke error (not deployed, 4xx, network…). */
-export async function fromFunctionError(error: unknown): Promise<AppError> {
-  if (error instanceof FunctionsHttpError) {
-    const response = error.context as Response | undefined
-    const status = response?.status ?? null
-    if (status === 401 || status === 403) return new AppError('errors.forbidden', status)
-    if (status === 404) return new AppError('errors.functionUnavailable', status)
-    if (status === 409) return new AppError('errors.duplicate', status)
-    if (status === 400) return new AppError('errors.invalid', status)
-    if (status === 429) return new AppError('errors.rateLimited', status)
-    return new AppError('errors.generic', status)
-  }
-  if (error instanceof FunctionsRelayError || error instanceof FunctionsFetchError) {
-    return new AppError('errors.functionUnavailable')
-  }
-  return new AppError('errors.generic')
+/** Maps an HTTP status of the Python backend to an AppError with a translated message. */
+export function fromHttpStatus(status: number): AppError {
+  if (status === 401 || status === 403) return new AppError('errors.forbidden', status)
+  if (status === 404 || status === 503) return new AppError('errors.functionUnavailable', status)
+  if (status === 409) return new AppError('errors.duplicate', status)
+  if (status === 400) return new AppError('errors.invalid', status)
+  if (status === 429) return new AppError('errors.rateLimited', status)
+  return new AppError('errors.generic', status)
 }
 
 export function errorMessageKey(error: unknown): string {

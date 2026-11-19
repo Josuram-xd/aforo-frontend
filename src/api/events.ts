@@ -1,7 +1,8 @@
 import { endOfBogotaDay, startOfBogotaDay } from '../lib/format'
 import { isMockMode } from '../lib/env'
 import { supabase } from '../lib/supabase'
-import { AppError, fromFunctionError, fromPostgrest } from './errors'
+import { backendText } from './backend'
+import { AppError, fromPostgrest } from './errors'
 import type { DailySummary, Direction, EventFilters, EventItem, EventMethod, Page } from './types'
 
 // Events and the daily summary: teacher/admin only (RLS). Viewers get an empty result or an
@@ -113,7 +114,7 @@ export async function fetchDailySummary(
 const MAX_EXPORT_DAYS = 31
 
 /**
- * CSV export through the `export-events` Edge Function (aforo-backend). The function checks the
+ * CSV export through the Python backend (`GET /export-events`). The function checks the
  * role, logs the EXPORT in audit_log and streams the file.
  */
 export async function exportEventsCsv(params: {
@@ -129,10 +130,8 @@ export async function exportEventsCsv(params: {
 
   if (isMockMode) return { csv: await (await mock()).exportEventsCsv(params), filename }
 
-  const { data, error } = await supabase.functions.invoke<string>('export-events', {
-    method: 'POST',
-    body: { from: fromIso, to: toIso, classroomId: params.classroomId },
+  const csv = await backendText('/export-events', {
+    query: { from: fromIso, to: toIso, classroomId: params.classroomId },
   })
-  if (error) throw await fromFunctionError(error)
-  return { csv: typeof data === 'string' ? data : '', filename }
+  return { csv, filename }
 }

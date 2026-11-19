@@ -12,6 +12,8 @@ export const queryKeys = {
   courses: ['courses'] as const,
   courseStudents: ['course-students'] as const,
   studentPhotos: ['student-photos'] as const,
+  sessionReport: ['session-report'] as const,
+  courseRoster: ['course-roster'] as const,
   users: ['users'] as const,
   audit: ['audit'] as const,
   me: ['me'] as const,
@@ -22,7 +24,13 @@ export type RealtimeTable = 'events' | 'classrooms' | 'cameras' | 'alerts'
 /** Tables published to Realtime by aforo-db, and the query families each change affects. */
 export const REALTIME_INVALIDATIONS: Record<RealtimeTable, readonly (readonly string[])[]> = {
   // A new event also moves students.presence, attendance and the daily summary (DB triggers).
-  events: [queryKeys.events, queryKeys.dailySummary, queryKeys.students, queryKeys.attendance],
+  events: [
+    queryKeys.events,
+    queryKeys.dailySummary,
+    queryKeys.students,
+    queryKeys.attendance,
+    queryKeys.sessionReport,
+  ],
   classrooms: [queryKeys.classrooms],
   cameras: [queryKeys.cameras],
   alerts: [queryKeys.alerts],

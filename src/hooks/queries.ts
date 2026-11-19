@@ -14,6 +14,7 @@ import {
   fetchCourses,
 } from '../api/facilities'
 import { queryKeys } from '../api/queryKeys'
+import { getCourseRoster, getSessionReport } from '../api/reports'
 import { fetchAttendance, fetchSessions } from '../api/sessions'
 import { fetchCourseStudentIds, fetchEnrollmentCounts } from '../api/courseStudents'
 import { fetchPhotoUrls, fetchStudents } from '../api/students'
@@ -154,5 +155,26 @@ export function useStudentPhotoUrls(paths: string[]) {
     queryFn: () => fetchPhotoUrls(sorted),
     staleTime: 50 * 60_000, // signed URLs last 1 h
     enabled: sorted.length > 0,
+  })
+}
+
+/** Report of one session; `cursor`/`dir` move the timeline window (doubly linked list). */
+export function useSessionReport(sessionId: string | null, cursor?: string, dir?: 'next' | 'prev') {
+  const refetchInterval = useFallbackRefetchInterval()
+  return useQuery({
+    queryKey: [...queryKeys.sessionReport, sessionId, cursor, dir],
+    queryFn: () => getSessionReport(sessionId!, { cursor, dir }),
+    enabled: sessionId !== null,
+    placeholderData: keepPreviousData,
+    refetchInterval,
+  })
+}
+
+/** Roster of a course sorted by name; `q` is a name prefix (binary search tree). */
+export function useCourseRoster(courseId: string, q: string) {
+  return useQuery({
+    queryKey: [...queryKeys.courseRoster, courseId, q],
+    queryFn: () => getCourseRoster(courseId, q),
+    placeholderData: keepPreviousData,
   })
 }

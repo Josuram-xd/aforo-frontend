@@ -2,11 +2,12 @@ import { isRoleCode, type RoleCode } from '../auth/roles'
 import { endOfBogotaDay, startOfBogotaDay } from '../lib/format'
 import { isMockMode } from '../lib/env'
 import { supabase } from '../lib/supabase'
-import { fromFunctionError, fromPostgrest } from './errors'
+import { backendJson } from './backend'
+import { fromPostgrest } from './errors'
 import type { AuditFilters, AuditItem, Page, UserItem } from './types'
 
 // Admin-only data: other profiles, roles and the audit log. RLS returns only the caller's own
-// rows to non-admins, and the RPCs/Edge Function re-check the admin role server-side.
+// rows to non-admins, and the RPCs/backend re-check the admin role server-side.
 
 const mock = () => import('./mock/mockApi')
 
@@ -62,14 +63,10 @@ export async function deleteUser(userId: string): Promise<void> {
   if (error) throw fromPostgrest(error)
 }
 
-/** Invitation email through the `invite-user` Edge Function (aforo-backend). */
+/** Invitation email through the Python backend (`POST /invite-user`). */
 export async function inviteUser(email: string, role: RoleCode): Promise<void> {
   if (isMockMode) return (await mock()).inviteUser(email, role)
-  const { error } = await supabase.functions.invoke('invite-user', {
-    method: 'POST',
-    body: { email, role },
-  })
-  if (error) throw await fromFunctionError(error)
+  await backendJson('/invite-user', { method: 'POST', body: { email, role } })
 }
 
 export const AUDIT_PAGE_SIZE = 25
