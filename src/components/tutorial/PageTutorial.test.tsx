@@ -45,12 +45,24 @@ it('walks the steps, skips missing targets and closes with Escape', async () => 
 
   fireEvent.keyDown(document, { key: 'ArrowRight' })
   expect(dialog).toHaveTextContent('Paso 3 de 3')
-  expect(screen.getByRole('button', { name: 'Siguiente' })).toBeDisabled()
+  expect(screen.queryByRole('button', { name: 'Siguiente' })).toBeNull()
 
   fireEvent.keyDown(document, { key: 'ArrowLeft' })
   expect(dialog).toHaveTextContent('Paso 2 de 3')
 
   fireEvent.keyDown(document, { key: 'Escape' })
+  expect(screen.queryByRole('dialog')).toBeNull()
+  expect(trigger).toHaveFocus()
+})
+
+it('shows "Cerrar" as the primary button on the last step and closes the tour', async () => {
+  setup(['events-filters', 'events-table'])
+  const trigger = await openButton()
+  fireEvent.click(trigger)
+  fireEvent.keyDown(document, { key: 'ArrowRight' })
+  fireEvent.keyDown(document, { key: 'ArrowRight' })
+
+  fireEvent.click(screen.getByRole('button', { name: 'Cerrar' }))
   expect(screen.queryByRole('dialog')).toBeNull()
   expect(trigger).toHaveFocus()
 })
