@@ -28,6 +28,8 @@ import type {
   Student,
   UserItem,
 } from '../types'
+import { AppError } from '../errors'
+import type { CourseRoster, RosterStudent, SessionReport } from '../reports'
 import { MOCK_AUTH_USER } from './mockIdentity'
 import { db, delay, MOCK_ROLE_IDS, newId, notifyMock } from './mockDb'
 
@@ -515,5 +517,164 @@ export function fetchAuditPage(filters: AuditFilters, page: number): Promise<Pag
         createdAt: row.created_at,
       }
     }),
+  })
+}
+
+// ---------- Reports (mirror of the Python backend endpoints) ----------
+
+const nameKey = (text: string) =>
+  text
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+
+interface BstNode {
+  key: string
+  student: (typeof db.students)[number]
+  left: BstNode | null
+  right: BstNode | null
+}
+
+export function getCourseRoster(courseId: string, q: string): Promise<CourseRoster> {
+  // Real binary search tree (unbalanced insert) so `height` is honest.
+  let root: BstNode | null = null
+  let size = 0
+  let height = 0
+  const ids = new Set(
+    db.course_students.filter((c) => c.course_id === courseId).map((c) => c.student_id),
+  )
+  for (const student of db.students.filter((s) => ids.has(s.id))) {
+    const node: BstNode = { key: nameKey(student.full_name), student, left: null, right: null }
+    size++
+    if (!root) {
+      root = node
+      height = Math.max(height, 1)
+      continue
+    }
+    let current = root
+    let depth = 1
+    for (;;) {
+      depth++
+      const side = node.key < current.key ? 'left' : 'right'
+      if (!current[side]) {
+        current[side] = node
+        break
+      }
+      current = current[side]!
+    }
+    height = Math.max(height, depth)
+  }
+  const prefix = nameKey(q.trim())
+  const students: RosterStudent[] = []
+  const walk = (node: BstNode | null) => {
+    if (!node) return
+    walk(node.left)
+    if (node.key.startsWith(prefix)) {
+      students.push({
+        id: node.student.id,
+        fullName: node.student.full_name,
+        studentCode: node.student.student_code,
+        presence: node.student.presence as RosterStudent['presence'],
+        enrollmentStatus: node.student.enrollment_status,
+      })
+    }
+    walk(node.right)
+  }
+  walk(root)
+  return delay({ courseId, structure: 'binary_search_tree', height, size, students })
+}
+
+const REPORT_LIMIT = 10
+
+export function getSessionReport(
+  sessionId: string,
+  { cursor, dir }: { cursor?: string; dir?: 'next' | 'prev' } = {},
+): Promise<SessionReport> {
+  const session = db.class_sessions.find((s) => s.id === sessionId)
+  if (!session) return Promise.reject(new AppError('errors.functionUnavailable', 404))
+  const events = db.events
+    .filter((e) => e.session_id === sessionId)
+    .sort((a, b) => a.occurred_at.localeCompare(b.occurred_at))
+
+  const arrival = new Map<string, string>()
+  const stacks = new Map<string, string[]>() // per-student stack of ENTRY times
+  const anomalies: SessionReport['anomalies'] = []
+  const entries: SessionReport['lastEntries'] = []
+  let count = 0
+  let peak: SessionReport['peak'] = { count: 0, at: null }
+  for (const e of events) {
+    count += e.direction === 'ENTRY' ? 1 : -1
+    if (count > peak.count) peak = { count, at: e.occurred_at }
+    const id = e.student_id
+    if (!id) continue
+    const name = studentName(id) ?? '—'
+    const stack = stacks.get(id) ?? []
+    stacks.set(id, stack)
+    if (e.direction === 'ENTRY') {
+      stack.push(e.occurred_at)
+      if (!arrival.has(id)) arrival.set(id, e.occurred_at)
+      entries.push({ studentId: id, fullName: name, at: e.occurred_at })
+    } else if (stack.pop() === undefined) {
+      anomalies.push({
+        studentId: id,
+        fullName: name,
+        kind: 'EXIT_WITHOUT_ENTRY',
+        at: e.occurred_at,
+      })
+    }
+  }
+  const insideNow: SessionReport['insideNow'] = []
+  for (const [id, stack] of stacks) {
+    if (stack.length === 0) continue
+    insideNow.push({ studentId: id, fullName: studentName(id) ?? '—', since: stack[0]! })
+    if (stack.length > 1) {
+      anomalies.push({
+        studentId: id,
+        fullName: studentName(id) ?? '—',
+        kind: 'ENTRY_WITHOUT_EXIT',
+        at: stack[stack.length - 1]!,
+      })
+    }
+  }
+
+  // Timeline window: no cursor = newest events; `next`/`prev` move away from the cursor event.
+  const at = cursor ? events.findIndex((e) => e.id === cursor) : -1
+  let from: number
+  if (at < 0) from = Math.max(0, events.length - REPORT_LIMIT)
+  else if (dir === 'prev') from = Math.max(0, at - REPORT_LIMIT)
+  else from = at + 1
+  const window = events.slice(from, from + REPORT_LIMIT)
+  const items = window.map((e) => ({
+    id: e.id,
+    direction: e.direction as Direction,
+    method: e.method as EventMethod,
+    studentId: e.student_id,
+    fullName: studentName(e.student_id),
+    occurredAt: e.occurred_at,
+  }))
+
+  return delay({
+    session: {
+      id: session.id,
+      title: session.title,
+      startsAt: session.starts_at,
+      endsAt: session.ends_at,
+      courseId: session.course_id,
+      classroomId: session.classroom_id,
+    },
+    arrivalOrder: [...arrival].map(([id, firstEntryAt]) => ({
+      studentId: id,
+      fullName: studentName(id) ?? '—',
+      firstEntryAt,
+    })),
+    insideNow,
+    anomalies,
+    lastEntries: entries.slice(-5).reverse(),
+    peak,
+    timeline: {
+      items,
+      prevCursor: from > 0 && window.length ? window[0]!.id : null,
+      nextCursor: from + window.length < events.length && window.length ? window.at(-1)!.id : null,
+    },
   })
 }

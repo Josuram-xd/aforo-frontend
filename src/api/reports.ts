@@ -1,5 +1,8 @@
+import { isMockMode } from '../lib/env'
 import { backendJson } from './backend'
 import type { Direction, EventMethod } from './types'
+
+const mock = () => import('./mock/mockApi')
 
 // Reports computed by the Python backend with its own data structures (queue, stacks,
 // doubly linked list, binary search tree). Teacher/admin/viewer; the backend applies RLS.
@@ -72,6 +75,7 @@ export async function getSessionReport(
   sessionId: string,
   { cursor, dir }: TimelineCursor = {},
 ): Promise<SessionReport> {
+  if (isMockMode) return (await mock()).getSessionReport(sessionId, { cursor, dir })
   return backendJson<SessionReport>(`/sessions/${sessionId}/report`, {
     query: { cursor, dir: cursor ? dir : undefined, limit: TIMELINE_LIMIT },
   })
@@ -79,6 +83,7 @@ export async function getSessionReport(
 
 /** Students of a course sorted by name; `q` is a name prefix (BST range search). */
 export async function getCourseRoster(courseId: string, q = ''): Promise<CourseRoster> {
+  if (isMockMode) return (await mock()).getCourseRoster(courseId, q)
   return backendJson<CourseRoster>(`/courses/${courseId}/roster`, {
     query: { q: q.trim() || undefined },
   })
