@@ -1,6 +1,7 @@
 import { DoorOpen } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router'
 import { STAFF_ROLES, canAccess } from '../../auth/roles'
 import { useRole } from '../../auth/useRole'
 import { EmptyState } from '../../components/ui/EmptyState'
@@ -8,8 +9,10 @@ import { ErrorState } from '../../components/ui/ErrorState'
 import { SelectInput } from '../../components/ui/Field'
 import { PageIntro } from '../../components/ui/PageIntro'
 import { TOURS } from '../../components/tutorial/tours'
-import { useClassrooms } from '../../hooks/queries'
+import { useClassrooms, useCourses, useSessions } from '../../hooks/queries'
 import { bogotaDay, formatLongDate } from '../../lib/format'
+import { CourseSelector } from './CourseSelector'
+import { defaultCourseId } from './defaultCourse'
 import { DashboardStats } from './DashboardStats'
 import { HourlyChartCard } from './HourlyChartCard'
 import { CamerasCard, LatestEventsCard, OpenAlertsCard } from './LiveCards'
@@ -23,6 +26,16 @@ export function HomePage() {
   const classrooms = useClassrooms()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const day = bogotaDay()
+  // The course lives in the URL (`?curso=<id>`) so a reload keeps it. Staff only: viewers see no events.
+  const [params, setParams] = useSearchParams()
+  const courses = useCourses()
+  const sessions = useSessions()
+  const activeCourses = (courses.data ?? []).filter((c) => c.is_active)
+  const courseId = isStaff
+    ? (activeCourses.find((c) => c.id === params.get('curso'))?.id ??
+      defaultCourseId(activeCourses, sessions.data ?? []))
+    : undefined
+  const courseLoading = isStaff && (courses.isPending || sessions.isPending)
 
   if (classrooms.isError) {
     return <ErrorState onRetry={() => void classrooms.refetch()} retrying={classrooms.isFetching} />
@@ -70,11 +83,30 @@ export function HomePage() {
           ) : undefined
         }
       />
-      <DashboardStats classroom={classroom} day={day} isStaff={isStaff} />
-      {isStaff && <HourlyChartCard classroomId={classroom?.id} day={day} />}
+      {isStaff && courseId && (
+        <CourseSelector
+          courses={activeCourses}
+          value={courseId}
+          onChange={(id) => setParams({ curso: id }, { replace: true })}
+        />
+      )}
+      <DashboardStats
+        classroom={classroom}
+        day={day}
+        isStaff={isStaff}
+        courseId={courseId}
+        courseLoading={courseLoading}
+      />
+      {isStaff && !courseLoading && (
+        <HourlyChartCard classroomId={classroom?.id} day={day} courseId={courseId} />
+      )}
       <div className="dashboard__row">
         {isStaff ? (
-          <LatestEventsCard classroomId={classroom?.id} />
+          <LatestEventsCard
+            classroomId={classroom?.id}
+            courseId={courseId}
+            loading={courseLoading}
+          />
         ) : (
           <CamerasCard classroomId={classroom?.id} />
         )}

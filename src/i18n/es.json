@@ -271,6 +271,8 @@
     "intro": "{{name}} · {{location}}. Todo se actualiza solo, en tiempo real.",
     "noLocation": "sin ubicación",
     "pickClassroom": "Elegir salón",
+    "course": "Curso",
+    "courseHint": "El curso filtra los totales del día, el gráfico y los últimos eventos. El aforo en vivo cuenta a todo el salón.",
     "noClassrooms": "Todavía no hay salones",
     "noClassroomsHint": "Un administrador debe crear el salón del piloto en Configuración.",
     "entriesToday": "Entradas hoy",

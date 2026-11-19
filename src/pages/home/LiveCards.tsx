@@ -21,9 +21,17 @@ function SeeAll({ to, label }: { to: string; label: string }) {
   )
 }
 
-export function LatestEventsCard({ classroomId }: { classroomId: string | undefined }) {
+export function LatestEventsCard({
+  classroomId,
+  courseId,
+  loading = false,
+}: {
+  classroomId: string | undefined
+  courseId?: string
+  loading?: boolean
+}) {
   const { t } = useTranslation()
-  const events = useLatestEvents(classroomId, 10)
+  const events = useLatestEvents(classroomId, 10, !loading, courseId)
 
   return (
     <Card aria-labelledby="latest-events-title" data-tour="home-events">
@@ -34,7 +42,7 @@ export function LatestEventsCard({ classroomId }: { classroomId: string | undefi
         description={t('dashboard.latestEventsHint')}
         actions={<SeeAll to="/eventos" label={t('dashboard.seeHistory')} />}
       />
-      {events.isPending ? (
+      {loading || events.isPending ? (
         <SkeletonList rows={6} />
       ) : events.isError ? (
         <ErrorState compact onRetry={() => void events.refetch()} retrying={events.isFetching} />
