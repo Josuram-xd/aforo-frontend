@@ -1,4 +1,4 @@
-// Invited users (invite-user Edge Function) arrive through an email link with a session but no
+// Invited users (backend invite-user endpoint) arrive through an email link with a session but no
 // password. They must choose one before using the app; this flag survives reloads in the tab.
 
 const STORAGE_KEY = 'aforo.must-set-password'

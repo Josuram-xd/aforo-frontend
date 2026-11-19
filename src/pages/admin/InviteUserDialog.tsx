@@ -18,7 +18,7 @@ interface InviteUserDialogProps {
   onInvited?: (email: string) => void
 }
 
-/** Sends an invitation email through the invite-user Edge Function (admin only). */
+/** Sends an invitation email through the backend invite-user endpoint (admin only). */
 export function InviteUserDialog({ open, onClose, onInvited }: InviteUserDialogProps) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
