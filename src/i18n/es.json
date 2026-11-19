@@ -438,8 +438,8 @@
       "enrolled": "Registrada",
       "failed": "Falló"
     },
-    "enrollmentProgress": "Progreso del análisis de la foto",
-    "enrollmentElapsed": "Analizando la foto… {{time}} (máx. 10:00)",
+    "enrollmentProgress": "Subiendo y analizando la foto",
+    "enrollmentElapsed": "Subiendo y analizando la foto… {{time}}",
     "enroll": "Registrar rostro",
     "reenroll": "Volver a registrar",
     "enrollNamed": "Registrar rostro de {{name}}",

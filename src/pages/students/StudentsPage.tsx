@@ -38,9 +38,6 @@ import { formatDateTime, formatRelative } from '../../lib/format'
 import { EnrollmentDialog } from './EnrollmentDialog'
 import { StudentFormDialog } from './StudentFormDialog'
 
-// Matches the 10-minute purge in aforo-db: after this the photos are deleted and the status becomes failed.
-const ENROLLMENT_TIMEOUT_S = 600
-
 type PresenceFilter = '' | 'IN' | 'OUT' | 'inactive'
 
 function normalize(text: string): string {
@@ -194,9 +191,8 @@ export function StudentsPage() {
             </Badge>
             {status === 'pending' && (
               <span className="muted" style={{ display: 'block', marginTop: 4, fontSize: 12 }}>
+                {/* no value: indeterminate until the vision node flips the status to enrolled/failed */}
                 <progress
-                  max={ENROLLMENT_TIMEOUT_S}
-                  value={Math.min(elapsed, ENROLLMENT_TIMEOUT_S)}
                   aria-label={t('students.enrollmentProgress')}
                   style={{ width: 120 }}
                 />
