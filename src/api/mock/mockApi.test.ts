@@ -56,3 +56,47 @@ describe('events filters on mock data', () => {
     expect(result).toEqual({ rows: [], total: 0 })
   })
 })
+
+describe('reports on mock data', () => {
+  it('searches the TEST roster by name prefix, sorted', async () => {
+    const { getCourseRoster } = await import('./mockApi')
+    const { db } = await import('./mockDb')
+    const test = db.courses.find((c) => c.code === 'TEST')!
+    const all = await getCourseRoster(test.id, '')
+    const names = all.students.map((s) => s.fullName)
+    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b, 'es')))
+    expect(names).toEqual(expect.arrayContaining(['Joseph Herrera', 'Juan Cuaran']))
+    const hit = await getCourseRoster(test.id, 'jua')
+    expect(hit.students.map((s) => s.fullName)).toEqual(['Juan Cuaran'])
+  })
+
+  it('builds the session report and pages the timeline both ways', async () => {
+    const { getSessionReport } = await import('./mockApi')
+    const { db } = await import('./mockDb')
+    const session = [...db.class_sessions]
+      .filter((s) => db.events.filter((e) => e.session_id === s.id).length > 12)
+      .at(0)!
+    const first = await getSessionReport(session.id)
+    expect(first.timeline.items.length).toBe(10)
+    expect(first.timeline.nextCursor).toBeNull()
+    const older = await getSessionReport(session.id, {
+      cursor: first.timeline.prevCursor!,
+      dir: 'prev',
+    })
+    expect(older.timeline.nextCursor).not.toBeNull()
+    const back = await getSessionReport(session.id, {
+      cursor: older.timeline.nextCursor!,
+      dir: 'next',
+    })
+    expect(back.timeline.items[0]!.id).toBe(first.timeline.items[0]!.id)
+  })
+
+  it('keeps events outside session windows without a session', async () => {
+    const { db } = await import('./mockDb')
+    for (const e of db.events) {
+      if (!e.session_id) continue
+      const s = db.class_sessions.find((x) => x.id === e.session_id)!
+      expect(e.occurred_at >= s.starts_at && e.occurred_at < s.ends_at).toBe(true)
+    }
+  })
+})
