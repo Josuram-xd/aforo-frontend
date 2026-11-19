@@ -155,6 +155,7 @@ export function useCourseStudentIds(courseId: string) {
   return useQuery({
     queryKey: [...queryKeys.courseStudents, courseId],
     queryFn: () => fetchCourseStudentIds(courseId),
+    enabled: courseId !== '',
   })
 }
 
