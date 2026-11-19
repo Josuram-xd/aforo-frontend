@@ -29,6 +29,8 @@ vi.mock('../../api/accessLog', () => ({ useLogView: () => undefined }))
 vi.mock('../../hooks/queries', () => ({
   useStudents: () => ({ data: [STUDENT], isPending: false, isError: false, refetch: vi.fn() }),
   useStudentPhotoUrls: () => ({ data: {} }),
+  useCourses: () => ({ data: [] }),
+  useCourseStudentIds: () => ({ data: undefined }),
 }))
 
 describe('StudentsPage delete action', () => {

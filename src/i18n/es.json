@@ -381,6 +381,7 @@
     "status": "Estado"
   },
   "students": {
+    "course": "Curso",
     "description_one": "{{inside}} de {{total}} estudiante activo está dentro del salón ahora.",
     "description_other": "{{inside}} de {{total}} estudiantes activos están dentro del salón ahora.",
     "create": "Nuevo estudiante",

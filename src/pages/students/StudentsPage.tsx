@@ -32,7 +32,7 @@ import { TOURS } from '../../components/tutorial/tours'
 import { SkeletonTable } from '../../components/ui/Skeleton'
 import { TypedConfirmDialog } from '../../components/ui/TypedConfirmDialog'
 import { useToast } from '../../components/ui/toastContext'
-import { useStudentPhotoUrls, useStudents } from '../../hooks/queries'
+import { useCourseStudentIds, useCourses, useStudentPhotoUrls, useStudents } from '../../hooks/queries'
 import { formatDateTime, formatRelative } from '../../lib/format'
 import { EnrollmentDialog } from './EnrollmentDialog'
 import { StudentFormDialog } from './StudentFormDialog'
@@ -60,6 +60,15 @@ export function StudentsPage() {
   const queryClient = useQueryClient()
   const [search, setSearch] = useState('')
   const [presence, setPresence] = useState<PresenceFilter>('')
+  // Students are enrolled per course: default to the first course; '' means all courses.
+  const courses = useCourses()
+  const [picked, setPicked] = useState<string | null>(null)
+  const courseId = picked ?? courses.data?.[0]?.id ?? ''
+  const courseIds = useCourseStudentIds(courseId)
+  const inCourse = useMemo(
+    () => (courseId && courseIds.data ? new Set(courseIds.data) : null),
+    [courseId, courseIds.data],
+  )
   const [editing, setEditing] = useState<Student | null>(null)
   const [formOpen, setFormOpen] = useState(false)
 
@@ -94,6 +103,7 @@ export function StudentsPage() {
   const rows = useMemo(() => {
     const term = normalize(search.trim())
     return (students.data ?? []).filter((student) => {
+      if (courseId && !inCourse?.has(student.id)) return false
       if (presence === 'inactive' && student.is_active) return false
       if (
         (presence === 'IN' || presence === 'OUT') &&
@@ -105,9 +115,11 @@ export function StudentsPage() {
         normalize(value).includes(term),
       )
     })
-  }, [students.data, search, presence])
+  }, [students.data, search, presence, courseId, inCourse])
 
-  const active = (students.data ?? []).filter((s) => s.is_active)
+  const active = (students.data ?? []).filter(
+    (s) => s.is_active && (!courseId || inCourse?.has(s.id)),
+  )
   const inside = active.filter((s) => s.presence === 'IN').length
 
   const columns: Column<Student>[] = [
@@ -281,6 +293,18 @@ export function StudentsPage() {
                 placeholder={t('students.searchPlaceholder')}
                 icon={<Search size={15} />}
               />
+            )}
+          </Field>
+          <Field label={t('students.course')}>
+            {({ id }) => (
+              <SelectInput id={id} value={courseId} onChange={(event) => setPicked(event.target.value)}>
+                <option value="">{t('filters.all')}</option>
+                {(courses.data ?? []).map((course) => (
+                  <option key={course.id} value={course.id}>
+                    {course.name}
+                  </option>
+                ))}
+              </SelectInput>
             )}
           </Field>
           <Field label={t('students.columns.presence')}>
