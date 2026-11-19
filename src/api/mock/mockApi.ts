@@ -212,19 +212,36 @@ export function fetchEventsPage(filters: EventFilters, page: number): Promise<Pa
   })
 }
 
-export function fetchEventsBetween(classroomId: string, from: string, to: string) {
+/** True when no course is asked for, or the event's session belongs to that course. */
+const inCourse = (e: (typeof db.events)[number], courseId?: string) =>
+  !courseId ||
+  (e.session_id !== null &&
+    db.class_sessions.find((s) => s.id === e.session_id)?.course_id === courseId)
+
+export function fetchEventsBetween(
+  classroomId: string,
+  from: string,
+  to: string,
+  courseId?: string,
+) {
   return delay(
     db.events
-      .filter((e) => e.classroom_id === classroomId && e.occurred_at >= from && e.occurred_at < to)
+      .filter(
+        (e) =>
+          e.classroom_id === classroomId &&
+          e.occurred_at >= from &&
+          e.occurred_at < to &&
+          inCourse(e, courseId),
+      )
       .reverse()
       .map(toEventItem),
   )
 }
 
-export function fetchLatestEvents(classroomId: string, limit: number) {
+export function fetchLatestEvents(classroomId: string, limit: number, courseId?: string) {
   return delay(
     db.events
-      .filter((e) => e.classroom_id === classroomId)
+      .filter((e) => e.classroom_id === classroomId && inCourse(e, courseId))
       .slice(0, limit)
       .map(toEventItem),
   )

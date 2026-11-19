@@ -67,21 +67,32 @@ export function useDailySummary(classroomId: string | undefined, day: string, en
   })
 }
 
-export function useDayEvents(classroomId: string | undefined, day: string, enabled = true) {
+export function useDayEvents(
+  classroomId: string | undefined,
+  day: string,
+  enabled = true,
+  courseId?: string,
+) {
   const refetchInterval = useFallbackRefetchInterval()
   return useQuery({
-    queryKey: [...queryKeys.events, 'day', classroomId, day],
-    queryFn: () => fetchEventsBetween(classroomId!, startOfBogotaDay(day), endOfBogotaDay(day)),
+    queryKey: [...queryKeys.events, 'day', classroomId, day, courseId ?? null],
+    queryFn: () =>
+      fetchEventsBetween(classroomId!, startOfBogotaDay(day), endOfBogotaDay(day), courseId),
     enabled: enabled && Boolean(classroomId),
     refetchInterval,
   })
 }
 
-export function useLatestEvents(classroomId: string | undefined, limit = 10, enabled = true) {
+export function useLatestEvents(
+  classroomId: string | undefined,
+  limit = 10,
+  enabled = true,
+  courseId?: string,
+) {
   const refetchInterval = useFallbackRefetchInterval()
   return useQuery({
-    queryKey: [...queryKeys.events, 'latest', classroomId, limit],
-    queryFn: () => fetchLatestEvents(classroomId!, limit),
+    queryKey: [...queryKeys.events, 'latest', classroomId, limit, courseId ?? null],
+    queryFn: () => fetchLatestEvents(classroomId!, limit, courseId),
     enabled: enabled && Boolean(classroomId),
     refetchInterval,
   })
