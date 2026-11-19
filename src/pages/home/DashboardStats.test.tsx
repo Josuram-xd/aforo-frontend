@@ -1,6 +1,13 @@
 import { screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { AlertItem, Camera, Classroom, DailySummary, SessionItem } from '../../api/types'
+import type {
+  AlertItem,
+  Camera,
+  Classroom,
+  DailySummary,
+  EventItem,
+  SessionItem,
+} from '../../api/types'
 import { renderWithProviders } from '../../test/render'
 import { DashboardStats } from './DashboardStats'
 
@@ -9,13 +16,14 @@ const data = vi.hoisted(() => ({
   cameras: [] as Camera[],
   alerts: [] as AlertItem[],
   sessions: [] as SessionItem[],
+  events: [] as EventItem[],
 }))
 
 const ok = <T,>(value: T) => ({ isPending: false, isError: false, data: value })
 
 vi.mock('../../hooks/queries', () => ({
   useDailySummary: () => ok(data.summary),
-  useDayEvents: () => ok([]),
+  useDayEvents: () => ok(data.events),
   useCameras: () => ok(data.cameras),
   useAlerts: () => ok(data.alerts),
   useSessions: () => ok(data.sessions),
@@ -51,6 +59,7 @@ describe('DashboardStats', () => {
     data.cameras = []
     data.alerts = []
     data.sessions = []
+    data.events = []
   })
 
   it('shows occupancy against capacity with a text level', () => {
@@ -102,5 +111,25 @@ describe('DashboardStats', () => {
       'aria-busy',
       'true',
     )
+  })
+
+  it('derives the day totals from the course events instead of the room summary', () => {
+    const ev = (direction: EventItem['direction'], method: EventItem['method']) =>
+      ({ direction, method, occurredAt: '2026-10-13T12:00:00Z' }) as EventItem
+    data.events = [
+      ev('ENTRY', 'FACE'),
+      ev('ENTRY', 'FACE'),
+      ev('ENTRY', 'BODY_ONLY'),
+      ev('EXIT', 'FACE'),
+    ]
+    renderWithProviders(
+      <DashboardStats classroom={classroom(18)} day="2026-10-13" isStaff courseId="course-1" />,
+    )
+    // Occupancy stays room-wide (18); totals are the course's (3 in, 1 out), not 42/24.
+    expect(screen.getByText('18')).toBeInTheDocument()
+    expect(screen.getByText('3')).toBeInTheDocument()
+    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(screen.queryByText('42')).toBeNull()
+    expect(screen.getByText('3 por rostro')).toBeInTheDocument()
   })
 })

@@ -15,12 +15,14 @@ const CHART_HEIGHT = 280
 export function HourlyChartCard({
   classroomId,
   day,
+  courseId,
 }: {
   classroomId: string | undefined
   day: string
+  courseId?: string
 }) {
   const { t } = useTranslation()
-  const events = useDayEvents(classroomId, day)
+  const events = useDayEvents(classroomId, day, true, courseId)
 
   let body
   if (events.isPending) body = <SkeletonChart height={CHART_HEIGHT} />

@@ -14,6 +14,7 @@ import {
   useSessions,
 } from '../../hooks/queries'
 import { bucketByHour } from '../../lib/hourBuckets'
+import { summarizeEvents } from '../../lib/summarizeEvents'
 import {
   bogotaHour,
   formatDateTime,
@@ -27,15 +28,29 @@ interface DashboardStatsProps {
   classroom: Classroom | undefined
   day: string
   isStaff: boolean
+  /** Course filter for the day totals; the live occupancy number is always the whole room. */
+  courseId?: string
+  courseLoading?: boolean
 }
 
 /** Top row of the home page: occupancy hero + three KPIs that depend on the role. */
-export function DashboardStats({ classroom, day, isStaff }: DashboardStatsProps) {
+export function DashboardStats({
+  classroom,
+  day,
+  isStaff,
+  courseId,
+  courseLoading = false,
+}: DashboardStatsProps) {
   return (
     <div className="dashboard__stats" data-tour="home-stats">
       <OccupancyCard classroom={classroom} />
       {isStaff ? (
-        <StaffStats classroomId={classroom?.id} day={day} />
+        <StaffStats
+          classroomId={classroom?.id}
+          day={day}
+          courseId={courseId}
+          loading={courseLoading}
+        />
       ) : (
         <ViewerStats classroomId={classroom?.id} />
       )}
@@ -68,16 +83,28 @@ function OccupancyCard({ classroom }: { classroom: Classroom | undefined }) {
   )
 }
 
-function StaffStats({ classroomId, day }: { classroomId: string | undefined; day: string }) {
+function StaffStats({
+  classroomId,
+  day,
+  courseId,
+  loading,
+}: {
+  classroomId: string | undefined
+  day: string
+  courseId: string | undefined
+  loading: boolean
+}) {
   const { t } = useTranslation()
-  const summary = useDailySummary(classroomId, day)
+  // The summary view is per classroom: with a course, totals are derived from its events instead.
+  const summaryQuery = useDailySummary(classroomId, day, !courseId && !loading)
   // Same query as the hourly chart (shared cache): the last hours feed the mini trends.
-  const dayEvents = useDayEvents(classroomId, day)
+  const dayEvents = useDayEvents(classroomId, day, !loading, courseId)
   const recent = bucketByHour(dayEvents.data ?? [])
     .filter((bucket) => bucket.hour <= bogotaHour(new Date()))
     .slice(-8)
 
-  if (summary.isPending) {
+  const pending = loading || (courseId ? dayEvents.isPending : summaryQuery.isPending)
+  if (pending) {
     return (
       <>
         <SkeletonStatCard />
@@ -87,7 +114,17 @@ function StaffStats({ classroomId, day }: { classroomId: string | undefined; day
     )
   }
 
-  const data = summary.data
+  const byCourse = courseId ? summarizeEvents(dayEvents.data ?? []) : null
+  const data = courseId
+    ? byCourse && {
+        entries: byCourse.entries,
+        exits: byCourse.exits,
+        face_identified: byCourse.faceIdentified,
+        face_identified_pct: byCourse.facePct,
+        peak_occupancy: byCourse.peak,
+        first_event_at: byCourse.firstEventAt,
+      }
+    : summaryQuery.data
   const entries = data?.entries ?? 0
   const exits = data?.exits ?? 0
   const total = entries + exits

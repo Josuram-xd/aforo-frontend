@@ -45,6 +45,7 @@ export function PageTutorial({ steps }: { steps: TourStep[] }) {
   }, [steps])
 
   const step = active?.[index]
+  const isLast = active !== null && index === active.length - 1
 
   const close = useCallback(() => {
     setActive(null)
@@ -199,9 +200,11 @@ export function PageTutorial({ steps }: { steps: TourStep[] }) {
                 {t(`${step.key}.body`)}
               </p>
               <div className="tour__actions">
-                <Button variant="ghost" size="md" onClick={close}>
-                  {t('tutorial.ui.close')}
-                </Button>
+                {!isLast && (
+                  <Button variant="ghost" size="md" onClick={close}>
+                    {t('tutorial.ui.close')}
+                  </Button>
+                )}
                 <span className="tour__nav">
                   <Button
                     variant="secondary"
@@ -211,12 +214,8 @@ export function PageTutorial({ steps }: { steps: TourStep[] }) {
                   >
                     {t('tutorial.ui.prev')}
                   </Button>
-                  <Button
-                    size="md"
-                    disabled={index === active.length - 1}
-                    onClick={() => setIndex(index + 1)}
-                  >
-                    {t('tutorial.ui.next')}
+                  <Button size="md" onClick={isLast ? close : () => setIndex(index + 1)}>
+                    {t(isLast ? 'tutorial.ui.close' : 'tutorial.ui.next')}
                   </Button>
                 </span>
               </div>

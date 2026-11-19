@@ -39,6 +39,10 @@ function toEventItem(row: EventRow): EventItem {
   }
 }
 
+/** With a course, an inner join keeps only events whose session belongs to it. */
+const eventColumns = (courseId?: string) =>
+  courseId ? `${EVENT_COLUMNS}, class_sessions!inner(course_id)` : EVENT_COLUMNS
+
 export const EVENTS_PAGE_SIZE = 25
 
 export async function fetchEventsPage(
@@ -69,30 +73,39 @@ export async function fetchEventsBetween(
   classroomId: string,
   from: string,
   to: string,
+  courseId?: string,
 ): Promise<EventItem[]> {
-  if (isMockMode) return (await mock()).fetchEventsBetween(classroomId, from, to)
-  const { data, error } = await supabase
+  if (isMockMode) return (await mock()).fetchEventsBetween(classroomId, from, to, courseId)
+  let query = supabase
     .from('events')
-    .select(EVENT_COLUMNS)
+    .select(eventColumns(courseId))
     .eq('classroom_id', classroomId)
     .gte('occurred_at', from)
     .lt('occurred_at', to)
     .order('occurred_at', { ascending: true })
     .limit(5000)
+  if (courseId) query = query.eq('class_sessions.course_id', courseId)
+  const { data, error } = await query
   if (error) throw fromPostgrest(error)
-  return (data as EventRow[]).map(toEventItem)
+  return (data as unknown as EventRow[]).map(toEventItem)
 }
 
-export async function fetchLatestEvents(classroomId: string, limit = 10): Promise<EventItem[]> {
-  if (isMockMode) return (await mock()).fetchLatestEvents(classroomId, limit)
-  const { data, error } = await supabase
+export async function fetchLatestEvents(
+  classroomId: string,
+  limit = 10,
+  courseId?: string,
+): Promise<EventItem[]> {
+  if (isMockMode) return (await mock()).fetchLatestEvents(classroomId, limit, courseId)
+  let query = supabase
     .from('events')
-    .select(EVENT_COLUMNS)
+    .select(eventColumns(courseId))
     .eq('classroom_id', classroomId)
     .order('occurred_at', { ascending: false })
     .limit(limit)
+  if (courseId) query = query.eq('class_sessions.course_id', courseId)
+  const { data, error } = await query
   if (error) throw fromPostgrest(error)
-  return (data as EventRow[]).map(toEventItem)
+  return (data as unknown as EventRow[]).map(toEventItem)
 }
 
 /** Today's row of daily_occupancy_summary (security_invoker view → empty for viewers). */

@@ -2,7 +2,8 @@ import { afterAll, describe, expect, it, vi } from 'vitest'
 
 // The mock DB adds a live event on a timer; fake timers keep the data still during the test.
 vi.useFakeTimers({ toFake: ['setInterval'] })
-const { fetchEventsPage } = await import('./mockApi')
+const { fetchEventsPage, fetchEventsBetween, fetchLatestEvents, fetchCourses, fetchClassrooms } =
+  await import('./mockApi')
 const { EVENTS_PAGE_SIZE } = await import('../events')
 const { bogotaDay, addDays } = await import('../../lib/format')
 
@@ -98,5 +99,34 @@ describe('reports on mock data', () => {
       const s = db.class_sessions.find((x) => x.id === e.session_id)!
       expect(e.occurred_at >= s.starts_at && e.occurred_at < s.ends_at).toBe(true)
     }
+  })
+})
+
+describe('course filter on mock events', () => {
+  const wide = ['2000-01-01T00:00:00Z', '2100-01-01T00:00:00Z'] as const
+
+  it('keeps only events of sessions of that course', async () => {
+    const [room] = await fetchClassrooms()
+    const courses = await fetchCourses()
+    const test = courses.find((c) => c.code === 'TEST')!
+    const other = courses.find((c) => c.code !== 'TEST')!
+    const all = await fetchEventsBetween(room!.id, ...wide)
+    const mine = await fetchEventsBetween(room!.id, ...wide, test.id)
+    const theirs = await fetchEventsBetween(room!.id, ...wide, other.id)
+    expect(mine.length).toBeGreaterThan(0)
+    expect(mine.every((e) => e.sessionId !== null)).toBe(true)
+    expect(mine.length + theirs.length).toBeLessThanOrEqual(all.length)
+    const ids = new Set(theirs.map((e) => e.id))
+    expect(mine.some((e) => ids.has(e.id))).toBe(false)
+  })
+
+  it('limits the latest events to the course too', async () => {
+    const [room] = await fetchClassrooms()
+    const test = (await fetchCourses()).find((c) => c.code === 'TEST')!
+    const full = await fetchEventsBetween(room!.id, ...wide, test.id)
+    const latest = await fetchLatestEvents(room!.id, 5, test.id)
+    expect(latest.length).toBe(Math.min(5, full.length))
+    const fullIds = new Set(full.map((e) => e.id))
+    expect(latest.every((e) => fullIds.has(e.id))).toBe(true)
   })
 })
