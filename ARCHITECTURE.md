@@ -152,13 +152,17 @@ First project review: the UI was "too basic", there was no registration or login
 │  - App shell + role guards    │   rpc: set_user_role, ...   │  PostgreSQL + RLS (aforo-db)  │
 │  - TanStack Query cache       │ ◀───────────────────────── │  Realtime (events, classrooms,│
 │  - Realtime → invalidations   │   Realtime websocket        │   cameras, alerts)            │
-└──────────────────────────────┘                             │  Edge Functions (aforo-backend)│
+└──────────────────────────────┘                             │                               │
                                                               └──────────────────────────────┘
+                    │ HTTPS + Bearer <Supabase access token>
+                    ▼
+   aforo-backend (Python, AWS Lambda + API Gateway): export-events, invite-user, session report, course roster
 ```
 
 - The browser uses only the **publishable key**; everything else depends on the signed-in user's JWT and RLS. No service-role key ever reaches the frontend.
 - TanStack Query stays as the server-state cache. Realtime messages do not write to the cache directly: they invalidate the affected queries (simple and consistent with RLS).
-- Environment: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` (replace `VITE_API_BASE_URL`). `VITE_USE_MOCK` keeps working for offline UI work.
+- The Python backend replaces the Supabase Edge Functions. `src/api/backend.ts` attaches the current access token and maps failures to `AppError` by HTTP status (the backend's `{error}` text is not shown). Report endpoints live in `src/api/reports.ts` and have mock implementations for demo mode.
+- Environment: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_BACKEND_URL` (replace `VITE_API_BASE_URL`). `VITE_USE_MOCK` keeps working for offline UI work.
 
 ### 8.3 Routes and roles
 
